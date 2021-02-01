@@ -17,11 +17,24 @@ Route::get('/', function () {
     return view('index');
 });
 
+/* MANTENER CATEGORIAS */
+Route::resource('categoria', 'CategoriaController');
+Route::get('/categoria/eliminarCategoria/{id}','CategoriaController@eliminarCategoria');
+Route::get('cancelar', function () {
+    return redirect()->route('categoria.index')->with('datos','Accion Cancelada...!');
+})->name('cancelar');
 
+Route::resource('subcategoria', 'SubCategoriaController');
+Route::get('/subcategoria/eliminarSubCategoria/{id}','SubCategoriaController@eliminarSubcategoria');
+
+
+
+/*
 Route::get('/categoria', function () {
     return view('Categorias.index');
 });
+*/
 
 
 
-Route::get('/listarProductos','ProductoController@listarProductos');
+//Route::get('/listarProductos','ProductoController@listarProductos');
