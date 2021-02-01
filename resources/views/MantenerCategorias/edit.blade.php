@@ -155,7 +155,8 @@
                                 <td>{{$itemSub->nombre}}</td>
                                 
 
-                                <td> <a href="" class = "btn btn-warning">  
+                                <td> 
+                                    <a href="{{route('subcategoria.edit',$itemSub->codSubCategoria)}}" class = "btn btn-warning btn-sm">  
                                         <i class="fas fa-edit"> </i> 
                                         Editar
                                     </a>
@@ -165,41 +166,49 @@
                                         Eliminar
                                     </a>   
                                     -->
-                                    <a href="#" class="btn btn-danger btn-sm btn-icon icon-left" title="Eliminar registro" onclick="swal({//sweetalert
-                                        title:'¿Está seguro de eliminar?',
-                                        text: '',     //mas texto
-                                        //type: 'warning',  
-                                        type: '',
-                                        showCancelButton: true,//para que se muestre el boton de cancelar
-                                        confirmButtonColor: '#3085d6',
-                                        cancelButtonColor: '#d33',
-                                        confirmButtonText:  'SI',
-                                        cancelButtonText:  'NO',
-                                        closeOnConfirm:     true,//para mostrar el boton de confirmar
-                                        html : true
-                                    },
-                                    function(){//se ejecuta cuando damos a aceptar
-                                        $.ajax({
-                                            url : '/subcategoria/eliminarSubCategoria/{{$itemSub->nroEnCategoria}}',
-                                            data: { },
-                                            type:'get',
-                                            success:  function (response) {
-                                                //console.log(response);
-                                                //$('#CargarContenido').empty().append($(response));
-                                                //window.location.reload();
-                                                //alert('Mensaje');
-                                                window.location.href='{{route('categoria.edit',$categoria->codCategoria)}}';
-                                            },
-                                            statusCode: {// es como un catch
-                
-                                            },
-                                            error:function(x,xs,xt){//error por defecto no definido en el statusCode
-                                                //window.open(JSON.stringify(x));
-                                                console.log('error: ' + JSON.stringify(x) +'\n error string: '+ xs + '\n error throwed: ' + xt);
-                                            }
-                                        });
-                
-                                    });"><i class="entypo-cancel"></i>Eliminar</a>
+                                    <a href="#" class="btn btn-danger btn-sm btn-icon icon-left" title="Eliminar registro" 
+                                        onclick="swal(
+                                                {//sweetalert
+                                                    title:'¿Está seguro de eliminar?',
+                                                    text: '',     //mas texto
+                                                    //type: 'warning',  
+                                                    type: '',
+                                                    showCancelButton: true,//para que se muestre el boton de cancelar
+                                                    confirmButtonColor: '#3085d6',
+                                                    cancelButtonColor: '#d33',
+                                                    confirmButtonText:  'SI',
+                                                    cancelButtonText:  'NO',
+                                                    closeOnConfirm:     true,//para mostrar el boton de confirmar
+                                                    html : true
+                                                },
+                                                function()
+                                                {//se ejecuta cuando damos a aceptar
+                                                    $.ajax(
+                                                        {
+                                                        url : '/subcategoria/eliminarSubCategoria/{{$itemSub->nroEnCategoria}}',
+                                                        data: { },
+                                                        type:'get',
+                                                        success:  function (response) 
+                                                            {
+                                                                //console.log(response);
+                                                                //$('#CargarContenido').empty().append($(response));
+                                                                //window.location.reload();
+                                                                //alert('Mensaje');
+                                                                window.location.href='{{route('categoria.edit',$categoria->codCategoria)}}';
+                                                            },
+                                                            statusCode:{}, //ESTO ES COMO UN CATCH
+                                                            error:function(x,xs,xt)
+                                                            {//error por defecto no definido en el statusCode
+                                                                //window.open(JSON.stringify(x));
+                                                                console.log('error: ' + JSON.stringify(x) +'\n error string: '+ xs + '\n error throwed: ' + xt);
+                                                            }
+                                                        });
+                            
+                                                });">
+                                        <i class="entypo-cancel"></i>
+                                        <i class="fas fa-trash"></i>
+                                        Eliminar
+                                    </a>
                                 </td>
                             </tr>
                          @endforeach

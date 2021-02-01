@@ -17,15 +17,24 @@ Route::get('/', function () {
     return view('index');
 });
 
-/* MANTENER CATEGORIAS */
+/*-----------------RUTAS  MANTENEDORES ----------------------*/
 Route::resource('categoria', 'CategoriaController');
+Route::resource('marca', 'MarcaController');
+Route::resource('producto', 'ProductoController');
+
+/* ------------------------ RUTAS ELIMINACION PARA MSJ CONFIRMACION AJAX ------------------------ */
+
 Route::get('/categoria/eliminarCategoria/{id}','CategoriaController@eliminarCategoria');
+Route::get('/subcategoria/eliminarSubCategoria/{id}','SubCategoriaController@eliminarSubcategoria');
+Route::get('/marca/eliminarMarca/{id}','MarcaController@eliminarMarca');
+
+
+
 Route::get('cancelar', function () {
     return redirect()->route('categoria.index')->with('datos','Accion Cancelada...!');
 })->name('cancelar');
 
 Route::resource('subcategoria', 'SubCategoriaController');
-Route::get('/subcategoria/eliminarSubCategoria/{id}','SubCategoriaController@eliminarSubcategoria');
 
 
 

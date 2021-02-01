@@ -82,7 +82,10 @@ class CategoriaController extends Controller
     {
         
         $categoria=Categoria::find($id);
-        $listaSub=SubCategoria::where('codCategoria','=',$id)->where('estado','=','1')->get();
+        $listaSub=SubCategoria::where('codCategoria','=',$id)
+        ->where('estado','=','1')
+        ->orderBy('nroEnCategoria','ASC')
+        ->get();
         //return $listaSub;
         //return "hola";
         

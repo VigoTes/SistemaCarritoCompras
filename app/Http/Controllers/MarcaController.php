@@ -3,17 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Marca;
 class MarcaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    const PAGINATION='20';
+    public function index(Request $request)
     {
-        //
+        $buscarpor=$request->buscarpor;
+        $marcas=Marca::where('estado','=',1)
+        ->where('nombre','like','%'.$buscarpor.'%')
+        ->orderBy('codMarca','ASC')
+                ->paginate($this::PAGINATION);
+
+
+
+        return view('MantenerMarcas.index',compact('marcas','buscarpor'));
     }
 
     /**
@@ -23,7 +27,7 @@ class MarcaController extends Controller
      */
     public function create()
     {
-        //
+        return view('MantenerMarcas.create');
     }
 
     /**
@@ -34,7 +38,13 @@ class MarcaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $nuevaMarca = new Marca();
+        $nuevaMarca->nombre = $request->nombre;
+        $nuevaMarca->estado = '1';
+        $nuevaMarca->save();
+
+        return redirect()->route('marca.index');
+
     }
 
     /**
@@ -56,7 +66,12 @@ class MarcaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $marca=Marca::findOrFail($id);
+    
+        
+        return view('MantenerMarcas.edit',compact('marca'));
+        
+    
     }
 
     /**
@@ -68,7 +83,12 @@ class MarcaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $marca = Marca::findOrFail($id);
+        $marca->nombre = $request->nombre;
+        $marca->save();
+        
+
+        return redirect()->route('marca.index');
     }
 
     /**
@@ -79,6 +99,20 @@ class MarcaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        
+
+
+
+    }
+
+
+    public function eliminarMarca($id){
+        $marca=Marca::findOrFail($id);
+        $marca->estado=0;
+        $marca->save();
+
+
+        
+        return redirect()->route('marca.index')->with('datos','Registro Eliminado!');
     }
 }

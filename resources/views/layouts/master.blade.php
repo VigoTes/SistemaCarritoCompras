@@ -202,14 +202,81 @@
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
+
+      {{-- SIDE BAR MIO --}}
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+         
+
+
+          <li class="nav-item">{{-- AQUI VA LA RUTA  --}}
+            <a href="" class="nav-link">
+              <i class="fas fa-users"></i>
+              <p>
+                FODA
+              </p>
+            </a>
+          </li>
+
+          <li class="nav-item menu-open">
+              <a href="" class="nav-link">
+                <i class="fas fa-list-alt"></i>
+                <p>
+                  Mantenedores
+                  <i class="right fas fa-angle-left"></i>
+                </p>
+              </a>
+
+              <ul class="nav nav-treeview">
+                    <li class="nav-item">
+                      <a href="{{route('categoria.index')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Categorías</p>
+                      </a>
+                    </li>
+
+                    <li class="nav-item">
+                      <a href="{{route('marca.index')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Marcas</p>
+                      </a>
+                    </li>
+
+                    
+
+              </ul>
+          </li>
+          <li class="nav-item">{{-- AQUI VA LA RUTA  --}}
+            <a href="{{route('producto.index')}}" class="nav-link">
+              <i class="fas fa-users"></i>
+              <p>
+                Productos
+              </p>
+            </a>
+          </li>
+
+
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+
+
+
     </div>
     <!-- /.sidebar -->
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+
+
+
+
+
+      {{-- ESTO PARA BORRARLO  --}}    
     <!-- Content Header (Page header) -->
-    <div class="content-header">
+    <div class="content-header" style="background-color: blue">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
@@ -228,6 +295,11 @@
     </div>
     <!-- /.content-header -->
 
+
+
+
+
+
     <!-- Main content -->
     <section class="content">
 
@@ -237,13 +309,13 @@
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
-  <footer class="main-footer">
+  {{-- <footer class="main-footer">
     <strong>Copyright &copy; 2014-2019 <a href="http://adminlte.io">AdminLTE.io</a>.</strong>
     All rights reserved.
     <div class="float-right d-none d-sm-inline-block">
       <b>Version</b> 3.0.5
     </div>
-  </footer>
+  </footer> --}}
 
   <!-- Control Sidebar -->
   <aside class="control-sidebar control-sidebar-dark">

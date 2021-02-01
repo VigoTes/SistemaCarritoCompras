@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Marca extends Model
 {
-    protected $table = "marca";
+    protected $table = "MARCA";
     protected $primaryKey = "codMarca";
 
     public $timestamps = false;  //para que no trabaje con los campos fecha 

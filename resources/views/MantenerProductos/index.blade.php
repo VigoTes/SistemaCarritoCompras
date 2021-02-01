@@ -17,8 +17,8 @@
 
 
 <div class="container">
-  <h3>LISTADO DE CATEGORIAS</h3>
-  <a href="{{route('categoria.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
+  <h3>LISTADO DE PRODUCTOS</h3>
+  <a href="{{route('producto.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
   
   <nav class="navbar float-right">
       <form class="form-inline my-2 my-lg-0">
@@ -40,23 +40,44 @@
   <table class="table">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">Codigo</th>
-          <th scope="col">Nombre</th>
-          <th scope="col">Opciones</th>
+            <th scope="col">Codigo</th>
+            <th scope="col">Nombre</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Subcategoria</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Stock</th>
+            <th scope="col">precio</th>
+            <th scope="col">descuento</th>
+            <th scope="col">fechaActualizacion</th>
+            <th scope="col">contadorVentas</th>
+                
+
+            <th scope="col">Opciones</th>
         </tr>
       </thead>
       <tbody>
-          @foreach($categorias as $itemcategoria)      
+          @foreach($productos as $itemProducto)      
               <tr>
-                  <td>{{$itemcategoria->codCategoria}}</td>
-                  <td>{{$itemcategoria->nombre}}</td>
+                <td>{{$itemProducto->codProducto}}</td>
+                <td>{{$itemProducto->nombre}}</td>
+                <td>{{$itemProducto->getNombreCategoria()}}</td>
+                <td>{{$itemProducto->getNombreSubcategoria()}}</td>
+                <td>{{$itemProducto->getNombreMarca()}}</td>
+                <td>{{$itemProducto->stock}}</td>
+                <td>{{$itemProducto->precio}}</td>
+                <td>{{$itemProducto->descuento}}</td>
+                <td>{{$itemProducto->fechaActualizacion}}</td>
+                <td>{{$itemProducto->contadorVentas}}</td>
+                
+
+
                   <td>
-                    <a href="{{route('categoria.edit',$itemcategoria->codCategoria)}}" class="btn btn-warning btn-sm"> 
+                    <a href="{{route('producto.edit',$itemProducto->codProducto)}}" class="btn btn-warning btn-sm"> 
                         <i class="fas fa-edit"></i> 
-                        Editar
+                        
                     </a>
                     <!--
-                    <a href="/categoria/eliminarCategoria/{{$itemcategoria->codCategoria}}" class="btn btn-danger btn-sm"> <i class="fas fa-edit"></i> Eliminar</a>
+                    <a href="/producto/eliminarproducto/{{$itemProducto->codProducto}}" class="btn btn-danger btn-sm"> <i class="fas fa-edit"></i> Eliminar</a>
                     -->
                     <a href="#" class="btn btn-danger btn-sm btn-icon icon-left" title="Eliminar registro" 
                         onclick="swal(
@@ -77,7 +98,7 @@
                                     {//se ejecuta cuando damos a aceptar
                                         $.ajax(
                                             {
-                                            url : '/categoria/eliminarCategoria/{{$itemcategoria->codCategoria}}',
+                                            url : '/producto/eliminarproducto/{{$itemProducto->codProducto}}',
                                             data: { },
                                             type:'get',
                                             success:  function (response) 
@@ -86,7 +107,7 @@
                                                     //$('#CargarContenido').empty().append($(response));
                                                     //window.location.reload();
                                                     //alert('Mensaje');
-                                                    window.location.href='{{route('categoria.index')}}';
+                                                    window.location.href='{{route('producto.index')}}';
                                                 },
                                                 statusCode: {// es como un catch
                                                 },
@@ -100,7 +121,7 @@
                                     );">
                         <i class="entypo-cancel"></i>  
                         <i class="fas fa-trash"></i>
-                        Eliminar
+                        
                     </a>
                     
 
@@ -110,7 +131,7 @@
           @endforeach
       </tbody>
   </table>
-  {{$categorias->links()}}
+{{--   {{$productos->links()}} --}}
 </div>
 
 

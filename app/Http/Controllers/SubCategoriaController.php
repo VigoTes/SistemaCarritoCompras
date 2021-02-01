@@ -79,7 +79,8 @@ class SubCategoriaController extends Controller
      */
     public function edit($id)
     {
-        //
+        $subCategoria = SubCategoria::findOrFail($id);
+        return view('MantenerCategorias.editSubCategoria',compact('subCategoria'));
     }
 
     /**
@@ -91,7 +92,12 @@ class SubCategoriaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $subCategoria = SubCategoria::findOrFail($id);
+        $subCategoria->nombre = $request->nombre;
+        $subCategoria->save();
+
+        return redirect()->route('categoria.edit',$subCategoria->codCategoria);
+
     }
 
     /**
