@@ -16,28 +16,28 @@
 </script>
 
 
-<div class="container">
-  <h3>LISTADO DE PRODUCTOS</h3>
-  <a href="{{route('producto.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
+    <div style="background-color: red; width:100%; margin-bottom:25px;">
+        <h3>LISTADO DE PRODUCTOS</h3>
+        <a href="{{route('producto.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
+        
+        <nav style="float:right" >
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscar por descripcion" aria-label="Search" name="buscarpor" id="buscarpor" value="{{$buscarpor}}">
+                <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
+            </form>
+        </nav>
+        
+        @if(session('datos'))<!-- cuando se registra algo-->
+            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                {{session('datos')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>    
+        @endif
+    </div>
   
-  <nav class="navbar float-right">
-      <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-2" type="search" placeholder="Buscar por descripcion" aria-label="Search" name="buscarpor" id="buscarpor" value="{{$buscarpor}}">
-          <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
-      </form>
-  </nav>
-  
-  @if(session('datos'))<!-- cuando se registra algo-->
-      <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
-          {{session('datos')}}
-          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-          </button>
-      </div>    
-  @endif
-  
-  
-  <table class="table">
+  <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
             <th scope="col">Codigo</th>
@@ -46,10 +46,10 @@
             <th scope="col">Subcategoria</th>
             <th scope="col">Marca</th>
             <th scope="col">Stock</th>
-            <th scope="col">precio</th>
-            <th scope="col">descuento</th>
-            <th scope="col">fechaActualizacion</th>
-            <th scope="col">contadorVentas</th>
+            <th scope="col">Precio</th>
+            <th scope="col">Descuento</th>
+            <th scope="col"> <i class="fas fa-calendar-day"></i>Actualizacion</th>
+            <th scope="col">#Ventas</th>
                 
 
             <th scope="col">Opciones</th>
@@ -64,9 +64,9 @@
                 <td>{{$itemProducto->getNombreSubcategoria()}}</td>
                 <td>{{$itemProducto->getNombreMarca()}}</td>
                 <td>{{$itemProducto->stock}}</td>
-                <td>{{$itemProducto->precio}}</td>
+                <td>{{$itemProducto->precioActual}}</td>
                 <td>{{$itemProducto->descuento}}</td>
-                <td>{{$itemProducto->fechaActualizacion}}</td>
+                <td>    {{$itemProducto->fechaActualizacion}}</td>
                 <td>{{$itemProducto->contadorVentas}}</td>
                 
 
@@ -132,7 +132,7 @@
       </tbody>
   </table>
 {{--   {{$productos->links()}} --}}
-</div>
+
 
 
 

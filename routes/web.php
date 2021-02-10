@@ -22,9 +22,13 @@ Route::resource('categoria', 'CategoriaController');
 Route::resource('marca', 'MarcaController');
 Route::resource('producto', 'ProductoController');
 
+
+Route::get('/categoria/listarSubs/{id}','CategoriaController@listarSubCategorias');
+
 /* ------------------------ RUTAS ELIMINACION PARA MSJ CONFIRMACION AJAX ------------------------ */
 
 Route::get('/categoria/eliminarCategoria/{id}','CategoriaController@eliminarCategoria');
+
 Route::get('/subcategoria/eliminarSubCategoria/{id}','SubCategoriaController@eliminarSubcategoria');
 Route::get('/marca/eliminarMarca/{id}','MarcaController@eliminarMarca');
 
@@ -35,6 +39,12 @@ Route::get('cancelar', function () {
 })->name('cancelar');
 
 Route::resource('subcategoria', 'SubCategoriaController');
+
+
+/**MOSTRAR CATEGORIAS PARA LOS CLIENTES */
+Route::get('/categoriaCliente','CategoriaController@mostrarCategorias');
+Route::get('/productoCliente/{id}','ProductoController@mostrarProducto');
+Route::get('/carrito','CarritoController@mostrarCarrito');
 
 
 

@@ -136,8 +136,22 @@ class CategoriaController extends Controller
         $categoria->estado=0;
         $categoria->save();
 
-
+        
         
         return redirect()->route('categoria.index')->with('datos','Registro Eliminado!');
+    }
+
+
+    public function listarSubCategorias($idCategorias){
+        $lista = SubCategoria::where('codCategoria','=',$idCategorias)->get();
+        return $lista;
+    }
+
+
+
+    /**PARA CLIENTES */
+    public function mostrarCategorias()
+    {
+        return view('CategoriasCliente.index');
     }
 }

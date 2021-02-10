@@ -16,7 +16,7 @@
 </script>
 
 
-<div class="container">
+<div >
   <h3>LISTADO DE CATEGORIAS</h3>
   <a href="{{route('categoria.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
   
@@ -35,7 +35,8 @@
           </button>
       </div>    
   @endif
-  
+</div>
+
   
   <table class="table">
       <thead class="thead-dark">
@@ -111,7 +112,6 @@
       </tbody>
   </table>
   {{$categorias->links()}}
-</div>
 
 
 

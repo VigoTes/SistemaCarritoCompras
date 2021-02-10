@@ -16,7 +16,7 @@
 </script>
 
 
-<div class="container">
+<div >
   <h3>LISTADO DE MARCAS</h3>
   <a href="{{route('marca.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
   
@@ -35,7 +35,7 @@
           </button>
       </div>    
   @endif
-  
+</div>
   
   <table class="table">
       <thead class="thead-dark">
@@ -111,7 +111,7 @@
       </tbody>
   </table>
   {{$marcas->links()}}
-</div>
+
 
 
 

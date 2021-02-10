@@ -10,7 +10,7 @@ use App\Marca;
 class Producto extends Model
 {
     protected $table = "PRODUCTO";
-    protected $primaryKey = "codigo";
+    protected $primaryKey = "codProducto";
 
     public $timestamps = false;  //para que no trabaje con los campos fecha 
 
