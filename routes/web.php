@@ -14,8 +14,14 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('/ingresar', 'UserController@logearse')->name('user.logearse');  //esta es para cuando le damos al boton Ingresar
+
 Route::get('/login', 'UserController@verLogin')->name('user.verLogin'); //para desplegar la vista del Login
 Route::get('/cerrarSesion','UserController@cerrarSesion')->name('user.cerrarSesion');
+Route::get('/registrar','UserController@verRegistrar')->name('user.verRegistrar');/******************************** */
+
+Route::post('/registrar', 'UserController@store')->name('user.store');  //esta es para cuando le damos al boton Ingresar
+
+
 
 /* Route::get('/login', function () {
     return redirect()->route('user.verLogin');
@@ -81,6 +87,8 @@ Route::get('/verProducto/{id}','ProductoController@mostrarProducto')->name('prod
 Route::get('/agregarProductoCarrito/{id}','ProductoController@agregarCarrito');
 
 Route::get('/carrito','CarritoController@mostrarCarrito')->name('carrito.mostrar');
+Route::get('/cambiarCantidadProducto/{id}','CarritoController@cambiarCantidad');
+
 
 //                                     idProd   
 Route::get('/carrito/eliminarProducto/{id}','CarritoController@eliminarProducto')->name('carrito.eliminarProducto');

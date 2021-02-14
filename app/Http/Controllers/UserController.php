@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use App\Usuario;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Cliente;
+use Illuminate\Support\Carbon;
+
 class UserController extends Controller
 {
 
@@ -95,9 +99,54 @@ class UserController extends Controller
 
 
 
+    public function verRegistrar(){
+
+
+        return view('registrar');
+    }
+
+
+    public function store(Request $request){
+
+
+        try {
+            //code...
+        
+            //PRIMERO INSERTAMOS EL CLIENTE
+            $cliente = new Cliente();
+            $cliente->nombres = $request->nombres;
+            $cliente->apellidos = $request->apellidos;
+            $cliente->nroTelefonoMovil = $request->telefono;
+            $cliente->save();
+
+            //insertamos el usuaro
+            $usuario = new Usuario();
+            $usuario->codCliente = (Cliente::latest('codCliente')->first())->codCliente;
+            $usuario-> email = $request->email;
+            $usuario->password = Hash::make( $request->password); //
+            $usuario->fechaActualizacion = Carbon::now()->subHours(5);
+            $usuario->isAdmin = '0';
+
+            $usuario->save();
+
+            return redirect()->route('user.verLogin')->with('datos','¡Cuenta Creada Exitosamente!');
+
+        } catch (\Throwable $th) {
+            error_log('
+            
+                ERROR EN USERCONTROLLER STORE: 
+
+                '.$th.'
+            
+            
+            ');
+        }
 
 
 
+
+
+    }
 
 
 }

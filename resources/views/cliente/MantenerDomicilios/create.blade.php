@@ -120,7 +120,7 @@
 </div>
 
 <script>
-    $(document).ready(function(){
+  /*   $(document).ready(function(){
            
 
       sleep(200);
@@ -131,8 +131,8 @@
           sleep(200);
           mostrarDistritos();
 
-        });
-    
+        }); 
+    } */
         function sleep(milliseconds) {
           var start = new Date().getTime();
           for (var i = 0; i < 1e7; i++) {

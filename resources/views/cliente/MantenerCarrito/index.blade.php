@@ -1,7 +1,8 @@
 @extends('layouts.master')
 
 @section('content')
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="/adminlte/plugins/jquery/jquery.min.js"></script>
 
 <div class="container">
     <h1 class="text-center">CARRITO DE COMPRAS</h1>        
@@ -17,7 +18,9 @@
    @endif
 
 
-    <div class="col-md-12 pt-3">     
+    <div class="col-md-12 pt-3">  
+        <input id="tipo" type="hidden" name="tipo" value="{{ $tipo }}" >
+        <input id="codCarrito" type="hidden" name="codCarrito" value="{{ $carrito->codCarrito }}" >  
         <div class="table-responsive">                           
             <table id="detalles" class="table table-striped table-bordered table-condensed table-hover" style='background-color:#FFFFFF;'> 
                 <thead class="thead-default" style="background-color:#3c8dbc;color: #fff;">
@@ -89,8 +92,8 @@
     <div class="col-md-12 text-center">  
         <div  id="guardar">
             <div class="form-group">
-                <button class="btn btn-primary" id="btnRegistrar" data-loading-text="<i class='fa a-spinner fa-spin'></i> Registrando">
-                    <i class='fas fa-save'></i> CAJA</button>    
+                <a href="" class="btn btn-primary" id="btnRegistrar" data-loading-text="<i class='fa a-spinner fa-spin'></i> Registrando">
+                    <i class='fas fa-save'></i> CAJA</a>    
         
                 <a href="" class='btn btn-danger'><i class='fas fa-ban'></i> CARRO VACIO</a>              
             </div>    
@@ -108,6 +111,11 @@
             cantidadActual=1;
             $('#cantidad'+codigo).val(1);
         }
+        tipoCarrito=$('#tipo').val();
+        codCarrito=$('#codCarrito').val();
+        //cambiamos la cantidad en bd
+        $.get('/cambiarCantidadProducto/'+tipoCarrito+'*'+codCarrito+'*'+codigo+'*'+cantidadActual, function(data){});
+        
         importeActual=cantidadActual*precioVenta;
 
         totalAnterior=$('#total').val();

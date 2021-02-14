@@ -37,10 +37,8 @@ class CarritoController extends Controller
             $detalleCarrito = $ListadetalleCarrito[0];
             $detalleCarrito->delete();
         }
-
+        
         return redirect()->route('carrito.mostrar')->with('datos','Elemento eliminado.');
-
-
     }
 
 
@@ -52,25 +50,13 @@ class CarritoController extends Controller
             //Recuperamos el token guardado anteriormente
             $token = session('token');
             if($token=='')
-                return "NO HAY PRODUCTOS EN ESTE CARRITO ANON";
-            
-
-            $ListacarritoNON=CarritoAnon::where('codCarrito','=', $token)->get();
+            {
+                $ListacarritoNON=[];
+            }else{
+                $ListacarritoNON=CarritoAnon::where('codCarrito','=', $token)->get();
+            }
             $LISTAx = CarritoAnon::All();
-            error_log('
-            
-            MIAU ----------------------------------------------- 
-            MI TOKEN RECUPERADO = '.$token.'            
-            
-            
-            
-            '.$ListacarritoNON.'
-            
-
-
-            '.$LISTAx.'
-            
-            ');
+           
 
 
             if(count($ListacarritoNON) > 0 ) //si hay algun carrito con ese token
@@ -102,9 +88,58 @@ class CarritoController extends Controller
     }
     
 
+    public function cambiarCantidad($id){
 
+        try {
+            /* 
+            0   si es anon o normal
+            1   codCarrito
+            2   codigo del detalle
+            3   cantidad
+            
+            */
+        
+            $arr = explode('*', $id);
+            if($arr[0]==1){
+                
+                //return $arr[1];
+                $Listacarrito = CarritoAnon::where('codCarrito','=',$arr[1])->get();          
+                $carrito = $Listacarrito[0];
 
+                $detalle=Detalle_CarritoAnon::find($arr[2]);
 
+            }
+            
+
+            if($arr[0]==2){
+                $carrito=Carrito::find($arr[1]);
+                $detalle=Detalle_Carrito::find($arr[2]);
+               
+            }
+            
+            
+            //return $detalle;
+            $detalle->cantidad=(int)$arr[3]; //AQUI 
+          
+            //return "yala";
+            $detalle->save();
+
+            $estado='ok';
+            error_log('---------------- CAMBIANDO CANTIDAD DESDE EL CARRITO');
+            return $estado;
+
+        } catch (\Throwable $th) {
+        error_log('CAMBIAR CANTIDAD-------- '.$id.'
+            
+            ------------ ERROR: 
+        
+        
+        '.$th);
+
+    }
+
+   
+}
 
 
 

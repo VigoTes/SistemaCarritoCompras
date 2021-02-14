@@ -23,7 +23,7 @@
                 Dribbble: https://dribbble.com/mycnlz
                 Pinterest: https://pinterest.com/mycnlz/
 -->
-<form method="POST" action="{{route('user.logearse')}}">
+<form method="POST" action="{{route('user.store')}}" onsubmit=" return validarContraseñas()" >
 
     @csrf
 
@@ -33,7 +33,7 @@
             <div class='box-login-tab'></div>
 
             <div class='box-login-title'>
-                <div class='i i-login'></div><h2>LOGIN</h2>
+                <div class='i i-login'></div><h2>Registro</h2>
             </div>
 
             <div class='box-login'>
@@ -52,26 +52,56 @@
                     @endif
                     
                     <p class='field'>
-                        
+                      <label for='user'>Nombres</label>
 
-                        <label for='user'>E-MAIL</label>
-
-                        {{-- INPUT PARA USERNAME --}}
-                        <input type='text' id='email' name='email' title='email' />
-                        <span id='valida' class='i i-warning'></span>
+                      {{-- INPUT PARA USERNAME --}}
+                      <input type='text' id='nombres' name='nombres' title='nombres' />
+                      <span id='valida' class='i i-warning'></span>
                     </p>
                     <p class='field'>
-                        <label for='pass'>Contraseña</label>
-                        {{-- INPUT PARA PASSWORD --}}
-                        <input type='password' id='password' name='password' title='Password' />
-                        <span id='valida' class='i i-close'></span>
-                    </p>    
-                    <input type='submit' id='do_login' value='Ingresar' title='Get Started' />
-                </div>
-            </div>
-            <a href="{{route('user.verRegistrar')}}" class="b-cta" style="font-size: 15pt; text-align:center">
+                        <label for='user'>Apellidos</label>
 
-                Crear Cuenta
+                        {{-- INPUT PARA USERNAME --}}
+                        <input type='text' id='apellidos' name='apellidos' title='apellidos' />
+                        <span id='valida' class='i i-warning'></span>
+                    </p>
+
+
+                    <p class='field'>
+                        <label for='pass'>Telefono</label>
+                        {{-- INPUT PARA PASSWORD --}}
+                        <input type='text' id='telefono' name='telefono' title='telefono' />
+                        <span id='valida' class='i i-close'></span>
+                    </p>   
+                    <p class='field'>
+                      <label for='pass'>Email</label>
+                      {{-- INPUT PARA PASSWORD --}}
+                      <input type='text' id='email' name='email' title='email' />
+                      <span id='valida' class='i i-close'></span>
+                    </p>   
+                    <p class='field'>
+                      <label for='pass'>Contraseña</label>
+                      {{-- INPUT PARA PASSWORD --}}
+                      <input type='password' id='password' name='password' title='Password' />
+                      <span id='valida' class='i i-close'></span>
+                    </p>   
+                    <p class='field'>
+                      <label for='pass'>Repetir Contraseña</label>
+                      {{-- INPUT PARA PASSWORD --}}
+                      <input type='password' id='password2' name='password2' title='Password2' />
+                      <span id='valida' class='i i-close'></span>
+                    </p>   
+                      
+                    
+
+                    <input type='submit' id='do_login' value='Registrarme' title='Get Started' />
+                    
+                </div>
+                
+            </div>
+            <a href="{{route('user.verLogin')}}" class="b-cta" style="font-size: 15pt; text-align:center">
+
+              Logearme
             </a>
 
         </div>
@@ -519,7 +549,48 @@ Credits
 <script>
 
     
+function validarContraseñas(){
+  msj='';
 
+  nombres=$("#nombres").val(); 
+  if(nombres=='')
+    msj='Debe ingresar sus nombres';
+
+  apellidos=$("#apellidos").val(); 
+  if(apellidos=='')
+    msj='Debe ingresar sus apellidos';
+
+  telefonos=$("#telefono").val(); 
+  if(telefonos=='')
+    msj='Debe ingresar el nro de telefono';
+
+  email=$("#email").val(); 
+  if(email=='')
+    msj='Debe ingresar el E-Mail';
+
+  
+  
+
+  contraseña1=$("#password").val(); 
+  contraseña2=$("#password2").val(); 
+  
+  if(contraseña1=='')
+    msj='Debe ingresar la contraseña.';
+
+
+  if(contraseña1!=contraseña2){
+    msj = 'Las contraseñas no coinciden.';
+  }
+
+
+  if(msj!=''){
+    alert(msj);
+    return false;
+  }
+
+  
+  return true;
+}
 
 
 
