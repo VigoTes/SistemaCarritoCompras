@@ -35,6 +35,11 @@ class Producto extends Model
         return $categoria->nombre;
     }   
     
-
+    public function getCodCategoria(){
+        $subCategoria = SubCategoria::findOrFail($this->codSubCategoria);
+        
+        $categoria = Categoria::findOrFail($subCategoria->codCategoria);
+        return $categoria->codCategoria;
+    }   
 
 }

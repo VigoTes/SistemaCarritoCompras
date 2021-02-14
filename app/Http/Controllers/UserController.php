@@ -5,50 +5,54 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\User;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
 
     const PAGINATION = 10; // PARA QUE PAGINEE DE 10 EN 10
-    public function login(Request $request)
+    public function logearse(Request $request)
     {
+     
+        //error_log('El hash para '.$request->password.' es '.Hash::make($request->password));
+
         $data=$request->validate([
-            'name'=>'required',
+            'email'=>'required',
             'password'=>'required',
         ],
         [
-            'name.required'=>'Ingrese Usuario',
+            'email.required'=>'Ingrese E-mail',
             'password.required'=>'Ingrese Contraseña',
         ]);
-            $name=$request->get('name');
-            $query=User::where('name','=',$name)->get();
+            $email=$request->get('email');
+            $query=User::where('email','=',$email)->get();
+
             if($query->count()!=0){
+               // error_log($query[0].'aaaaaaaaaaaaaaaaaaa');
                 $hashp=$query[0]->password; // guardamos la contraseña cifrada de la BD en hashp
                 $password=$request->get('password');    //guardamos la contraseña ingresada en password
                 if(password_verify($password,$hashp))       //comparamos con el metodo password_verifi ??¡ xdd
                 {
-                        // Preguntamos si es admin o no
-                    if($name=='admin')
+                    // Preguntamos si es admin o no
+                    if($email=='admin')
                     {
-                        if(Auth::attempt($request->only('name','password'))) //este attempt es para que el Auth se inicie
-                            return view('bienvenido');
+                        if(Auth::attempt($request->only('email','password'))) //este attempt es para que el Auth se inicie
+                            return redirect()->route('indexGeneral');
                     }//si es user normal
                     else{
-                        if(Auth::attempt($request->only('name','password')))
-                        return redirect()->route('empresa.index','0');
+
+                        if(Auth::attempt($request->only('email','password')))
+                            return redirect()->route('indexGeneral');
     
                     }
-                    
-                
                 
                 }
                 else{
-                    return back()->withErrors(['password'=>'Contraseña no válido'])->withInput([request('password')]);
+                    return redirect()->route('user.verLogin')->with('datos','¡Contraseña no valida!');
                 }                
             }
             else
             {
-                return back()->withErrors(['name'=>'Usuario no válido'])->withInput([request('name')]);
+                return redirect()->route('user.verLogin')->with('datos','Usuario no valido!');
             }
         }
 
@@ -73,7 +77,16 @@ class UserController extends Controller
     {
         
     }
+    public function verLogin(){
+        return view('login');
 
+    }
+
+    public function cerrarSesion(){
+        Auth::logout();
+
+        return redirect()->route('user.verLogin');
+    }
 
 
 

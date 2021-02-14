@@ -15,12 +15,13 @@ class User extends Authenticatable
      *
      * @var array
      */
-    protected $table = "usuario";
+    protected $table = "USUARIO";
+    protected $primaryKey = "codUsuario";
     public $timestamps = false;  //para que no trabaje con los campos fecha 
 
 
     protected $fillable = [
-        'name', 'email', 'password','nombres','apellidos','DNI'
+       'email', 'password'
     ];
 
     /**

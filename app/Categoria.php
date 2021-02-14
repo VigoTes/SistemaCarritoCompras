@@ -13,4 +13,8 @@ class Categoria extends Model
 
 
     protected $fillable = ['nombre','estado'];
+
+    public function subcategoria(){
+        return $this->hasMany('App\SubCategoria','codCategoria','codCategoria');
+    }
 }

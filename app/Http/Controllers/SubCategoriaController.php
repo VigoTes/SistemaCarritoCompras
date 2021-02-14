@@ -120,6 +120,6 @@ class SubCategoriaController extends Controller
 
         $subcategoria->save();
 
-        return redirect()->route('categoria.edit',$categoria->codCategoria);
+        return redirect()->route('categoria.edit',$categoria->codCategoria)->with('datos','Registro Eliminado!');
     }
 }

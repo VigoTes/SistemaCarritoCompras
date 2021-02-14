@@ -16,7 +16,7 @@
 </script>
 
 
-    <div style="background-color: red; width:100%; margin-bottom:25px;">
+    <div style="margin-bottom:25px;">
         <h3>LISTADO DE PRODUCTOS</h3>
         <a href="{{route('producto.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
         
@@ -48,7 +48,7 @@
             <th scope="col">Stock</th>
             <th scope="col">Precio</th>
             <th scope="col">Descuento</th>
-            <th scope="col"> <i class="fas fa-calendar-day"></i>Actualizacion</th>
+            <th scope="col"> <i class="fas fa-calendar-day"></i> Actualizacion</th>
             <th scope="col">#Ventas</th>
                 
 
@@ -96,26 +96,8 @@
                                     },
                                     function()
                                     {//se ejecuta cuando damos a aceptar
-                                        $.ajax(
-                                            {
-                                            url : '/producto/eliminarproducto/{{$itemProducto->codProducto}}',
-                                            data: { },
-                                            type:'get',
-                                            success:  function (response) 
-                                                {
-                                                    //console.log(response);
-                                                    //$('#CargarContenido').empty().append($(response));
-                                                    //window.location.reload();
-                                                    //alert('Mensaje');
-                                                    window.location.href='{{route('producto.index')}}';
-                                                },
-                                                statusCode: {// es como un catch
-                                                },
-                                                error:function(x,xs,xt){//error por defecto no definido en el statusCode
-                                                    //window.open(JSON.stringify(x));
-                                                    console.log('error: ' + JSON.stringify(x) +'\n error string: '+ xs + '\n error throwed: ' + xt);
-                                                }
-                                            });
+                                        window.location.href='{{route('producto.eliminarProducto',$itemProducto->codProducto)}}';
+                                    
 
                                     }
                                     );">

@@ -17,8 +17,8 @@
 
 
 <div >
-  <h3>LISTADO DE MARCAS</h3>
-  <a href="{{route('marca.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
+  <h3>LISTADO DE CATEGORIAS</h3>
+  <a href="{{route('categoria.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
   
   <nav class="navbar float-right">
       <form class="form-inline my-2 my-lg-0">
@@ -36,6 +36,7 @@
       </div>    
   @endif
 </div>
+
   
   <table class="table">
       <thead class="thead-dark">
@@ -46,17 +47,17 @@
         </tr>
       </thead>
       <tbody>
-          @foreach($marcas as $itemMarca)      
+          @foreach($categorias as $itemcategoria)      
               <tr>
-                  <td>{{$itemMarca->codMarca}}</td>
-                  <td>{{$itemMarca->nombre}}</td>
+                  <td>{{$itemcategoria->codCategoria}}</td>
+                  <td>{{$itemcategoria->nombre}}</td>
                   <td>
-                    <a href="{{route('marca.edit',$itemMarca->codMarca)}}" class="btn btn-warning btn-sm"> 
+                    <a href="{{route('categoria.edit',$itemcategoria->codCategoria)}}" class="btn btn-warning btn-sm"> 
                         <i class="fas fa-edit"></i> 
                         Editar
                     </a>
                     <!--
-                    <a href="/marca/eliminarmarca/{{$itemMarca->codMarca}}" class="btn btn-danger btn-sm"> <i class="fas fa-edit"></i> Eliminar</a>
+                    <a href="/categoria/eliminarCategoria/{{$itemcategoria->codCategoria}}" class="btn btn-danger btn-sm"> <i class="fas fa-edit"></i> Eliminar</a>
                     -->
                     <a href="#" class="btn btn-danger btn-sm btn-icon icon-left" title="Eliminar registro" 
                         onclick="swal(
@@ -75,27 +76,8 @@
                                     },
                                     function()
                                     {//se ejecuta cuando damos a aceptar
-                                        $.ajax(
-                                            {
-                                            url : '/marca/eliminarMarca/{{$itemMarca->codMarca}}',
-                                            data: { },
-                                            type:'get',
-                                            success:  function (response) 
-                                                {
-                                                    //console.log(response);
-                                                    //$('#CargarContenido').empty().append($(response));
-                                                    //window.location.reload();
-                                                    //alert('Mensaje');
-                                                    window.location.href='{{route('marca.index')}}';
-                                                },
-                                                statusCode: {// es como un catch
-                                                },
-                                                error:function(x,xs,xt){//error por defecto no definido en el statusCode
-                                                    //window.open(JSON.stringify(x));
-                                                    console.log('error: ' + JSON.stringify(x) +'\n error string: '+ xs + '\n error throwed: ' + xt);
-                                                }
-                                            });
-
+                                        window.location.href='{{route('categoria.eliminarCategoria',$itemcategoria->codCategoria)}}';
+                                    
                                     }
                                     );">
                         <i class="entypo-cancel"></i>  
@@ -110,8 +92,7 @@
           @endforeach
       </tbody>
   </table>
-  {{$marcas->links()}}
-
+  {{$categorias->links()}}
 
 
 

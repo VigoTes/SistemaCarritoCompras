@@ -8,6 +8,15 @@
 
   <div class="form-group">
 
+    @if(session('datos'))<!-- cuando se registra algo-->
+    <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+        {{session('datos')}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>    
+    @endif
+
    <div class="container">  {{-- Container  --}}
         <div class="row">
             <div class="col">
@@ -183,26 +192,8 @@
                                                 },
                                                 function()
                                                 {//se ejecuta cuando damos a aceptar
-                                                    $.ajax(
-                                                        {
-                                                        url : '/subcategoria/eliminarSubCategoria/{{$itemSub->nroEnCategoria}}',
-                                                        data: { },
-                                                        type:'get',
-                                                        success:  function (response) 
-                                                            {
-                                                                //console.log(response);
-                                                                //$('#CargarContenido').empty().append($(response));
-                                                                //window.location.reload();
-                                                                //alert('Mensaje');
-                                                                window.location.href='{{route('categoria.edit',$categoria->codCategoria)}}';
-                                                            },
-                                                            statusCode:{}, //ESTO ES COMO UN CATCH
-                                                            error:function(x,xs,xt)
-                                                            {//error por defecto no definido en el statusCode
-                                                                //window.open(JSON.stringify(x));
-                                                                console.log('error: ' + JSON.stringify(x) +'\n error string: '+ xs + '\n error throwed: ' + xt);
-                                                            }
-                                                        });
+                                                    window.location.href='{{route('subcategoria.eliminar',$itemSub->codSubCategoria)}}';
+                                                    
                             
                                                 });">
                                         <i class="entypo-cancel"></i>

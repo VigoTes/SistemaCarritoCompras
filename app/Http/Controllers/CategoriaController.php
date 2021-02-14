@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Categoria;
+use App\Producto;
 use App\SubCategoria;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CategoriaController extends Controller
 {
@@ -25,7 +27,7 @@ class CategoriaController extends Controller
 
 
 
-        return view('MantenerCategorias.index',compact('categorias','buscarpor'));
+        return view('admin.MantenerCategorias.index',compact('categorias','buscarpor'));
     }
 
     /**
@@ -35,7 +37,7 @@ class CategoriaController extends Controller
      */
     public function create()
     {
-        return view('MantenerCategorias.create');
+        return view('admin.MantenerCategorias.create');
     }
 
     /**
@@ -89,7 +91,7 @@ class CategoriaController extends Controller
         //return $listaSub;
         //return "hola";
         
-        return view('MantenerCategorias.edit',compact('categoria','listaSub'));
+        return view('admin.MantenerCategorias.edit',compact('categoria','listaSub'));
         
         
     }
@@ -135,8 +137,6 @@ class CategoriaController extends Controller
         $categoria=Categoria::findOrFail($id);
         $categoria->estado=0;
         $categoria->save();
-
-        
         
         return redirect()->route('categoria.index')->with('datos','Registro Eliminado!');
     }
@@ -150,8 +150,31 @@ class CategoriaController extends Controller
 
 
     /**PARA CLIENTES */
-    public function mostrarCategorias()
+    public function menuCategorias()
     {
-        return view('CategoriasCliente.index');
+        $categorias=Categoria::all();
+        return $categorias;
     }
+
+    public function mostrarCategorias($id)
+    {
+        $categoria=Categoria::findOrFail($id);
+        $subcategorias=$categoria->subcategoria;
+
+        $temp=array();//convertir la variable $temp a tipo array para meterlo a la consulta 'not in'
+        foreach($subcategorias as $a){
+            $temp[]=$a->codSubCategoria;
+        }
+
+        $marcas=DB::TABLE('PRODUCTO')
+        ->JOIN('MARCA', 'MARCA.codMarca', '=', 'PRODUCTO.codMarca')
+        ->SELECT('MARCA.codMarca as codMarca', 'MARCA.nombre as nombre')
+        ->where('MARCA.estado','!=',0)->groupBy('MARCA.codMarca', 'MARCA.nombre')->orderBy('MARCA.codMarca')->get();
+
+        $productos=Producto::whereIn('codSubCategoria',$temp)->where('estado','!=',0)->get();
+
+        return view('cliente.CategoriasCliente.index',compact('categoria','subcategorias','marcas','productos'));
+    }
+
+    
 }

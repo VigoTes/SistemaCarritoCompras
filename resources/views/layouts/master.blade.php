@@ -37,6 +37,25 @@
 
 
 </head>
+
+<script type="text/javascript">
+  $.get('/menuCategorias', function(data){      
+    categorias = data;
+
+    var menuCategoria='';
+    for(var i in categorias){
+      menuCategoria += '<li class="nav-item">';
+        menuCategoria += '<a href="/categoriaCliente/'+categorias[i].codCategoria+'" class="nav-link">';
+          menuCategoria += '<i class="far fa-circle nav-icon"></i>';
+          menuCategoria += '<p>'+categorias[i].nombre+'</p>';
+        menuCategoria += '</a>';
+      menuCategoria += '</li>';
+    }
+    $('#menuCategorias').html(menuCategoria);
+
+  });
+</script>
+
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
@@ -53,10 +72,37 @@
     
 
     <!-- SEARCH FORM -->
-    
+    <ul class="navbar-nav ml-auto">
+      <!-- Messages Dropdown Menu -->
+     <div>
+        @if(  Auth::id() =='' )
+        {{-- <label for=""> No logeado </label> --}}
+        <a href="{{route('user.verLogin')}}" class="btn btn-warning btn-sm"> 
+          <i class="fas fa-sign-in-alt"></i>
+          Logearse
+         </a>
+        @else
+          <label for=""> {{ App\Usuario::getEmailPorCodUsuario(Auth::id())  }} </label>
 
-    <!-- Right navbar links -->
-    
+
+        @endif  
+      
+      
+
+        <i class="far fa-user fa-2x">
+          
+        </i>
+     </div>
+        
+        
+      
+      <!-- Notifications Dropdown Menu -->
+      
+
+    </ul>
+
+   
+
   </nav>
   <!-- /.navbar -->
 
@@ -94,15 +140,16 @@
                 CATEGORIAS (clientes)
                 <i class="right fas fa-angle-left"></i>
               </p>
-            </a>
-
-            <ul class="nav nav-treeview">
+            </a> 
+            <ul class="nav nav-treeview" id="menuCategorias">
+              <!--
                   <li class="nav-item">
                     <a href="/categoriaCliente" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>Categoria 1</p>
                     </a>
                   </li>
+                -->
             </ul>
           </li>
 
@@ -160,7 +207,14 @@
 
               </ul>
           </li>
-          
+          <li class="nav-item">
+            <a href="{{route('user.cerrarSesion')}}" class="nav-link">
+              <i class="fas fa-sign-out-alt"></i>
+              <p>
+                Cerrar Sesión
+              </p>
+            </a>
+          </li>
 
 
         </ul>

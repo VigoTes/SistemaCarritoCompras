@@ -17,7 +17,7 @@ class MarcaController extends Controller
 
 
 
-        return view('MantenerMarcas.index',compact('marcas','buscarpor'));
+        return view('admin.MantenerMarcas.index',compact('marcas','buscarpor'));
     }
 
     /**
@@ -27,7 +27,7 @@ class MarcaController extends Controller
      */
     public function create()
     {
-        return view('MantenerMarcas.create');
+        return view('admin.MantenerMarcas.create');
     }
 
     /**
@@ -69,7 +69,7 @@ class MarcaController extends Controller
         $marca=Marca::findOrFail($id);
     
         
-        return view('MantenerMarcas.edit',compact('marca'));
+        return view('admin.MantenerMarcas.edit',compact('marca'));
         
     
     }

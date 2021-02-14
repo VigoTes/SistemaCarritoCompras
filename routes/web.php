@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::post('/ingresar', 'UserController@logearse')->name('user.logearse');  //esta es para cuando le damos al boton Ingresar
+Route::get('/login', 'UserController@verLogin')->name('user.verLogin'); //para desplegar la vista del Login
+Route::get('/cerrarSesion','UserController@cerrarSesion')->name('user.cerrarSesion');
+
+/* Route::get('/login', function () {
+    return redirect()->route('user.verLogin');
+}); */
+
+
 Route::get('/', function () {
     return view('index');
-});
+})->name('indexGeneral');
 
 /*-----------------RUTAS  MANTENEDORES ----------------------*/
 Route::resource('categoria', 'CategoriaController');
@@ -27,11 +36,12 @@ Route::get('/categoria/listarSubs/{id}','CategoriaController@listarSubCategorias
 
 /* ------------------------ RUTAS ELIMINACION PARA MSJ CONFIRMACION AJAX ------------------------ */
 
-Route::get('/categoria/eliminarCategoria/{id}','CategoriaController@eliminarCategoria');
+Route::get('/categoria/eliminarCategoria/{id}','CategoriaController@eliminarCategoria')->name('categoria.eliminarCategoria');
 
-Route::get('/subcategoria/eliminarSubCategoria/{id}','SubCategoriaController@eliminarSubcategoria');
-Route::get('/marca/eliminarMarca/{id}','MarcaController@eliminarMarca');
+Route::get('/subcategoria/eliminarSubCategoria/{id}','SubCategoriaController@eliminarSubcategoria')->name('subcategoria.eliminar');
+Route::get('/marca/eliminarMarca/{id}','MarcaController@eliminarMarca')->name('marca.eliminarMarca');
 
+Route::get('/producto/eliminarProducto/{id}','ProductoController@destroy')->name('producto.eliminarProducto');
 
 
 Route::get('cancelar', function () {
@@ -42,8 +52,13 @@ Route::resource('subcategoria', 'SubCategoriaController');
 
 
 /**MOSTRAR CATEGORIAS PARA LOS CLIENTES */
-Route::get('/categoriaCliente','CategoriaController@mostrarCategorias');
-Route::get('/productoCliente/{id}','ProductoController@mostrarProducto');
+Route::get('/menuCategorias','CategoriaController@menuCategorias');
+
+Route::get('/categoriaCliente/{id}','CategoriaController@mostrarCategorias');
+Route::post('/listarProductosSubCategoria/{id}','ProductoController@listarProductosSubCategoria');
+
+Route::get('/verProducto/{id}','ProductoController@mostrarProducto')->name('producto.ver');
+Route::get('/agregarProductoCarrito/{id}','ProductoController@agregarCarrito');
 Route::get('/carrito','CarritoController@mostrarCarrito');
 
 

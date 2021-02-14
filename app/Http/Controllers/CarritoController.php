@@ -9,6 +9,6 @@ class CarritoController extends Controller
 {
     public function mostrarCarrito()
     {
-        return view('MantenerCarrito.index');
+        return view('cliente.MantenerCarrito.index');
     }
 }

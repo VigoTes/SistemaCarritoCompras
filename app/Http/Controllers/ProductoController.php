@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Carrito;
+use App\CarritoAnon;
 use Illuminate\Http\Request;
 use App\Producto;
 use App\Marca;
 use App\Categoria;
+use App\Detalle_Carrito;
+use App\Detalle_CarritoAnon;
+use App\SubCategoria;
+use DateTime;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class ProductoController extends Controller
 {
@@ -20,9 +27,9 @@ class ProductoController extends Controller
     public function index(Request $request)
     {
         $buscarpor = $request->buscarPor;
-        $productos = Producto::all();
+        $productos = Producto::where('estado','=','1') ->orderBy('codProducto','ASC')->get();
         
-        return view('MantenerProductos.index',compact('productos','buscarpor'));
+        return view('admin.MantenerProductos.index',compact('productos','buscarpor'));
     }
 
     /**
@@ -35,7 +42,7 @@ class ProductoController extends Controller
         $listaCategorias = Categoria::All();
         $listaMarcas = Marca::All();
 
-        return view('MantenerProductos.create',compact('listaCategorias','listaMarcas'));
+        return view('admin.MantenerProductos.create',compact('listaCategorias','listaMarcas'));
 
     }
 
@@ -87,7 +94,16 @@ class ProductoController extends Controller
      */
     public function edit($id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+        $listaCategorias = Categoria::All();
+        $listaMarcas = Marca::All();
+        //subcat de la cat que tiene actualmente
+        $listaSubCategorias = SubCategoria::where('codCategoria','=',$producto->getCodCategoria())->get();
+
+
+        
+        return view('admin.MantenerProductos.edit',compact('producto','listaCategorias','listaMarcas','listaSubCategorias'));
+
     }
 
     /**
@@ -99,7 +115,23 @@ class ProductoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        
+        $prod = Producto::findOrFail($id);
+
+        $prod->nombre = $request->nombre;
+        $prod->descripcion = $request->descripcion;
+        $prod->codSubCategoria = $request->ComboBoxSubCategoria;
+        $prod->codMarca = $request->ComboBoxMarca;
+        $prod->precioActual = $request->precio;
+        $prod->stock = $request->stock;
+        $prod->descuento = $request->descuento;
+        $prod->fechaActualizacion = Carbon::now()->subHours(5);
+        $prod->estado = '1';
+        $prod->contadorVentas = '0';
+
+        $prod->save();
+        return redirect()->route('producto.index');
+
     }
 
     /**
@@ -110,12 +142,99 @@ class ProductoController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $producto = Producto::findOrFail($id);
+        $producto->estado = '2';
+        $producto->save();
+        return redirect()->route('producto.index')->with('datos','Registro Eliminado!');
+
+
     }
 
     /**PARA CLIENTES */
+    public function listarProductosSubCategoria(Request $request,$id){
+        $productos=Producto::where('codSubCategoria','=',$id)->get();
+        return response()->json(['productos'=>$productos]);
+    }
     public function mostrarProducto($id)
     {
-        return view('ProductoCliente.index');
+        $producto=Producto::findOrFail($id);
+        return view('cliente.ProductoCliente.verProducto',compact('producto'));
+    }
+
+    public function agregarCarrito($cadena){
+
+        try {
+            
+        
+
+            date_default_timezone_set('America/Lima');
+
+
+            $arr = explode('*', $cadena);
+
+            $producto=Producto::findOrFail($arr[0]);
+            if(is_null(Auth::user())){ //CARRITO ANON 
+
+
+                $ip=$_SERVER['REMOTE_ADDR'];
+                error_log('LLLEGA--------------------');
+                $ListacarritoNON=CarritoAnon::where('codCarrito','=', $ip)->get(); //aqui es el error
+                if(count($ListacarritoNON) > 0 ) //si hay algun carrito con esa IP
+                    $carritoNON = $ListacarritoNON[0];
+                else
+                {
+
+                    $carritoNON=new CarritoAnon();
+                    $carritoNON->codCarrito=$ip;
+                    $carritoNON->save();
+                }
+
+                
+                $detalle=new Detalle_CarritoAnon();
+                $detalle->codProducto=$producto->codProducto;
+                $detalle->cantidad=$arr[1];
+                $detalle->codCarrito=$ip;
+                $detalle->save();
+            }
+            else{           // CARRITO CON CLIENTE LOGEADO 
+
+                
+                //lee los carritos del cliente
+                $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();
+                
+                
+                
+                if(count($carritos) == 0 ){
+                    $carrito=new Carrito();
+                    $carrito->codCliente=Auth::user()->codCliente;
+                    $carrito->fechaHora=new DateTime();
+                    $carrito->save();
+                }
+                else{
+                    $carrito=$carritos[0];
+                }
+
+
+                $detalle=new Detalle_Carrito();
+                $detalle->codProducto=$producto->codProducto;
+                $detalle->cantidad=$arr[1];
+                $detalle->codCarrito=$carrito->codCarrito;
+                $detalle->save();
+            }
+
+            return redirect()->route('producto.ver',$producto->codProducto);
+            /* return redirect('/verProducto/'.$producto->codProducto); */
+
+        } catch (\Throwable $th) {
+            error_log('HA OCURRIDO UN ERROR EN PRODUCTO CONTROLLER AGREGAR CARRITO 
+            
+            '.$th.'
+            
+            
+
+    ');
+        }
+
+
     }
 }
