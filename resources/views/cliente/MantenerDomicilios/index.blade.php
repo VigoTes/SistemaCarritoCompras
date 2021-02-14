@@ -27,16 +27,27 @@
             </form>
         </nav> --}}
         
-        @if(session('datos'))<!-- cuando se registra algo-->
-            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
-                {{session('datos')}}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>    
-        @endif
     </div>
-    
+
+    @if($msj!='')<!-- cuando se registra algo-->
+    <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+        {{$msj}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>    
+    @endif
+
+
+    @if(session('datos'))<!-- cuando se registra algo-->
+    <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+        {{session('datos')}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>    
+    @endif
+
   <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
@@ -73,6 +84,33 @@
                     <i class="fas fa-edit"></i> 
                 </a>
                 
+
+                <a href="#" class="btn btn-danger btn-sm btn-icon icon-left" title="Eliminar registro" 
+                    onclick="swal(
+                                {//sweetalert
+                                    title:'¿Está seguro de eliminar?',
+                                    text: '',     //mas texto
+                                    //type: 'warning',  
+                                    type: '',
+                                    showCancelButton: true,//para que se muestre el boton de cancelar
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText:  'SI',
+                                    cancelButtonText:  'NO',
+                                    closeOnConfirm:     true,//para mostrar el boton de confirmar
+                                    html : true
+                                },
+                                function()
+                                {//se ejecuta cuando damos a aceptar
+                                    window.location.href='{{route('domicilio.eliminar',$itemDomicilio->codDomicilio)}}';
+                                }
+                                );">
+                    <i class="entypo-cancel"></i>  
+                    <i class="fas fa-trash"></i>
+                    
+                </a>
+                
+
                 
                 </td>
               </tr>

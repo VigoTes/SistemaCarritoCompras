@@ -43,7 +43,8 @@ Route::get('/mapa/getDistritos/{idProvincia}','DomicilioController@getDistritos'
 Route::post('/domicilio/guardar/{id}','DomicilioController@guardar')->name('domicilio.guardar');
 
 //                              idDomici
-Route::post('/domicilio/actualizar/{id}','DomicilioController@actualizar')->name('domicilio.actualizar');
+Route::put('/domicilio/actualizar/{id}','DomicilioController@actualizar')->name('domicilio.actualizar');
+Route::get('/domicilio/eliminar/{id}','DomicilioController@eliminar')->name('domicilio.eliminar');
 
 
 Route::get('/domicilio/crear/{id}','DomicilioController@crear')->name('domicilio.crear');

@@ -17,6 +17,7 @@ class DomicilioController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    const PAGINATION='20';
     public function index()
     {
         //
@@ -24,11 +25,27 @@ class DomicilioController extends Controller
 
 
     public function listarDomicilios($codCliente){
-        $listaDomicilios = Domicilio::where('codCliente','=',$codCliente)->paginate();
+
+
+        $listaDomicilios = Domicilio::where('codCliente','=',$codCliente)
+        ->orderBy('esPrincipal','DESC')
+        ->orderBy('codDomicilio','ASC')
+        ->paginate($this::PAGINATION);
         
-        return view('cliente.MantenerDomicilios.index',compact('listaDomicilios'));
+        
+        $listaDomPrincipal =         Domicilio::where('codCliente','=',$codCliente)
+                ->where('esPrincipal','=','1')
+            
+                ->get();
 
+        //return count($listaDomPrincipal);
+        $msj='';
+        
+        if(count($listaDomPrincipal) == '0' )
+            $msj = '¡ALERTA! No tiene un domicilio principal. Edite un domicilio y selecciónelo como tal.';
 
+        return view('cliente.MantenerDomicilios.index',compact('listaDomicilios','msj'));
+        
     }
 
 
@@ -53,6 +70,8 @@ class DomicilioController extends Controller
     public function crear(){
         
         $listaPaises = Pais::All();
+        
+
 
         return view('cliente.MantenerDomicilios.create',compact('listaPaises'));
 
@@ -94,18 +113,19 @@ class DomicilioController extends Controller
     {
         $cliente = Cliente::findOrFail($codCliente);
         $domicilio = new Domicilio();
-
+        
+        $domicilio->nombre = $request->nombre;
         $domicilio->direccion = $request->direccion;
         $domicilio->codDistrito = $request->Distrito;
         $domicilio->codigoPostal = $request->codigoPostal;
         $domicilio->nroTelefonoFijo = $request->telefonoFijo; 
         $domicilio->codCliente = $codCliente;
         $domicilio->fax = $request->fax;
+        $domicilio->esPrincipal = '0';
 
         if($request->CBPrincipal == 'on')
-            $domicilio->esPrincipal = '1';
-        else
-            $domicilio->esPrincipal = '0';
+            $domicilio->setPrincipal(); 
+        
         $domicilio->save();
 
         return redirect()->route('domicilio.listar',$codCliente);
@@ -133,8 +153,14 @@ class DomicilioController extends Controller
     {
         $domicilio = Domicilio::findOrFail($id);
         $listaPaises = Pais::All();
+        
+        $listaRegiones = Region::where('codPais','=',      $domicilio->getPais()->codPais)->get();
+        $listaProvincias = Provincia::where('codRegion','=',$domicilio->getRegion()->codRegion)->get();
+        $listaDistritos = Distrito::where('codProvincia','=',$domicilio->getProvincia()->codProvincia)->get();
+        
 
-        return view('cliente.MantenerDomicilios.edit',compact('domicilio','listaPaises'));
+        return view('cliente.MantenerDomicilios.edit',compact('domicilio','listaPaises',
+                'listaRegiones','listaProvincias','listaDistritos'));
 
     }
 
@@ -150,19 +176,22 @@ class DomicilioController extends Controller
         //
     }
 
+    //METODO UPDATE 
     public function actualizar(Request $request, $id)
     {
         $domicilio = Domicilio::findOrFail($id);
         $domicilio->direccion = $request->direccion;
+        $domicilio->nombre = $request->nombre;
         $domicilio->codDistrito = $request->Distrito;
         $domicilio->codigoPostal = $request->codigoPostal;
         $domicilio->nroTelefonoFijo = $request->telefonoFijo; 
         $domicilio->fax = $request->fax;
+        $domicilio->esPrincipal = '0';
 
         if($request->CBPrincipal == 'on')
-            $domicilio->esPrincipal = '1';
-        else
-            $domicilio->esPrincipal = '0';
+            $domicilio->setPrincipal(); 
+        
+            
         $domicilio->save();
 
         return redirect()->route('domicilio.listar',$domicilio->codCliente);
@@ -181,6 +210,20 @@ class DomicilioController extends Controller
      */
     public function destroy($id)
     {
-        //
+
+
     }
+
+    public function eliminar($id){
+        $dom = Domicilio::findOrFail($id);
+        $codCliente = $dom->codCliente;
+        $dom->delete();
+
+        return redirect()->route('domicilio.listar',$codCliente);
+
+
+    }
+
+
+
 }

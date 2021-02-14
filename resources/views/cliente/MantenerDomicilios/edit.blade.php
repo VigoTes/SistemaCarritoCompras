@@ -51,8 +51,16 @@
         <label for="Region">Region</label>
         <select class="form-control"  id="Region" name="Region" onchange="mostrarProvincias()" >
           <option value="0">-- Seleccionar -- </option>
-          {{-- ESTA PARTE SE HARIA CON JS --}}
-          
+          @foreach($listaRegiones as $itemRegion)
+              <option value="{{$itemRegion->codRegion}}" 
+                @if($itemRegion->codRegion == $domicilio->getRegion()->codRegion)
+                  selected
+                @endif
+
+                >
+                  {{$itemRegion->nombre}}
+              </option>                                 
+          @endforeach
         </select>   
       </div>
 
@@ -60,14 +68,35 @@
         <label for="Provincia">Provincia</label>
         <select class="form-control"  id="Provincia" name="Provincia" onchange="mostrarDistritos()" >
           <option value="0">-- Seleccionar -- </option>
-        
+          @foreach($listaProvincias as $itemProvincia)
+              <option value="{{$itemProvincia->codProvincia}}" 
+                @if($itemProvincia->codProvincia == $domicilio->getProvincia()->codProvincia)
+                  selected
+                @endif
+
+                >
+                  {{$itemProvincia->nombre}}
+              </option>                                 
+          @endforeach
+
+
         </select>   
       </div>
       <div class="form-group">
         <label for="Distrito">Distrito</label>
         <select class="form-control"  id="Distrito" name="Distrito" >
           <option value="0">-- Seleccionar -- </option>
-         
+          @foreach($listaDistritos as $itemDistrito)
+          <option value="{{$itemDistrito->codDistrito}}" 
+            @if($itemDistrito->codDistrito == $domicilio->codDistrito)
+              selected
+            @endif
+
+            >
+              {{$itemDistrito->nombre}}
+          </option>                                 
+          @endforeach
+     
         </select>   
       </div>
 
@@ -140,6 +169,7 @@
         });
     
     function limpiarRegiones(){  
+      limpiarProvincias();
       var sel = document.getElementById("Region");
       for (let index = 100; index >= 0; index--) {
         sel.remove(index);
@@ -150,6 +180,7 @@
     }
 
     function limpiarProvincias(){  
+      limpiarDistritos();
       var sel = document.getElementById("Provincia");
       for (let index = 100; index >= 0; index--) {
         sel.remove(index);

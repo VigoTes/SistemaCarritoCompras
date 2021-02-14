@@ -34,4 +34,37 @@ class Domicilio extends Model
         return $pais;
 
     }
+
+    public function getRegion(){
+        $distrito = Distrito::findOrFail($this->codDistrito);
+        $provincia  = Provincia::findOrFail($distrito->codProvincia);
+        $region = Region::findOrFail($provincia->codRegion);
+        return $region;
+
+    }
+
+    public function getProvincia(){
+        $distrito = Distrito::findOrFail($this->codDistrito);
+        $provincia  = Provincia::findOrFail($distrito->codProvincia);
+        return $provincia;
+
+    }
+
+    //metodo para setear este domicilio como el principal de este cliente
+    public function setPrincipal(){
+        $listaDomiciliosDelCliente = Domicilio::where('codCliente','=',$this->codCliente)->get();
+
+        //quitamos el esPrincipal de todos los domicilios de ese cliente
+        foreach ($listaDomiciliosDelCliente as $itemDom) {
+            $itemDom->esPrincipal='0';
+            $itemDom->save();
+        }
+
+        $this->esPrincipal='1';
+
+    }
+
+
+
+
 }
