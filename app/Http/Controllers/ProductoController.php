@@ -197,7 +197,7 @@ class ProductoController extends Controller
         return view('cliente.ProductoCliente.verProducto',compact('producto'));
     }
 
-    public function agregarCarrito($cadena){
+    public function agregarCarrito($cadena){ 
 
         try {
             
@@ -209,27 +209,40 @@ class ProductoController extends Controller
             $arr = explode('*', $cadena);
 
             $producto=Producto::findOrFail($arr[0]);
+            //Preguntamos si hay un usuario logeado
             if(is_null(Auth::user())){ //CARRITO ANON 
+                $token = session('token');
 
+                error_log('AGREGARCARRITO--------
+                
+                ------------ TOKEN OBTENIDO:'.$token.' 
+                
+                
+                ');
 
-                $ip=$_SERVER['REMOTE_ADDR'];
-                error_log('LLLEGA--------------------');
-                $ListacarritoNON=CarritoAnon::where('codCarrito','=', $ip)->get(); //aqui es el error
-                if(count($ListacarritoNON) > 0 ) //si hay algun carrito con esa IP
-                    $carritoNON = $ListacarritoNON[0];
-                else
-                {
-
-                    $carritoNON=new CarritoAnon();
-                    $carritoNON->codCarrito=$ip;
-                    $carritoNON->save();
-                }
 
                 
+                if($token!=''){ //Si el token existe, es porque este usuario ya creó un carrito
+                    $ListacarritoNON=CarritoAnon::where('codCarrito','=', $token)->get();
+                    $carritoNON = $ListacarritoNON[0]; //obtenemos el carrito ya creado
+                    $token = session('token');
+                }
+                else //usuario que recien va a crear su carrito (primer producto añadido)
+                {
+                    $numero_aleatorio = rand(1,1000);
+                    $token = $numero_aleatorio;
+                    $carritoNON=new CarritoAnon();
+                    $carritoNON->codCarrito=$token;
+                    $carritoNON->save();
+
+                    session(['token' => $token]); //GUARDAMOS ESE TOKEN EN LA SESION DEL USUARIO CONECTADO para que luego lo pueda obtener  
+                }
+
+                //Creamos un nuevo detalle y lo añadimos al carrrito
                 $detalle=new Detalle_CarritoAnon();
                 $detalle->codProducto=$producto->codProducto;
                 $detalle->cantidad=$arr[1];
-                $detalle->codCarrito=$ip;
+                $detalle->codCarrito=$token;
                 $detalle->save();
             }
             else{           // CARRITO CON CLIENTE LOGEADO 

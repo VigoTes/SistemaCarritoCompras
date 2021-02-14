@@ -83,8 +83,8 @@
          </a>
         @else
           <label for=""> {{ App\Usuario::getEmailPorCodUsuario(Auth::id())  }} </label>
-
-
+          sesion={{session('sesionX')}}
+          
         @endif  
       
       

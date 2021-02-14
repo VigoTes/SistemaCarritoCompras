@@ -17,17 +17,19 @@ class CarritoController extends Controller
     {
         date_default_timezone_set('America/Lima');
         if(is_null(Auth::user())){ //CARRITO ANON 
-            $ip=$_SERVER['REMOTE_ADDR'];
+            //$ip=$_SERVER['REMOTE_ADDR'];
+            //Recuperamos el token guardado anteriormente
+            $token = session('token');
+            if($token=='')
+                return "NO HAY PRODUCTOS EN ESTE CARRITO ANON";
+            
 
-
-           
-
-            $ListacarritoNON=CarritoAnon::where('codCarrito','=', $ip)->get();
+            $ListacarritoNON=CarritoAnon::where('codCarrito','=', $token)->get();
             $LISTAx = CarritoAnon::All();
             error_log('
             
             MIAU ----------------------------------------------- 
-            MI IP = '.$ip.'            
+            MI TOKEN RECUPERADO = '.$token.'            
             
             
             
@@ -40,12 +42,12 @@ class CarritoController extends Controller
             ');
 
 
-            if(count($ListacarritoNON) > 0 ) //si hay algun carrito con esa IP
+            if(count($ListacarritoNON) > 0 ) //si hay algun carrito con ese token
                 $carrito = $ListacarritoNON[0];
             else
             {
                 $carrito=new CarritoAnon();
-                $carrito->codCarrito=$ip;
+                $carrito->codCarrito=$token;
                 $carrito->save();
             }
             $detalles=Detalle_CarritoAnon::where('codCarrito','=',$carrito->codCarrito)->get();

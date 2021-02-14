@@ -8,9 +8,14 @@
     <div class="alert  hidden" role="alert"></div>
     <form method="POST" action="">
     @csrf
-    {{$tipo}}
+   {{--  {{$tipo}} --}}
 
-        ESTA ES MI IP: {{$_SERVER['REMOTE_ADDR']}}
+   @if( session('token')!='' )
+   <label for="">Token: {{session('token')}}</label>
+   <label for="">Vector: {{session('carritoSesion')}}</label>
+   
+   @endif
+
 
     <div class="col-md-12 pt-3">     
         <div class="table-responsive">                           

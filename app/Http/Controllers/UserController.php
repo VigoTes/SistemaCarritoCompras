@@ -41,7 +41,12 @@ class UserController extends Controller
                     else{
 
                         if(Auth::attempt($request->only('email','password')))
+                        {
+                            
                             return redirect()->route('indexGeneral');
+
+                        }
+                            
     
                     }
                 
