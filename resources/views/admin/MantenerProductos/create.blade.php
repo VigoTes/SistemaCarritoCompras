@@ -57,7 +57,7 @@
           @endforeach 
         </select>   
       </div>
-
+      
       <div class="form-group">
         <label for="stock">Stock</label>
         <input type="number" class="form-control" style="width: 150px;"
@@ -73,7 +73,7 @@
       <div class="form-group">
         <label for="descuento">Descuento Especial</label>
         <input type="number" step="0.01" class="form-control" style="width: 150px;"
-         id="descuento" name="descuento" placeholder="Ingrese descuento">
+         id="descuento" name="descuento" placeholder="Ingrese descuento" value="0">
       
       </div>
       

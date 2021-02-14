@@ -152,7 +152,7 @@ class CategoriaController extends Controller
     /**PARA CLIENTES */
     public function menuCategorias()
     {
-        $categorias=Categoria::all();
+        $categorias=Categoria::where('estado','=','1')->get();
         return $categorias;
     }
 

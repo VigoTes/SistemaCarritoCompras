@@ -10,9 +10,40 @@ use App\Http\Controllers\Controller;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Cliente;
 
 class CarritoController extends Controller
 {
+
+
+
+    public function eliminarProducto($idProducto){
+
+        if(is_null(Auth::user())){ 
+            //caso anon
+            $codCarritoAnon = session('token');
+            $ListadetalleCarrito = Detalle_CarritoAnon::where('codProducto','=',$idProducto)
+            ->where('codCarrito','=',$codCarritoAnon)->get();
+        }else{ //cliente logeado
+            $cliente = Cliente::getClienteLogeado();
+            $carrito = (Carrito::where('codCliente','=',$cliente->codCliente)->get())[0];
+
+
+            $ListadetalleCarrito = Detalle_Carrito::where('codProducto','=',$idProducto)
+            ->where('codCarrito','=',$carrito->codCarrito)->get();
+            
+        }
+        if(count($ListadetalleCarrito)>0){
+            $detalleCarrito = $ListadetalleCarrito[0];
+            $detalleCarrito->delete();
+        }
+
+        return redirect()->route('carrito.mostrar')->with('datos','Elemento eliminado.');
+
+
+    }
+
+
     public function mostrarCarrito()
     {
         date_default_timezone_set('America/Lima');
@@ -70,4 +101,12 @@ class CarritoController extends Controller
         return view('cliente.MantenerCarrito.index',compact('carrito','detalles','tipo'));
     }
     
+
+
+
+
+
+
+
+
 }

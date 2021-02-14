@@ -80,7 +80,10 @@ Route::post('/listarProductosSubCategoria/{id}','ProductoController@listarProduc
 Route::get('/verProducto/{id}','ProductoController@mostrarProducto')->name('producto.ver');
 Route::get('/agregarProductoCarrito/{id}','ProductoController@agregarCarrito');
 
-Route::get('/carrito','CarritoController@mostrarCarrito');
+Route::get('/carrito','CarritoController@mostrarCarrito')->name('carrito.mostrar');
+
+//                                     idProd   
+Route::get('/carrito/eliminarProducto/{id}','CarritoController@eliminarProducto')->name('carrito.eliminarProducto');
 
 
 /*

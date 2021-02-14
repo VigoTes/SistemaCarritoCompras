@@ -81,7 +81,7 @@ class SubCategoriaController extends Controller
     public function edit($id)
     {
         $subCategoria = SubCategoria::findOrFail($id);
-        return view('MantenerCategorias.editSubCategoria',compact('subCategoria'));
+        return view('admin.MantenerCategorias.editSubCategoria',compact('subCategoria'));
     }
 
     /**

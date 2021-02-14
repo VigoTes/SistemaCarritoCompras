@@ -39,7 +39,7 @@ class ProductoController extends Controller
      */
     public function create()
     {
-        $listaCategorias = Categoria::All();
+        $listaCategorias = Categoria::where('estado','=','1')->get();
         $listaMarcas = Marca::All();
 
         return view('admin.MantenerProductos.create',compact('listaCategorias','listaMarcas'));
@@ -95,7 +95,7 @@ class ProductoController extends Controller
     public function edit($id)
     {
         $producto = Producto::findOrFail($id);
-        $listaCategorias = Categoria::All();
+        $listaCategorias = Categoria::where('estado','=','1')->get();
         $listaMarcas = Marca::All();
         //subcat de la cat que tiene actualmente
         $listaSubCategorias = SubCategoria::where('codCategoria','=',$producto->getCodCategoria())->get();
@@ -225,7 +225,7 @@ class ProductoController extends Controller
                 if($token!=''){ //Si el token existe, es porque este usuario ya creó un carrito
                     $ListacarritoNON=CarritoAnon::where('codCarrito','=', $token)->get();
                     $carritoNON = $ListacarritoNON[0]; //obtenemos el carrito ya creado
-                    $token = session('token');
+                    $token = session('token'); //obtenemos el token  ya creado
                 }
                 else //usuario que recien va a crear su carrito (primer producto añadido)
                 {
@@ -235,9 +235,10 @@ class ProductoController extends Controller
                     $carritoNON->codCarrito=$token;
                     $carritoNON->save();
 
+                    //NUEVO TOKEN 
                     session(['token' => $token]); //GUARDAMOS ESE TOKEN EN LA SESION DEL USUARIO CONECTADO para que luego lo pueda obtener  
                 }
-
+                
                 //Creamos un nuevo detalle y lo añadimos al carrrito
                 $detalle=new Detalle_CarritoAnon();
                 $detalle->codProducto=$producto->codProducto;
