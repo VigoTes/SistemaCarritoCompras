@@ -171,7 +171,7 @@ class CategoriaController extends Controller
         ->SELECT('MARCA.codMarca as codMarca', 'MARCA.nombre as nombre')
         ->where('MARCA.estado','!=',0)->groupBy('MARCA.codMarca', 'MARCA.nombre')->orderBy('MARCA.codMarca')->get();
 
-        $productos=Producto::whereIn('codSubCategoria',$temp)->where('estado','!=',0)->get();
+        $productos=Producto::whereIn('codSubCategoria',$temp)->where('estado','=',1)->get();
 
         return view('cliente.CategoriasCliente.index',compact('categoria','subcategorias','marcas','productos'));
     }

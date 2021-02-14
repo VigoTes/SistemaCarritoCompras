@@ -152,9 +152,45 @@ class ProductoController extends Controller
 
     /**PARA CLIENTES */
     public function listarProductosSubCategoria(Request $request,$id){
-        $productos=Producto::where('codSubCategoria','=',$id)->get();
-        return response()->json(['productos'=>$productos]);
+
+        try {
+            //code...
+        
+
+                $arr = explode('*', $id);
+                if($arr[0]==0 && $arr[1]==0){
+                    $categoria=Categoria::find($arr[2]);
+                    $subcategorias=$categoria->subcategoria;
+                    $temp=array();//convertir la variable $temp a tipo array para meterlo a la consulta 'not in'
+                    foreach($subcategorias as $a){
+                        $temp[]=$a->codSubCategoria;
+                    }
+                    //$productos=Producto::where('estado','=',1)->get();
+                    $productos=Producto::whereIn('codSubCategoria',$temp)->where('estado','=',1)->get();
+                }
+                else{
+                    $productos=Producto::where('codSubCategoria','=',$arr[0])->where('codMarca','=',$arr[1])->where('estado','=',1)->get();
+                    if($arr[0]==0){
+                        $productos=Producto::where('codMarca','=',$arr[1])->where('estado','=',1)->get();
+                    }
+                    if($arr[1]==0){
+                        $productos=Producto::where('codSubCategoria','=',$arr[0])->where('estado','=',1)->get();
+                    }
+                }
+                return response()->json(['productos'=>$productos]);
+            } catch (\Throwable $th) {
+                error_log('
+                    OCURRIO UN ERROR EN 
+                    ProductoController : listarProductosSubCategoria
+                
+                '.$th.'
+                
+                ');
+            }    
+
+
     }
+
     public function mostrarProducto($id)
     {
         $producto=Producto::findOrFail($id);
@@ -232,7 +268,7 @@ class ProductoController extends Controller
             
             
 
-    ');
+        ');
         }
 
 

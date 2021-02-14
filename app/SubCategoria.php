@@ -14,6 +14,8 @@ class SubCategoria extends Model
 
     protected $fillable = ['nombre','estado','codCategoria','nroEnCategoria'];
 
-
+    public function categoria(){
+        return $this->hasOne('App\Categoria','codCategoria','codCategoria');
+    }
 
 }

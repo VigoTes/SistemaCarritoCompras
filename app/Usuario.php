@@ -26,7 +26,7 @@ class Usuario extends Model
         error_log('ESTO ES PARA MUESTRA  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ' .$codUsuario);
         $usuario = Usuario::findOrFail($codUsuario);
         return $usuario->email;
-    
+        
     
     }
 

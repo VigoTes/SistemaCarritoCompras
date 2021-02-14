@@ -4,16 +4,25 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript"> 
-$(document).ready(function(){
+    $(document).ready(function(){
         $('#codSubCategoria').change(function(){
+            mostrar();
+        });
+        $('#codMarca').change(function(){
+            mostrar();
+        });
+    });
 
-            var codigo=$('#codSubCategoria').val();
+    function mostrar(){
+        var codigo=$('#codSubCategoria').val();
+        var codigo2=$('#codMarca').val();
+        var codigo3=$('#codCategoria').val();
             //alert(codigo);
             
-            if(codigo!=0){
+            //if(codigo!=0){
                 //alert(codigo);
                 $.ajax({
-                    url: '/listarProductosSubCategoria/' + codigo,
+                    url: '/listarProductosSubCategoria/' + codigo + '*' + codigo2 + '*' + codigo3,
                     type: 'post',
                     data: {
                         codigo     : codigo,
@@ -38,19 +47,18 @@ $(document).ready(function(){
 
                     }
                 });
-            }else{
-                        $('#productos').html('');
+            //}else{
+            //            $('#productos').html('');
 
-            }
-
-        })
-    });
+            //}
+    }
 </script>
 
     <div class="row">
         <section class="col-lg-3">
             <div class="card">
                 <div class="card-body">
+                    <input id="codCategoria" type="hidden" name="codCategoria" value="{{ $categoria->codCategoria }}" >
                     <h5>Filtros</h5>
                     <hr>
                     <label class="">SubCategoria:</label>

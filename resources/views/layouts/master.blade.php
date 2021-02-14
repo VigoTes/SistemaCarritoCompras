@@ -127,12 +127,14 @@
         </div>
       </div>
 
+  
+      <!-- /.sidebar-menu -->
+
+      {{-- SIDE BAR MIO --}}
       <!-- Sidebar Menu -->
       <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-          <!-- Add icons to the links using the .nav-icon class
-               with font-awesome or any other icon font library -->
-          
+         
           <li class="nav-item menu-close">
             <a href="" class="nav-link">
               <i class="fas fa-list-alt"></i>
@@ -161,19 +163,18 @@
               </p>
             </a>
           </li>
-          
-          
-        </ul>
-      </nav>
-      <!-- /.sidebar-menu -->
+          @if(  Auth::id()!='' )
+          <li class="nav-item">
+            <a href="{{route('domicilio.listar', (App\Usuario::getClientePorCodUsuario(Auth::id()) )->codCliente  )}}" class="nav-link">
+              <i class="fas fa-users"></i>
+              <p>
+                Mis Domicilios
+              </p>
+            </a>
+          </li>
+          @endif
 
-      {{-- SIDE BAR MIO --}}
-      <!-- Sidebar Menu -->
-      <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-         
-
-          <li class="nav-item menu-open">
+          <li class="nav-item">
               <a href="" class="nav-link">
                 <i class="fas fa-list-alt"></i>
                 <p>
@@ -202,11 +203,47 @@
                         <p>Productos</p>
                       </a>
                     </li>
-
+                    <li class="nav-item">
+                      <a href="{{route('cliente.index')}}" class="nav-link">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Clientes</p>
+                      </a>
+                    </li>
+                      
                     
 
               </ul>
           </li>
+
+          <li class="nav-item">
+            <a href="" class="nav-link">
+              <i class="fas fa-list-alt"></i>
+              <p>
+                Reportes
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+
+            <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Productos</p>
+                    </a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a href="" class="nav-link">
+                      <i class="far fa-circle nav-icon"></i>
+                      <p>Clientes</p>
+                    </a>
+                  </li>
+
+                  
+
+            </ul>
+          </li>
+
           <li class="nav-item">
             <a href="{{route('user.cerrarSesion')}}" class="nav-link">
               <i class="fas fa-sign-out-alt"></i>

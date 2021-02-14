@@ -14,4 +14,8 @@ class Detalle_Carrito extends Model
     protected $fillable = [
         'cantidad', 'codProducto', 'codCarrito'
     ];
+
+    public function producto(){
+        return $this->hasOne('App\Producto','codProducto','codProducto');
+    }
 }

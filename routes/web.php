@@ -30,6 +30,25 @@ Route::get('/', function () {
 Route::resource('categoria', 'CategoriaController');
 Route::resource('marca', 'MarcaController');
 Route::resource('producto', 'ProductoController');
+Route::resource('cliente', 'ClienteController');
+Route::resource('domicilio', 'DomicilioController');
+
+
+// RUTAS SERVICIOS para obtener listas de paises, regiones, distritos
+Route::get('/mapa/getRegiones/{idPais}','DomicilioController@getRegiones')->name('domicilio.getRegiones');
+Route::get('/mapa/getProvincias/{idRegion}','DomicilioController@getProvincias')->name('domicilio.getProvincias');
+Route::get('/mapa/getDistritos/{idProvincia}','DomicilioController@getDistritos')->name('domicilio.getDistritos');
+
+//                          idCliente
+Route::post('/domicilio/guardar/{id}','DomicilioController@guardar')->name('domicilio.guardar');
+
+//                              idDomici
+Route::post('/domicilio/actualizar/{id}','DomicilioController@actualizar')->name('domicilio.actualizar');
+
+
+Route::get('/domicilio/crear/{id}','DomicilioController@crear')->name('domicilio.crear');
+
+Route::get('/cliente/{id}/domicilios','DomicilioController@listarDomicilios')->name('domicilio.listar');
 
 
 Route::get('/categoria/listarSubs/{id}','CategoriaController@listarSubCategorias');
@@ -59,8 +78,8 @@ Route::post('/listarProductosSubCategoria/{id}','ProductoController@listarProduc
 
 Route::get('/verProducto/{id}','ProductoController@mostrarProducto')->name('producto.ver');
 Route::get('/agregarProductoCarrito/{id}','ProductoController@agregarCarrito');
-Route::get('/carrito','CarritoController@mostrarCarrito');
 
+Route::get('/carrito','CarritoController@mostrarCarrito');
 
 
 /*
