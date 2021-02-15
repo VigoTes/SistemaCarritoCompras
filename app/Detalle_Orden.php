@@ -14,4 +14,16 @@ class Detalle_Orden extends Model
     protected $fillable = [
         'codOrden', 'cantidad', 'precio','codProducto'
     ];
+
+    public function getItem(){
+        return '1';
+    }
+    public function getNombreProducto(){
+        $prod = Producto::findOrFail($this->codProducto);
+        return $prod->nombre;
+    }
+
+    
+
+
 }

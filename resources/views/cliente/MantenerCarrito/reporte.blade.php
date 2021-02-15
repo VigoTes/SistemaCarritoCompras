@@ -142,7 +142,7 @@
     $(document).ready(function(){
 		$("#boton").click(function () { 
 			codDomicilio=$('input:radio[name=radio1]:checked').val();
-            alert('ahora va a cambiar');
+            //alert('ahora va a cambiar');
             $("#frmRegistrado").submit();
 		});
     });

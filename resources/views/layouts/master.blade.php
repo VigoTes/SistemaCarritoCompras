@@ -123,7 +123,13 @@
           <img src="/adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">Estatico</a>
+          <a href="#" class="d-block">
+            @if(  Auth::id() !='' )
+              <label for=""> {{ App\Usuario::getEmailPorCodUsuario(Auth::id())  }} </label>
+            @else
+            <label for="">Anonimo</label>
+            @endif
+          </a>
         </div>
       </div>
 
@@ -169,6 +175,14 @@
               <i class="fas fa-users"></i>
               <p>
                 Mis Domicilios
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{route('orden.listar', (App\Usuario::getClientePorCodUsuario(Auth::id()) )->codCliente  )}}" class="nav-link">
+              <i class="fas fa-users"></i>
+              <p>
+                Mis Ordenes
               </p>
             </a>
           </li>

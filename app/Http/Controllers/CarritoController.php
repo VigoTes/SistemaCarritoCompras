@@ -170,6 +170,8 @@ class CarritoController extends Controller
         $orden->codCliente=Auth::user()->codCliente;
         $orden->fechaHoraVenta=new DateTime();
         $orden->codTipo=$request->codTipo;
+        $orden->codEstado='1';
+        
 
         $total=0;
         $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();

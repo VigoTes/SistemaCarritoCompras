@@ -56,8 +56,19 @@
                     html : true
                 },
                 function(){//se ejecuta cuando damos a aceptar
-                    var cantidad=$('#cantidad').val();
-                    window.location.href='/agregarProductoCarrito/'+{{$producto->codProducto}}+'*'+cantidad;
+
+                  $.get('/verificarStock/{{$producto->codProducto}}', function(data){
+                    cantidadProducto=data;
+                    cantidadMarcada=$('#cantidad').val();
+                    if(cantidadProducto<cantidadMarcada){
+                      alert('stock insuficiente');
+                    }else{
+                      window.location.href='/agregarProductoCarrito/'+{{$producto->codProducto}}+'*'+cantidadMarcada;
+                    }
+                  });
+
+                  //var cantidad=$('#cantidad').val();
+                  //window.location.href='/agregarProductoCarrito/'+{{$producto->codProducto}}+'*'+cantidad;
 
                 });"><i class="fas fa-cart-plus fa-lg mr-2"></i>Add to Cart</a>
               

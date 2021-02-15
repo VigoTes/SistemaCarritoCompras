@@ -14,6 +14,7 @@ use App\SubCategoria;
 use DateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ProductoController extends Controller
 {
@@ -70,6 +71,23 @@ class ProductoController extends Controller
         $prod->contadorVentas = '0';
 
         $prod->save();
+
+        //para el registro de imagenes xd
+        $prod->nombreImagen='imagen'.$prod->codProducto.'.jpg';
+        //$file = $request->file('imagen')->storeAs('imagenes',$prod->nombreImagen);
+        Storage::disk('local2')->put($prod->nombreImagen,\File::get($request->file('imagen')));
+        error_log('
+        
+        
+        Se está subiendo la imagen '.$prod->nombreImagen.'
+        
+        
+        
+        ');
+        //$imagen =$request->file('imagen');
+        //Storage::disk('imagenes')->put($prod->nombreImagen,\File::get($imagen));
+        $prod->save();
+
         return redirect()->route('producto.index');
 
         
@@ -117,7 +135,7 @@ class ProductoController extends Controller
     {
         
         $prod = Producto::findOrFail($id);
-
+        
         $prod->nombre = $request->nombre;
         $prod->descripcion = $request->descripcion;
         $prod->codSubCategoria = $request->ComboBoxSubCategoria;
@@ -128,6 +146,24 @@ class ProductoController extends Controller
         $prod->fechaActualizacion = Carbon::now()->subHours(5);
         $prod->estado = '1';
         $prod->contadorVentas = '0';
+
+
+        if(!is_null($request->imagen)){
+            //Storage::disk('local')->delete($prod->nombreImagen);
+            Storage::disk('local2')->delete($prod->nombreImagen);
+                                        //$prod->nombreImagen='imagen'.$prod->codProducto.'.jpg';
+            Storage::disk('local2')->put($prod->nombreImagen,\File::get($request->file('imagen')));
+            //$file = $request->file('imagen')->storeAs('imagenes',$prod->nombreImagen);
+            error_log('
+        
+        
+            Se está subiendo la imagen '.$prod->nombreImagen.'
+            
+            
+            
+            ');
+
+        }
 
         $prod->save();
         return redirect()->route('producto.index');
@@ -321,5 +357,11 @@ class ProductoController extends Controller
         }
 
 
+    }
+
+    public function verificarStock($id)
+    {
+        $producto=Producto::findOrFail($id);
+        return $producto->stock;
     }
 }

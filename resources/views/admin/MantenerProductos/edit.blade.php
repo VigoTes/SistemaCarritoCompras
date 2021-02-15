@@ -4,7 +4,7 @@
 <div class="container">
 
   <h1>CREAR PRODUCTO</h1>
-  <form method="POST" action="{{route('producto.update',$producto->codProducto)}}">
+  <form method="POST" action="{{route('producto.update',$producto->codProducto)}}" enctype="multipart/form-data">
     @method('put')  
     @csrf
       <div class="form-group">
@@ -17,9 +17,16 @@
           </span>
         @enderror
       </div>
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label">Foto:</label>
+                <div class="col-sm-4">
+                    <input type="file" class="form-control" name="imagen" id="imagen" accept=".jpg">
+                </div>
+      </div>
       <div class="form-group">
         <label for="nombre">Descripcion</label>
-        <textarea id="descripcion" name="descripcion" class="form-control" aria-label="With textarea" style="resize:none; height:100px;">value="{{$producto->descripcion}}</textarea>
+        <textarea id="descripcion" name="descripcion" class="form-control" 
+            aria-label="With textarea" style="resize:none; height:100px;">{{$producto->descripcion}}</textarea>
         @error('descripcion')
           <span class="invalid-feedback" role="alert">
               <strong>{{$message}}</strong>
@@ -49,7 +56,7 @@
           <option value="-1">-- Seleccionar -- </option>
           {{-- ESTA PARTE SE HARIA CON JS --}}
           @foreach($listaSubCategorias as $itemSubCat)
-              <option value="{{$itemSubCat->codCategoria}}" 
+              <option value="{{$itemSubCat->codSubCategoria}}" 
                 @if($producto->codSubCategoria == $itemSubCat->codSubCategoria )
                   selected
                 @endif

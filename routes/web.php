@@ -91,12 +91,15 @@ Route::get('/cambiarCantidadProducto/{id}','CarritoController@cambiarCantidad');
 
 /*DE CARRITO A PAGO */
 Route::get('/verificarLogin', 'UserController@verificarLogin');
+Route::get('/verificarStock/{id}', 'ProductoController@verificarStock');
 Route::get('/menuOpcionesCaja','CarritoController@menuOpcionesCaja');
 Route::get('/mostrarReporte','CarritoController@mostrarReporte');
 Route::post('/registrarCompra','CarritoController@registrarCompra');
 
 
 
+Route::get('/ordenes/{id}','OrdenController@listar')->name('orden.listar');
+Route::get('/ordenes/detalles/{id}','OrdenController@verDetalles')->name('orden.verDetalles');
 
 
 //                                     idProd   

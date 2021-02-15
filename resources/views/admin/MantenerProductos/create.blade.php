@@ -4,7 +4,7 @@
 <div class="container">
 
   <h1>CREAR PRODUCTO</h1>
-  <form method="POST" action="{{route('producto.store')}}">
+  <form method="POST" action="{{route('producto.store')}}" enctype="multipart/form-data">
       @csrf
       <div class="form-group">
         <label for="nombre">Nombre del producto</label>
@@ -14,6 +14,12 @@
               <strong>{{$message}}</strong>
           </span>
         @enderror
+      </div>
+      <div class="form-group row">
+        <label class="col-sm-1 col-form-label">Foto:</label>
+                <div class="col-sm-4">
+                    <input type="file" class="form-control" name="imagen" id="imagen" accept=".jpg">
+                </div>
       </div>
       <div class="form-group">
         <label for="nombre">Descripcion</label>
