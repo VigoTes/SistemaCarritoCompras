@@ -11,6 +11,10 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Cliente;
+use App\Detalle_Orden;
+use App\Metodo_Pago;
+use App\Orden;
+use App\Tipo_CDP;
 
 class CarritoController extends Controller
 {
@@ -56,7 +60,7 @@ class CarritoController extends Controller
                 $ListacarritoNON=CarritoAnon::where('codCarrito','=', $token)->get();
             }
             $LISTAx = CarritoAnon::All();
-           
+            
 
 
             if(count($ListacarritoNON) > 0 ) //si hay algun carrito con ese token
@@ -86,7 +90,6 @@ class CarritoController extends Controller
         }
         return view('cliente.MantenerCarrito.index',compact('carrito','detalles','tipo'));
     }
-    
 
     public function cambiarCantidad($id){
 
@@ -136,12 +139,63 @@ class CarritoController extends Controller
         
         '.$th);
 
+        }
+   
     }
 
+
    
-}
+    public function menuOpcionesCaja()
+    {
+        return view('cliente.MantenerCarrito.opcionesCaja');
+    }
+
+    public function mostrarReporte()
+    {
+        $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();
+        $carrito=$carritos[0];
+        $detalles=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
+        $tiposCDP=Tipo_CDP::all();
+        $metodos=Metodo_Pago::all();
+        return view('cliente.MantenerCarrito.reporte',compact('carrito','detalles','tiposCDP','metodos'));
+    }
+
+    public function registrarCompra(Request $request)
+    {
+        date_default_timezone_set('America/Lima');
+
+        $orden=new Orden();
+        $orden->codMetodo=$request->codMetodo;
+        $orden->codDomicilio=$request->radio1;
+        $orden->codCliente=Auth::user()->codCliente;
+        $orden->fechaHoraVenta=new DateTime();
+        $orden->codTipo=$request->codTipo;
+
+        $total=0;
+        $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();
+        $carrito=$carritos[0];
+        $detalles=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
+        foreach ($detalles as $itemdetalle) {
+            $total+=$itemdetalle->producto->precioActual*$itemdetalle->cantidad;
+        }
+
+        $orden->total=$total;
+        $orden->totalIGV=(float)$total*1.18;
+        $orden->save();
+
+        foreach ($detalles as $itemdetalle) {
+            $detalle=new Detalle_Orden();
+            $detalle->codProducto=$itemdetalle->codProducto;
+            $detalle->codOrden=$orden->codOrden;
+            $detalle->precio=$itemdetalle->producto->precioActual;
+            $detalle->cantidad=$itemdetalle->cantidad;
+            $detalle->save();
+            $itemdetalle->delete();
+        }
 
 
+        return redirect('/carrito');
+    }
 
 
 }

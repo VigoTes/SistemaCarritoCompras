@@ -23,7 +23,7 @@
                 Dribbble: https://dribbble.com/mycnlz
                 Pinterest: https://pinterest.com/mycnlz/
 -->
-<form method="POST" action="{{route('user.logearse')}}">
+<form method="POST" action="{{route('user.logearse')}}" onsubmit="return validar()">
 
     @csrf
 
@@ -52,7 +52,9 @@
                     @endif
                     
                     <p class='field'>
-                        
+
+                      {{-- PARA QUE EN EL CONTROLLER SEPA SI VIENE DEL LOGIN O DEL --}}
+                      <input type='hidden' id='tipoLogin' name='tipoLogin' title='email' value="1" />
 
                         <label for='user'>E-MAIL</label>
 
@@ -69,11 +71,18 @@
                     <input type='submit' id='do_login' value='Ingresar' title='Get Started' />
                 </div>
             </div>
-            <a href="{{route('user.verRegistrar')}}" class="b-cta" style="font-size: 15pt; text-align:center">
+            {{--                                1 porque viene del login --}}
+            <a href="{{route('indexGeneral')}}" class="b-cta" style="font-size: 15pt; text-align:center; margin-right:10px;" >
+
+              Entrar Libre
+            </a>
+            
+            <a href="{{route('user.verRegistrar','1')}}" class="b-cta" style="font-size: 15pt; text-align:center">
 
                 Crear Cuenta
             </a>
-
+           
+            
         </div>
 
 
@@ -519,6 +528,29 @@ Credits
 <script>
 
     
+
+        
+    function validar(){
+      msj='';
+
+      email=$("#email").val(); 
+      if(email=='')
+        msj='Debe ingresar el E-Mail';
+
+      contraseña=$("#password").val(); 
+    
+      if(contraseña=='')
+        msj='Debe ingresar la contraseña.';
+
+
+      if(msj!=''){
+        alert(msj);
+        return false;
+      }
+
+      
+      return true;
+    }
 
 
 

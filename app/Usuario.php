@@ -23,7 +23,7 @@ class Usuario extends Model
         if($codUsuario=='')
             return 'No logeado';
             
-        error_log('ESTO ES PARA MUESTRA  AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ' .$codUsuario);
+ 
         $usuario = Usuario::findOrFail($codUsuario);
         return $usuario->email;
         
@@ -35,6 +35,8 @@ class Usuario extends Model
         $cliente = Cliente::findOrFail($usuario->codCliente);
         return $cliente;
     }
-    
+    public function cliente(){
+        return $this->hasOne('App\Cliente','codCliente','codCliente');
+    }
 
 }

@@ -64,7 +64,9 @@ class Domicilio extends Model
 
     }
 
-
+    public function distrito(){
+        return $this->hasOne('App\Distrito','codDistrito','codDistrito');
+    }
 
 
 }

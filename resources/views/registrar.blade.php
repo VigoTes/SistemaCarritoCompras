@@ -92,8 +92,9 @@
                       <span id='valida' class='i i-close'></span>
                     </p>   
                       
+                    {{-- HIDDEN PARA ALMACENAR EL TIPO REG, POR DEFECTO ES 1 (LOGIN) Y 2(DEL PAGO) --}}
+                    <input type="hidden" id="tipoReg" name="tipoReg" value="{{$tipoReg}}">
                     
-
                     <input type='submit' id='do_login' value='Registrarme' title='Get Started' />
                     
                 </div>

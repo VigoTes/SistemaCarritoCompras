@@ -51,5 +51,9 @@ class Cliente extends Model
 
     }
 
+    public function domicilio(){
+        return $this->hasMany('App\Domicilio','codCliente','codCliente');
+    }
+
 
 }

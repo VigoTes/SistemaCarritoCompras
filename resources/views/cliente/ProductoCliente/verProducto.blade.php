@@ -34,7 +34,7 @@
 
             <div class="row mt-2">
               <div class="col-md-2">
-                <input type="number" class="form-control" id="cantidad">
+                <input type="number" class="form-control" id="cantidad" value="1">
               </div>
               <!--
               <a href="" class="btn btn-primary btn-lg btn-flat">

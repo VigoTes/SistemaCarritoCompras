@@ -14,4 +14,8 @@ class Distrito extends Model
     protected $fillable = [
         'nombre', 'codProvincia'
     ];
+
+    public function provincia(){
+        return $this->hasOne('App\Provincia','codProvincia','codProvincia');
+    }
 }

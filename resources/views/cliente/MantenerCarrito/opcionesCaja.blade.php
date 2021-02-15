@@ -3,71 +3,87 @@
 @section('content')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript"> 
-    $(document).ready(function(){
-        $('#codSubCategoria').change(function(){
-            mostrar();
+
+
+
+<div class="well"><H3 style="text-align: center;">CONFIRMAR LA ENTRADA</H3></div>
+<div class="form-group row">
+    <p class="col-sm-6" style="margin-left:350px;">
+        Seleccione uno de las opciones.
+    </p>
+</div>
+
+<div class="form-group" style="margin-left:350px;">
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="radio1" id="val1" value="1" checked="">
+      <label class="">Ya estoy registrado</label>
+    </div>
+    <p>Si usted se ha registrado antes, ingrese su email y su contraseña para confirmar la entrada.</p>
+
+    <form method="POST" action="{{route('user.logearse')}}" id="frmRegistrado" name="frmRegistrado">
+        @csrf
+        {{-- PARA SABER EN EL CONTROLLER DE DONDE VIENE (si de aqui o del login principal)  --}}
+        <input type="hidden" name="tipoLogin" id="tipoLogin" value="2">
+
+        <div class="form-group row" style="margin-left:100px;">
+            <label class="col-sm-1 col-form-label">Email:</label>
+            <div class="col-sm-4" style="margin-left:40px;">
+                <input type="text" class="form-control" id="email" name="email" placeholder="Email..." >
+            </div>
+        </div>
+        <div class="form-group row" style="margin-left:100px;">
+            <label class="col-sm-1 col-form-label">Contraseña:</label>
+            <div class="col-sm-4" style="margin-left:40px;">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Contraseña..." >
+            </div>
+        </div>
+        <input class="btn btn-primary" type='submit' id='do_login' value='Ingresar' title='Get Started' />
+        
+        
+    </form>
+
+    <br>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="radio1" id="val2" value="2">
+      <label class="">Soy un nuevo usuario</label>
+    </div>
+    <p>Si usted no se ha registrado antes, pulse aqui</p>
+    {{--                                2 porque viene del pagar --}}
+    <a href="{{route('user.verRegistrar','2')}}" class="btn btn-primary">Registrarme</a>
+
+</div>
+
+<script>
+$(document).ready(function(){
+        $("#val1").click(function () {
+            espacio = '';
+                espacio += '<div class="form-group row" style="margin-left:100px;" id="espacio1">';
+                    espacio += '<label class="col-sm-1 col-form-label">Email:</label>';
+                    espacio += '<div class="col-sm-4" style="margin-left:15px;">';
+                        espacio += '<input type="text" class="form-control" id="email" name="email" placeholder="Email..." >';
+                    espacio += '</div>';
+                espacio += '</div>';
+                espacio += '<div class="form-group row" style="margin-left:100px;" id="espacio2">';
+                    espacio += '<label class="col-sm-1 col-form-label">Contraseña:</label>';
+                    espacio += '<div class="col-sm-4" style="margin-left:15px;">';
+                        espacio += '<input type="text" class="form-control" id="contraseña" name="contraseña" placeholder="Contraseña..." >';
+                    espacio += '</div>';
+                espacio += '</div>';
+            $('#frmRegistrado').html(espacio);
         });
-        $('#codMarca').change(function(){
-            mostrar();
+        $("#val2").click(function () {
+            $('#frmRegistrado').html('');
         });
-    });
 
-    function mostrar(){
-        var codigo=$('#codSubCategoria').val();
-        var codigo2=$('#codMarca').val();
-        var codigo3=$('#codCategoria').val();
-            //alert(codigo);
-            
-            //if(codigo!=0){
-                //alert(codigo);
-                $.ajax({
-                    url: '/listarProductosSubCategoria/' + codigo + '*' + codigo2 + '*' + codigo3,
-                    type: 'post',
-                    data: {
-                        codigo     : codigo,
-                        _token	 	: "{{ csrf_token() }}"
-                    },
-                    dataType: 'JSON',
-                    success: function(respuesta) {
-
-                        var tableValor ='';
-
-                                    for(var i in respuesta.productos){
-                                        tableValor += '<div class="col-lg-2 col-7" style="background: rgb(255, 255, 255);">';
-                                            tableValor += '<img src="../img/1.jpg" style="width: 100%; height: auto;">';
-                                            tableValor += '<div class="container">';
-                                                tableValor += '<a href="/verProducto/'+respuesta.productos[i].codProducto+'"><span>'+respuesta.productos[i].nombre+'</span></a>';
-                                                tableValor += '<p style="font-weight: bold; color: #FF0000">S/. '+respuesta.productos[i].precioActual+'</p>';
-                                            tableValor += '</div>';
-                                        tableValor += '</div>';
-                                    }
-
-                        $('#productos').html(tableValor);
-
-                    }
-                });
-            //}else{
-            //            $('#productos').html('');
-
-            //}
-    }
+		$("#boton").click(function () { 
+			valor=$('input:radio[name=radio1]:checked').val();
+            if(valor==1){
+                document.frmRegistrado.submit();
+            }else{
+                window.location.href='/registrar';
+            }
+		});
+});
 </script>
-<div class="well"><H3 style="text-align: center;">NUEVA EMPRESA</H3></div>
-
-<div class="form-group row">
-    <label class="col-sm-1 col-form-label" style="margin-left:350px;">Nombre:</label>
-    <div class="col-sm-4">
-        <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre..." >
-    </div>
-</div>
-
-<div class="form-group row">
-    <label class="col-sm-1 col-form-label" style="margin-left:350px;">RUC:</label>
-    <div class="col-sm-4">
-        <input type="number" class="form-control" id="RUC" name="RUC" placeholder="RUC...">
-    </div>
-</div>
-
 
 @endsection

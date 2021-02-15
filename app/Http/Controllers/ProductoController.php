@@ -222,7 +222,7 @@ class ProductoController extends Controller
 
 
                 
-                if($token!=''){ //Si el token existe, es porque este usuario ya creó un carrito
+                if($token>0){ //Si el token existe, es porque este usuario ya creó un carrito
                     $ListacarritoNON=CarritoAnon::where('codCarrito','=', $token)->get();
                     $carritoNON = $ListacarritoNON[0]; //obtenemos el carrito ya creado
                     $token = session('token'); //obtenemos el token  ya creado
@@ -239,12 +239,27 @@ class ProductoController extends Controller
                     session(['token' => $token]); //GUARDAMOS ESE TOKEN EN LA SESION DEL USUARIO CONECTADO para que luego lo pueda obtener  
                 }
                 
-                //Creamos un nuevo detalle y lo añadimos al carrrito
-                $detalle=new Detalle_CarritoAnon();
-                $detalle->codProducto=$producto->codProducto;
-                $detalle->cantidad=$arr[1];
-                $detalle->codCarrito=$token;
-                $detalle->save();
+                $temp=0;
+                $verificacionDetalles=Detalle_CarritoAnon::where('codCarrito','=',$token)->get();
+                foreach ($verificacionDetalles as $itemdetalle) {
+                    if($itemdetalle->codProducto==$producto->codProducto) {$temp=$itemdetalle->codDetCarrito;}
+                }
+          
+                if($temp!=0){
+                
+                    $detalle=Detalle_CarritoAnon::find($temp);
+                    $detalle->cantidad+=$arr[1];
+                    $detalle->save();
+                }
+                else{
+                    //Creamos un nuevo detalle y lo añadimos al carrrito
+                    $detalle=new Detalle_CarritoAnon();
+                    $detalle->codProducto=$producto->codProducto;
+                    $detalle->cantidad=$arr[1];
+                    $detalle->codCarrito=$token;
+                    $detalle->save();
+                }
+                
             }
             else{           // CARRITO CON CLIENTE LOGEADO 
 
@@ -264,12 +279,32 @@ class ProductoController extends Controller
                     $carrito=$carritos[0];
                 }
 
+                $temp=0;
+                $verificacionDetalles=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
+                foreach ($verificacionDetalles as $itemdetalle) {
+                    if($itemdetalle->codProducto==$producto->codProducto) {$temp=$itemdetalle->codDetCarrito;}
+                }
+                error_log('AGREGARCARRITO--------
+                    
+                ------------ TEMP:'.$temp.' 
+                
+                
+                ');
+                if($temp!=0){
+                    $detalle=Detalle_Carrito::find($temp);
+                    $detalle->cantidad+=$arr[1];
+                    $detalle->save();
+                }
+                else{
+                    //Creamos un nuevo detalle y lo añadimos al carrrito
+                    $detalle=new Detalle_Carrito();
+                    $detalle->codProducto=$producto->codProducto;
+                    $detalle->cantidad=$arr[1];
+                    $detalle->codCarrito=$carrito->codCarrito;
+                    $detalle->save();
+                }
 
-                $detalle=new Detalle_Carrito();
-                $detalle->codProducto=$producto->codProducto;
-                $detalle->cantidad=$arr[1];
-                $detalle->codCarrito=$carrito->codCarrito;
-                $detalle->save();
+                
             }
 
             return redirect()->route('producto.ver',$producto->codProducto);

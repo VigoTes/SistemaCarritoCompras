@@ -17,7 +17,7 @@ Route::post('/ingresar', 'UserController@logearse')->name('user.logearse');  //e
 
 Route::get('/login', 'UserController@verLogin')->name('user.verLogin'); //para desplegar la vista del Login
 Route::get('/cerrarSesion','UserController@cerrarSesion')->name('user.cerrarSesion');
-Route::get('/registrar','UserController@verRegistrar')->name('user.verRegistrar');/******************************** */
+Route::get('/registrar/{tipoReg}','UserController@verRegistrar')->name('user.verRegistrar');/******************************** */
 
 Route::post('/registrar', 'UserController@store')->name('user.store');  //esta es para cuando le damos al boton Ingresar
 
@@ -88,6 +88,15 @@ Route::get('/agregarProductoCarrito/{id}','ProductoController@agregarCarrito');
 
 Route::get('/carrito','CarritoController@mostrarCarrito')->name('carrito.mostrar');
 Route::get('/cambiarCantidadProducto/{id}','CarritoController@cambiarCantidad');
+
+/*DE CARRITO A PAGO */
+Route::get('/verificarLogin', 'UserController@verificarLogin');
+Route::get('/menuOpcionesCaja','CarritoController@menuOpcionesCaja');
+Route::get('/mostrarReporte','CarritoController@mostrarReporte');
+Route::post('/registrarCompra','CarritoController@registrarCompra');
+
+
+
 
 
 //                                     idProd   

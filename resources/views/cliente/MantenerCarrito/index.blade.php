@@ -92,7 +92,7 @@
     <div class="col-md-12 text-center">  
         <div  id="guardar">
             <div class="form-group">
-                <a href="" class="btn btn-primary" id="btnRegistrar" data-loading-text="<i class='fa a-spinner fa-spin'></i> Registrando">
+                <a href="#" class="btn btn-primary" id="btnRegistrar" data-loading-text="<i class='fa a-spinner fa-spin'></i> Registrando">
                     <i class='fas fa-save'></i> CAJA</a>    
         
                 <a href="" class='btn btn-danger'><i class='fas fa-ban'></i> CARRO VACIO</a>              
@@ -103,6 +103,29 @@
 
 
 <script>
+$(document).ready(function(){
+		$("#btnRegistrar").click(function () {
+            estaLogueado=0;
+            $.get('/verificarLogin', function(data){
+                estaLogueado=data;
+                if(estaLogueado==1){
+                    window.location.href='/mostrarReporte';
+                }else{
+                    window.location.href='/menuOpcionesCaja';
+                }
+            });
+            //alert(estaLogueado);
+            //window.location.href='/mostrarReporte';
+            /*
+            if(estaLogueado==1){
+                window.location.href='/mostrarReporte';
+            }else{
+                window.location.href='/menuOpcionesCaja';
+            }
+            */
+		});
+});
+
     function cambioCantidad(codigo){
         importeAnterior=$('#importe'+codigo).val();
         precioVenta=$('#pventa'+codigo).val();

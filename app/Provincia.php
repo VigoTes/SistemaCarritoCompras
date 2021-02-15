@@ -14,4 +14,8 @@ class Provincia extends Model
     protected $fillable = [
         'nombres', 'codRegion'
     ];
+
+    public function region(){
+        return $this->hasOne('App\Region','codRegion','codRegion');
+    }
 }

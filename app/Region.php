@@ -14,4 +14,8 @@ class Region extends Model
     protected $fillable = [
         'nombre', 'codPais'
     ];
+
+    public function pais(){
+        return $this->hasOne('App\Pais','codPais','codPais');
+    }
 }
