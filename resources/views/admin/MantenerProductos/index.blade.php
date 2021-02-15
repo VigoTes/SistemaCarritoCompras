@@ -21,8 +21,26 @@
         <a href="{{route('producto.create')}}" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
         
         <nav style="float:right" >
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Buscar por descripcion" aria-label="Search" name="buscarpor" id="buscarpor" value="{{$buscarpor}}">
+            <form class="form-inline my-2 my-lg-0" action = "{{route('producto.index')}}">
+                
+                <label for="categoria">Categoria:</label>
+                <div style="width: 20px;">
+                    
+                </div>
+                <select class="form-control" name="categoria" id="categoria">
+                    <option value="0" selected>Todos</option>  
+                    @foreach($listaCategorias as $itemCategoria)
+                        <option value="{{$itemCategoria->codCategoria}}">
+                            {{$itemCategoria->nombre}}
+                        </option>  
+                    @endforeach
+
+                </select>
+                <div style="width: 50px;">
+                    
+                </div>
+
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscar por nombre" aria-label="Search" name="buscarpor" id="buscarpor" value="{{$buscarpor}}">
                 <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
             </form>
         </nav>
@@ -113,7 +131,7 @@
           @endforeach
       </tbody>
   </table>
-{{--   {{$productos->links()}} --}}
+  {{$productos->links()}}
 
 
 

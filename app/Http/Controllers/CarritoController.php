@@ -14,6 +14,7 @@ use App\Cliente;
 use App\Detalle_Orden;
 use App\Metodo_Pago;
 use App\Orden;
+use App\Producto;
 use App\Tipo_CDP;
 
 class CarritoController extends Controller
@@ -46,8 +47,7 @@ class CarritoController extends Controller
     }
 
 
-    public function mostrarCarrito()
-    {
+    public function mostrarCarrito(){
         date_default_timezone_set('America/Lima');
         if(is_null(Auth::user())){ //CARRITO ANON 
             //$ip=$_SERVER['REMOTE_ADDR'];
@@ -145,13 +145,11 @@ class CarritoController extends Controller
 
 
    
-    public function menuOpcionesCaja()
-    {
+    public function menuOpcionesCaja(){
         return view('cliente.MantenerCarrito.opcionesCaja');
     }
 
-    public function mostrarReporte()
-    {
+    public function mostrarReporte(){
         $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();
         $carrito=$carritos[0];
         $detalles=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
@@ -192,11 +190,20 @@ class CarritoController extends Controller
             $detalle->precio=$itemdetalle->producto->precioActual;
             $detalle->cantidad=$itemdetalle->cantidad;
             $detalle->save();
+
+            //actualizar stock
+            $productoTemp=Producto::find($itemdetalle->codProducto);
+            $productoTemp->stock-=$itemdetalle->cantidad;
+            $productoTemp->save();
+
             $itemdetalle->delete();
         }
 
+        //obtenemos la orden redien creada
+        $codOrdenCreada= (Orden::latest('codOrden')->first())->codOrden;
+			
 
-        return redirect('/carrito');
+        return redirect()->route('orden.listar',$orden->codCliente)->with('datos','Orden N°'.$codOrdenCreada.' Registrada!');
     }
 
 

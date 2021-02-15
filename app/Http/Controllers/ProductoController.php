@@ -24,13 +24,32 @@ class ProductoController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    const PAGINATION='20';
+    const PAGINATION='10';
     public function index(Request $request)
     {
-        $buscarpor = $request->buscarPor;
-        $productos = Producto::where('estado','=','1') ->orderBy('codProducto','ASC')->get();
+        if($request->categoria=='')
+            $request->categoria='0';
+
+        $buscarpor = $request->buscarpor;
+        if($request->categoria == '0'){ //todos
+            $productos = Producto::where('PRODUCTO.estado','=','1')
+            ->where('PRODUCTO.nombre','like','%'.$buscarpor.'%')
+            ->orderBy('codProducto','ASC');
         
-        return view('admin.MantenerProductos.index',compact('productos','buscarpor'));
+        }else{ //escogio solo una categoria
+            $productos = Producto::where('PRODUCTO.estado','=','1')
+            ->join('SUBCATEGORIA','SUBCATEGORIA.codSubCategoria','=','PRODUCTO.codSubCategoria')
+            ->where('PRODUCTO.nombre','like','%'.$buscarpor.'%')
+            ->where('SUBCATEGORIA.codCategoria','=',$request->categoria)
+            ->orderBy('codProducto','ASC');
+
+        }
+
+        $productos=$productos ->paginate($this::PAGINATION);
+
+        $listaCategorias = Categoria::where('estado','=','1')->get();
+
+        return view('admin.MantenerProductos.index',compact('productos','buscarpor','listaCategorias'));
     }
 
     /**
@@ -53,8 +72,7 @@ class ProductoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
-    {
+    public function store(Request $request){
 
         //Falta validar
 
@@ -71,7 +89,7 @@ class ProductoController extends Controller
         $prod->contadorVentas = '0';
 
         $prod->save();
-
+        
         //para el registro de imagenes xd
         $prod->nombreImagen='imagen'.$prod->codProducto.'.jpg';
         //$file = $request->file('imagen')->storeAs('imagenes',$prod->nombreImagen);
@@ -131,8 +149,7 @@ class ProductoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, $id){
         
         $prod = Producto::findOrFail($id);
         

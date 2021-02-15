@@ -2,48 +2,35 @@
 
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+
+/* RUTAS PARA INGRESO Y REGISTRO DE USUARIO Y CLIENTE */
 
 Route::post('/ingresar', 'UserController@logearse')->name('user.logearse');  //esta es para cuando le damos al boton Ingresar
-
 Route::get('/login', 'UserController@verLogin')->name('user.verLogin'); //para desplegar la vista del Login
 Route::get('/cerrarSesion','UserController@cerrarSesion')->name('user.cerrarSesion');
-Route::get('/registrar/{tipoReg}','UserController@verRegistrar')->name('user.verRegistrar');/******************************** */
-
+Route::get('/registrar/{tipoReg}','UserController@verRegistrar')->name('user.verRegistrar');
 Route::post('/registrar', 'UserController@store')->name('user.store');  //esta es para cuando le damos al boton Ingresar
 
+//DESPLIEGUE DE LA PAGINA PRINCIPAL
+Route::get('/', function () {return view('index');}  )->name('indexGeneral');
 
 
-/* Route::get('/login', function () {
-    return redirect()->route('user.verLogin');
-}); */
-
-
-Route::get('/', function () {
-    return view('index');
-})->name('indexGeneral');
-
-/*-----------------RUTAS  MANTENEDORES ----------------------*/
+/*-----------------RUTAS  MANTENEDORES CON RESOURCE ----------------------*/
 Route::resource('categoria', 'CategoriaController');
 Route::resource('marca', 'MarcaController');
 Route::resource('producto', 'ProductoController');
 Route::resource('cliente', 'ClienteController');
 Route::resource('domicilio', 'DomicilioController');
+Route::resource('subcategoria', 'SubCategoriaController');
 
 
-// RUTAS SERVICIOS para obtener listas de paises, regiones, distritos
+// RUTAS SERVICIOS para obtener listas
 Route::get('/mapa/getRegiones/{idPais}','DomicilioController@getRegiones')->name('domicilio.getRegiones');
 Route::get('/mapa/getProvincias/{idRegion}','DomicilioController@getProvincias')->name('domicilio.getProvincias');
 Route::get('/mapa/getDistritos/{idProvincia}','DomicilioController@getDistritos')->name('domicilio.getDistritos');
+Route::get('/categoria/listarSubs/{id}','CategoriaController@listarSubCategorias');
+Route::get('/menuCategorias','CategoriaController@menuCategorias');//lista de categorias
+
 
 //                          idCliente
 Route::post('/domicilio/guardar/{id}','DomicilioController@guardar')->name('domicilio.guardar');
@@ -51,34 +38,23 @@ Route::post('/domicilio/guardar/{id}','DomicilioController@guardar')->name('domi
 //                              idDomici
 Route::put('/domicilio/actualizar/{id}','DomicilioController@actualizar')->name('domicilio.actualizar');
 Route::get('/domicilio/eliminar/{id}','DomicilioController@eliminar')->name('domicilio.eliminar');
-
-
 Route::get('/domicilio/crear/{id}','DomicilioController@crear')->name('domicilio.crear');
-
 Route::get('/cliente/{id}/domicilios','DomicilioController@listarDomicilios')->name('domicilio.listar');
 
 
-Route::get('/categoria/listarSubs/{id}','CategoriaController@listarSubCategorias');
 
 /* ------------------------ RUTAS ELIMINACION PARA MSJ CONFIRMACION AJAX ------------------------ */
 
 Route::get('/categoria/eliminarCategoria/{id}','CategoriaController@eliminarCategoria')->name('categoria.eliminarCategoria');
-
 Route::get('/subcategoria/eliminarSubCategoria/{id}','SubCategoriaController@eliminarSubcategoria')->name('subcategoria.eliminar');
 Route::get('/marca/eliminarMarca/{id}','MarcaController@eliminarMarca')->name('marca.eliminarMarca');
-
 Route::get('/producto/eliminarProducto/{id}','ProductoController@destroy')->name('producto.eliminarProducto');
 
 
-Route::get('cancelar', function () {
-    return redirect()->route('categoria.index')->with('datos','Accion Cancelada...!');
-})->name('cancelar');
 
-Route::resource('subcategoria', 'SubCategoriaController');
 
 
 /**MOSTRAR CATEGORIAS PARA LOS CLIENTES */
-Route::get('/menuCategorias','CategoriaController@menuCategorias');
 
 Route::get('/categoriaCliente/{id}','CategoriaController@mostrarCategorias');
 Route::post('/listarProductosSubCategoria/{id}','ProductoController@listarProductosSubCategoria');
@@ -86,6 +62,8 @@ Route::post('/listarProductosSubCategoria/{id}','ProductoController@listarProduc
 Route::get('/verProducto/{id}','ProductoController@mostrarProducto')->name('producto.ver');
 Route::get('/agregarProductoCarrito/{id}','ProductoController@agregarCarrito');
 
+//                                     idProd   
+Route::get('/carrito/eliminarProducto/{id}','CarritoController@eliminarProducto')->name('carrito.eliminarProducto');
 Route::get('/carrito','CarritoController@mostrarCarrito')->name('carrito.mostrar');
 Route::get('/cambiarCantidadProducto/{id}','CarritoController@cambiarCantidad');
 
@@ -94,7 +72,7 @@ Route::get('/verificarLogin', 'UserController@verificarLogin');
 Route::get('/verificarStock/{id}', 'ProductoController@verificarStock');
 Route::get('/menuOpcionesCaja','CarritoController@menuOpcionesCaja');
 Route::get('/mostrarReporte','CarritoController@mostrarReporte');
-Route::post('/registrarCompra','CarritoController@registrarCompra');
+Route::post('/registrarCompra','CarritoController@registrarCompra')->name('carrito.registrarCompra');
 
 
 
@@ -102,16 +80,3 @@ Route::get('/ordenes/{id}','OrdenController@listar')->name('orden.listar');
 Route::get('/ordenes/detalles/{id}','OrdenController@verDetalles')->name('orden.verDetalles');
 
 
-//                                     idProd   
-Route::get('/carrito/eliminarProducto/{id}','CarritoController@eliminarProducto')->name('carrito.eliminarProducto');
-
-
-/*
-Route::get('/categoria', function () {
-    return view('Categorias.index');
-});
-*/
-
-
-
-//Route::get('/listarProductos','ProductoController@listarProductos');

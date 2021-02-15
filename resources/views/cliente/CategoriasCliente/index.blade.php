@@ -35,7 +35,7 @@
 
                                     for(var i in respuesta.productos){
                                         tableValor += '<div class="col-lg-2 col-7" style="background: rgb(255, 255, 255);">';
-                                            tableValor += '<img src="../img/1.jpg" style="width: 100%; height: auto;">';
+                                            tableValor += '<img src="../imagenes/'+respuesta.productos[i].nombreImagen+'" style="width: 100%; height: auto;">';
                                             tableValor += '<div class="container">';
                                                 tableValor += '<a href="/verProducto/'+respuesta.productos[i].codProducto+'"><span>'+respuesta.productos[i].nombre+'</span></a>';
                                                 tableValor += '<p style="font-weight: bold; color: #FF0000">S/. '+respuesta.productos[i].precioActual+'</p>';
@@ -80,6 +80,7 @@
                 </div>
             </div>
         </section>
+        
         <section class="col-lg-9">
             <div class="card">
                 <div class="card-body">

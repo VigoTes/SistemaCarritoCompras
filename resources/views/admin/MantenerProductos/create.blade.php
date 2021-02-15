@@ -15,12 +15,26 @@
           </span>
         @enderror
       </div>
+
+
+
       <div class="form-group row">
         <label class="col-sm-1 col-form-label">Foto:</label>
-                <div class="col-sm-4">
-                    <input type="file" class="form-control" name="imagen" id="imagen" accept=".jpg">
+                <div class="col-sm-9">
+                  {{--   <input type="file" class="btn btn-primary" name="imagen" id="imagen" accept=".jpg"> --}}
+                   
+                      <input type="file" class="input" name="imagen" id="imagen" accept=".jpg" style="visibility: hidden">
+                      <label class="label" for="imagen">
+                        <div id="divFile">
+                          Escoger archivo 
+                        </div>
+                        <i class="fas fa-upload"></i> 
+                      </label>
+                      
                 </div>
       </div>
+
+
       <div class="form-group">
         <label for="nombre">Descripcion</label>
         <textarea id="descripcion" name="descripcion" class="form-control" aria-label="With textarea" style="resize:none; height:100px;"></textarea>
@@ -92,7 +106,55 @@
   
 </div>
 
+
+<style>
+
+    input[type=”file”]#imagen {
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      overflow: hidden;
+      position: absolute;
+      z-index: -1;
+      visibility: hidden;
+    }
+
+    label[for="imagen"] {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background-color: #106BA0;
+      display: inline-block;
+      transition: all .5s;
+      cursor: pointer;
+      padding: 15px 40px !important;
+      text-transform: uppercase;
+      width: fit-content;
+      text-align: center;
+    }
+
+
+
+</style>
+
+
+{{-- PARA EL FILE BONITO --}}
+<script type="application/javascript">
+      jQuery('input[type=file]').change(function(){
+        var filename = jQuery(this).val().split('\\').pop();
+        var idname = jQuery(this).attr('id');
+        console.log(jQuery(this));
+        console.log(filename);
+        console.log(idname);
+        jQuery('span.'+idname).next().find('span').html(filename);
+        document.getElementById("divFile").innerHTML= filename;
+      });
+</script>
+
 <script>
+
+
+
     $(document).ready(function(){
             $('#ComboBoxCategoria').change(function(){
 

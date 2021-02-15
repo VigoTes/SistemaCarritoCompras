@@ -51,7 +51,7 @@
         menuCategoria += '</a>';
       menuCategoria += '</li>';
     }
-    $('#menuCategorias').html(menuCategoria);
+    $('#menuCategorias').append(menuCategoria);
 
   });
 </script>
@@ -78,8 +78,8 @@
         @if(  Auth::id() =='' )
         {{-- <label for=""> No logeado </label> --}}
         <a href="{{route('user.verLogin')}}" class="btn btn-warning btn-sm"> 
-          <i class="fas fa-sign-in-alt"></i>
-          Logearse
+          <i class="far fa-user fa-x2">
+          Iniciar Sesión
          </a>
         @else
           <label for=""> {{ App\Usuario::getEmailPorCodUsuario(Auth::id())  }} </label>
@@ -89,7 +89,7 @@
       
       
 
-        <i class="far fa-user fa-2x">
+        
           
         </i>
      </div>
@@ -150,14 +150,14 @@
               </p>
             </a> 
             <ul class="nav nav-treeview" id="menuCategorias">
-              <!--
-                  <li class="nav-item">
-                    <a href="/categoriaCliente" class="nav-link">
+           
+                 {{--  <li class="nav-item">
+                    <a href="/categoriaCliente/0" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>Categoria 1</p>
+                      <p>Todas</p>
                     </a>
-                  </li>
-                -->
+                  </li> --}}
+      
             </ul>
           </li>
 

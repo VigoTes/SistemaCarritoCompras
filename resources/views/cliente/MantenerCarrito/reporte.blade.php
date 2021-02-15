@@ -4,6 +4,12 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script src="/adminlte/plugins/jquery/jquery.min.js"></script>
 
+<script>
+    let productos= [];
+    let cantidades= [];
+    let nuevaLongitud=[];
+</script>
+
 <div class="container">
     <h1 class="text-center">REVISION FINAL DE LA ORDEN</h1>        
 
@@ -29,6 +35,10 @@
                         <?php $total=0.0 ?>
                         @foreach($detalles as $itemdetalle)
                             <tr>
+                                <script> 
+                                    nuevaLongitud = productos.push('<?php echo $itemdetalle->codProducto?>'); 
+                                    nuevaLongitud = cantidades.push('<?php echo $itemdetalle->cantidad?>');
+                                </script>
                                 <?php $importe=(float)$itemdetalle->producto->precioActual*(float)$itemdetalle->cantidad; $total+=$importe  ?>
                                 <td style="text-align:center;">
                                     <a href="#" class="btn btn-danger btn-sm btn-icon icon-left" title="Eliminar registro" 
@@ -59,7 +69,7 @@
 
                                 </td>
                                 <td>{{$itemdetalle->producto->nombre}}</td>
-                                <td style="text-align:right;"><input type="number" name="cantidad[]" id="cantidad{{$itemdetalle->codDetCarrito}}" min="1" onchange="cambioCantidad({{$itemdetalle->codDetCarrito}})"  value="{{$itemdetalle->cantidad}}" style="width:80px; text-align:right;"></td>
+                                <td style="text-align:right;"><input type="number" name="cantidad[]" id="cantidad{{$itemdetalle->codDetCarrito}}" min="1" onchange="cambioCantidad({{$itemdetalle->codDetCarrito}},{{$itemdetalle->codProducto}})"  value="{{$itemdetalle->cantidad}}" style="width:80px; text-align:right;"></td>
                                 <td style="text-align:right;"><input type="number" name="pventa[]" id="pventa{{$itemdetalle->codDetCarrito}}" value="{{$itemdetalle->producto->precioActual}}" style="width:80px; text-align:right;" readonly></td>
                                 <td style="text-align:right;">S/ <input type="number" name="importe[]" id="importe{{$itemdetalle->codDetCarrito}}" value="{{$importe}}" style="width:80px; text-align:right;" readonly></td>
                             </tr>
@@ -83,7 +93,7 @@
     <hr>
     <h1 class="text-center">REVISION DE CARGA A LA CUENTA Y ENTREGA</h1>
     <p >Revise que su informacion sea correcta</p>
-    <form method="POST" action="/registrarCompra" id="frmRegistrado" name="frmRegistrado">
+    <form method="POST" action="{{route('carrito.registrarCompra')}}" onsubmit="return validarCampos()" id="frmRegistrado" name="frmRegistrado">
         @csrf
         <div class="container">
             <div style="margin-left:100px;">
@@ -139,15 +149,72 @@
     <br>
 
 <script>
+    cont=0;
     $(document).ready(function(){
-		$("#boton").click(function () { 
-			codDomicilio=$('input:radio[name=radio1]:checked').val();
+		$("#boton").click(function () {
+            //cont=0;
+            //alert('GAAAAAAAAAAA');
+            i =0;
+            productos.forEach(function(codProducto, index) {
+                //alert(val+'...'+cantidades[index]);
+                //sppWizard.init(optionsAssistant);
+                cont=0;
+                $.get('/verificarStock/'+codProducto, function(data){
+                    cantidadProducto=data;
+                    if(cantidadProducto<cantidades[index]){
+                        alert('stock insuficiente para producto (Nrº: '+index+')');
+                        cont+=1;
+                    }else{
+                        //alert('stock suficiente para producto (cod: '+codProducto+')');
+                        
+                    }
+
+                    
+                    i = index;
+                    console.log('prod lengt'+productos.length + '   i='+i)
+                    //ultima ejecucion
+                    if(i == productos.length-1){
+                        
+                        //alert('ya acabo');
+                        if(cont==0){
+                            $("#frmRegistrado").submit();
+                        }
+
+                    }
+
+                });
+                
+            });
+            
+           
+
+			//codDomicilio=$('input:radio[name=radio1]:checked').val();
             //alert('ahora va a cambiar');
-            $("#frmRegistrado").submit();
+            //$("#frmRegistrado").submit();
 		});
     });
 
-    function cambioCantidad(codigo){
+    function verificar(){
+        alert('ASSASASASA');
+        
+        productos.forEach(function(codProducto, index) {
+                //alert(val+'...'+cantidades[index]);
+                $.get('/verificarStock/'+codProducto, function(data){
+                    cantidadProducto=data;
+                    if(cantidadProducto<cantidades[index]){
+                        alert('stock insuficiente para producto (cod: '+codProducto+')');
+                        
+                    }else{
+                        alert('stock suficiente para producto (cod: '+codProducto+')');
+                        cont+=1;
+                    }
+                    
+                });
+                
+            });
+    }
+
+    function cambioCantidad(codigo, codigoProducto){
         importeAnterior=$('#importe'+codigo).val();
         precioVenta=$('#pventa'+codigo).val();
         cantidadActual=$('#cantidad'+codigo).val();
@@ -158,6 +225,13 @@
         codCarrito=$('#codCarrito').val();
         //cambiamos la cantidad en bd
         $.get('/cambiarCantidadProducto/'+2+'*'+codCarrito+'*'+codigo+'*'+cantidadActual, function(data){});
+
+        //cambiar valor en la verificacion
+        productos.forEach(function(val, index) {
+            if(val==codigoProducto){
+                cantidades[index]=cantidadActual;
+            }
+        });
         
         importeActual=cantidadActual*precioVenta;
 
@@ -166,6 +240,45 @@
 
         $('#importe'+codigo).val(importeActual);
         $('#total').val(totalActual);
+    }
+
+
+    function validarCampos(){
+        msj='';
+        codCDP = $('#codTipo').val();
+        if(codCDP=='0'){
+            msj = 'Ingrese un tipo de comprobante de pago.';
+
+        }
+
+
+        codMetodo = $('#codMetodo').val();
+        if(codMetodo=='0'){
+            msj = 'Ingrese un metodo de pago.';
+            
+        }
+        
+        
+        tarjeta = $('#tarjeta').val();
+        if(tarjeta==''){
+            msj = 'Ingrese una tarjeta de credito.';
+            
+        }
+
+        
+        tr = document.querySelector('input[name="radio1"]:checked')
+        if(tr==null)
+            msj='Seleccione un domicilio.';
+
+
+        if(msj!='')
+            {
+                alert(msj);
+                return false;
+
+            }
+        return true;
+
     }
 </script>
 

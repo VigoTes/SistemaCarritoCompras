@@ -158,23 +158,33 @@ class CategoriaController extends Controller
 
     public function mostrarCategorias($id)
     {
-        $categoria=Categoria::findOrFail($id);
-        $subcategorias=$categoria->subcategoria;
 
-        $temp=array();//convertir la variable $temp a tipo array para meterlo a la consulta 'not in'
-        foreach($subcategorias as $a){
-            $temp[]=$a->codSubCategoria;
+        if($id!='0')
+        {
+            $categoria=Categoria::findOrFail($id);
+            $subcategorias=$categoria->subcategoria;
+
+            $temp=array();//convertir la variable $temp a tipo array para meterlo a la consulta 'not in'
+            foreach($subcategorias as $a){
+                $temp[]=$a->codSubCategoria;
+            }
+
+            $marcas=DB::TABLE('PRODUCTO')
+            ->JOIN('MARCA', 'MARCA.codMarca', '=', 'PRODUCTO.codMarca')
+            ->SELECT('MARCA.codMarca as codMarca', 'MARCA.nombre as nombre')
+            ->where('MARCA.estado','!=',0)->groupBy('MARCA.codMarca', 'MARCA.nombre')->orderBy('MARCA.codMarca')->get();
+
+            $productos=Producto::whereIn('codSubCategoria',$temp)->where('estado','=',1)->get();
+
+            return view('cliente.CategoriasCliente.index',compact('categoria','subcategorias','marcas','productos'));
+        }else{ //si quiere todas
+            
+            
+            return view('cliente.CategoriasCliente.index',compact('categoria','subcategorias','marcas','productos'));
         }
-
-        $marcas=DB::TABLE('PRODUCTO')
-        ->JOIN('MARCA', 'MARCA.codMarca', '=', 'PRODUCTO.codMarca')
-        ->SELECT('MARCA.codMarca as codMarca', 'MARCA.nombre as nombre')
-        ->where('MARCA.estado','!=',0)->groupBy('MARCA.codMarca', 'MARCA.nombre')->orderBy('MARCA.codMarca')->get();
-
-        $productos=Producto::whereIn('codSubCategoria',$temp)->where('estado','=',1)->get();
-
-        return view('cliente.CategoriasCliente.index',compact('categoria','subcategorias','marcas','productos'));
-    }
+    
+    
+        }
 
     
 }
