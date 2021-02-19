@@ -22,11 +22,7 @@
     @csrf
    {{--  {{$tipo}} --}}
 
-   @if( session('token')!='' )
-   <label for="">Token: {{session('token')}}</label>
-{{--    <label for="">Vector: {{session('carritoSesion')}}</label>
-    --}}
-   @endif
+   
 
 
     <div class="col-md-12 pt-3">  
@@ -181,7 +177,7 @@ $(document).ready(function(){
             //VERIFICAMOS EL STOCK PRIMERO
             if(cantidadProducto < cantidadMarcada){
                 alert('Stock insuficiente, solo se dispone de '+cantidadProducto+' unidades');
-                $('#cantidad'+codDetalleCarrito).val(cantidadMarcada-1);
+                $('#cantidad'+codDetalleCarrito).val(cantidadProducto);
 
             }else{   
                 //cambiamos la cantidad en bd

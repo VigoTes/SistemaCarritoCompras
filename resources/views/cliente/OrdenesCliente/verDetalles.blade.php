@@ -15,17 +15,32 @@
     }
 </script>
 
+<style>
+    .col{
+        /* background-color: orange; */
+        margin-top: 20px;
+        
+    }
+    .colLabel{
+        width: 10%;
+        /* background-color: aqua; */
+        margin-top: 23px;    
+        text-align: left;
+        margin-left: 10px;
+    }
+    
+    .colLabel2{
+        width: 20%;
+        /* background-color: #3c8dbc; */
+        margin-top: 20px;
+        text-align: left;
+    }
+    
+</style>
 
     <div style="margin-bottom:25px;">
         <h3>Detalles de la orden</h3>
-        {{-- <a href="" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
-         --}}
-        {{-- <nav style="float:right" >
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Buscar por descripcion" aria-label="Search" name="buscarpor" id="buscarpor" value="{{$buscarpor}}">
-                <button class="btn btn-success my-2 my-sm-0" type="submit">Buscar</button>
-            </form>
-        </nav> --}}
+    
         
         @if(session('datos'))<!-- cuando se registra algo-->
             <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
@@ -36,7 +51,79 @@
             </div>    
         @endif
     </div>
-  
+
+    <div class="container" style="margin-bottom: 30px;">      
+        <div class="row">
+            <div  class="colLabel">
+                <label for="fecha">Nombre:</label>
+            </div>
+            <div class="col">                  
+                <div class="input-group date form_date " style="" >
+                    <input type="text"  class="form-control" name="nombre" id="nombre" readonly
+                        value="{{App\Cliente::getClienteLogeado()->nombres.' '.App\Cliente::getClienteLogeado()->apellidos}}" >     
+                </div>
+            </div>
+
+            <div class="colLabel"> 
+                <label for="">Dirección</label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" value="{{ $domicilioDestino->getDireccionCompleta() }}" readonly>
+            </div>
+           
+            <div class="w-100"></div> {{-- SALTO LINEA****************************************** --}}
+            
+            <div  class="colLabel">
+                <label for="fecha">Pais</label>
+            </div>
+            <div class="col">                  
+                <input type="text" class="form-control" value=" {{ $domicilioDestino->getPais()->nombre }}" readonly>
+            </div>
+
+            <div class="colLabel"> 
+                <label for="">Region</label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" value="{{ $domicilioDestino->getRegion()->nombre }}" readonly>
+            </div>    
+            <div class="colLabel"> 
+                <label for="">Distrito</label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" value="{{ $domicilioDestino->getDistrito()->nombre }}" readonly>
+            </div>    
+            <div class="colLabel"> 
+                <label for="">Provincia</label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" value="{{ $domicilioDestino->getProvincia()->nombre }}" readonly>
+            </div>    
+            <div class="w-100"></div> {{-- SALTO LINEA****************************************** --}}
+            <div class="col"> 
+                <label for="">Fecha y hora de Compra</label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" value="{{ $orden->fechaHoraVenta }}" readonly>
+            </div>       
+            <div class="col"> 
+                <label for="">Estado de la orden:</label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" value="{{ $orden->getNombreEstado() }}" readonly>
+            </div>       
+            
+        </div>        
+           
+    </div>   
+
+
+
   <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
@@ -45,10 +132,8 @@
             <th scope="col"  style="text-align: center">Cantidad</th>
             <th scope="col">Precio</th>
             <th scope="col">SubTotal</th>
-            
-       
-            
         </tr>
+
       </thead>
       <tbody>
           <?php $i=1; ?>
@@ -80,6 +165,21 @@
     <div class="col-md-2">
         <input type="text" class="form-control text-right" name="total" id="total" readonly="readonly" value="S/. {{number_format($orden->total,2) }}">                              
     </div>   
+    <div class="col">
+
+    </div>
+
+    <div style=" margin-top:20px;">
+        <a href="{{route('orden.CDP',$orden->codOrden)}}" class="btn btn-info" target="_blank"> 
+            Descargar comprobante de pago <i class="fas fa-file-download"> </i>
+        </a> 
+
+    </div>
+
+    <div class="col">
+
+    </div>
+
 </div>
 
 <div class="col-md-12 text-center">  

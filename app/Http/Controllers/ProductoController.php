@@ -15,7 +15,7 @@ use DateTime;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\DB;
 class ProductoController extends Controller
 {
     /**
@@ -251,7 +251,7 @@ class ProductoController extends Controller
     }
 
     /* AGREGA UN PRODUCTO AL CARRITO  */
-    public function agregarCarrito($cadena){ 
+    public function agregarProducto($cadena){ 
 
         try {
             
@@ -382,4 +382,35 @@ class ProductoController extends Controller
         $producto=Producto::findOrFail($id);
         return $producto->stock;
     }
+
+
+    function indexListarTop () {
+        //$productos=Producto::all()->orderBy('contadorVentas')->paginate(5);
+        $productos=DB::TABLE('PRODUCTO')->where('estado','=',1)->orderBy('contadorVentas')->paginate(6);
+        return view('index',compact('productos'));
+    }
+
+    function indexFiltro (Request $request) {
+        //$productos=Producto::all()->orderBy('contadorVentas')->paginate(5);
+        $filtro = strtolower($request->filtro);
+    
+        $productosQuery = DB::select(            
+            '
+            SELECT * from public."PRODUCTO" where lower("nombre") like \'%'.$filtro.'%\' and "estado"=1'
+
+        );
+        //tenemos los datos pero no como modelos
+
+        /* los pasamos a modelos */
+        $productos=[];
+        for ($i=0; $i < count($productosQuery); $i++) { 
+            $item = Producto::findOrFail($productosQuery[$i]->codProducto);
+            array_push( $productos,$item);
+        }
+
+        
+        return view('index',compact('productos'));
+    }
+
+
 }

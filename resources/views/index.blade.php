@@ -12,9 +12,10 @@
     
     <div class="row">
       @foreach($productos as $itemproducto)
-      
+        
       <div class="col-lg-2 col-7" style="background: rgb(255, 255, 255);">
         <!-- small box -->
+        <a href="{{route('producto.ver',$itemproducto->codProducto)}}">
           <div style="width: 100%; height: 270px;">
             <img src="../imagenes/{{$itemproducto->nombreImagen}}" style="width: 100%; height: auto;">
           </div>
@@ -22,6 +23,7 @@
             <span>{{$itemproducto->nombre}}</span>
             <p style="font-weight: bold; color: #FF0000">S/. {{$itemproducto->precioActual}}</p>
           </div>
+        </a>
       </div>
 
       @endforeach

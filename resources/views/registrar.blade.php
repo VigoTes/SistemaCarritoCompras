@@ -108,7 +108,7 @@
         </div>
 
 
-
+{}
 
         <div class='box-info'>
                             <p><button onclick="closeLoginInfo();" class='b b-info i i-left' title='Back to Sign In'></button><h3>Need Help?</h3>

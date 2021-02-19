@@ -21,13 +21,16 @@ class OrdenController extends Controller
         return view('cliente.OrdenesCliente.index',compact('listaOrdenes'));
     }
 
+
+    
     //despliega la vista con los detalels de una orden
     public function verDetalles($idOrden){
         
         $orden = Orden::findOrFail($idOrden);
+        $domicilioDestino = Domicilio::findOrFail($orden->codDomicilio);
         $listaDetalles = Detalle_Orden::where('codOrden','=',$idOrden)->get();;
         
-        return view('cliente.OrdenesCliente.verDetalles',compact('listaDetalles','orden'));
+        return view('cliente.OrdenesCliente.verDetalles',compact('listaDetalles','orden','domicilioDestino'));
 
     }
 

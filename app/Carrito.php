@@ -17,6 +17,9 @@ class Carrito extends Model
     ];
 
     
+    
+
+
     //se ejecuta cuando estaba agregando items a mi carrito de manera anonima, y le doy a pagar y me logeo.
     //lo que hace es sumar los detalles de mi carrito anon a mi carrito logeado normal 
     public static function sumarCarritoAnonAlCarritoLogin($email){

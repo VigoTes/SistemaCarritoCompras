@@ -45,7 +45,7 @@
     var menuCategoria='';
     for(var i in categorias){
       menuCategoria += '<li class="nav-item">';
-        menuCategoria += '<a href="/categoriaCliente/'+categorias[i].codCategoria+'" class="nav-link">';
+        menuCategoria += '<a href="/cliente/categoria/'+categorias[i].codCategoria+'" class="nav-link">';
           menuCategoria += '<i class="far fa-circle nav-icon"></i>';
           menuCategoria += '<p>'+categorias[i].nombre+'</p>';
         menuCategoria += '</a>';
@@ -65,20 +65,97 @@
     <ul class="navbar-nav">
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        
       </li>
       
       
     </ul>
+    <!-- SEARCH FORM  PARA BUSCAR PRODUCTOS -->
+    <form class="form-inline ml-3" action="{{route('indexFiltro')}}" onsubmit="">
+      <div class="input-group input-group-sm">
+        <input class="form-control form-control-navbar" name="filtro" id="filtro" type="search" placeholder="Buscar por nombre" aria-label="Search">
+        <div class="input-group-append">
+          <button class="btn btn-navbar" type="submit">
+            <i class="fas fa-search"></i>
+          </button>
+        </div>
+      </div>
+    </form>
     
+    
+    <div style="float: left; color:rgb(255, 248, 248)">
+      @if( session('token')!='' )
+        <label for="">Token: {{session('token')}}</label>
+      @endif
+
+    </div> 
+    
+    
+    
+    
+    
+    
+    
+    
+    
+  
+
+
+
 
     <!-- SEARCH FORM -->
     <ul class="navbar-nav ml-auto">
-      <!-- Messages Dropdown Menu -->
+      <!-- Messages Dropdown Menu --> {{-- VER CARRITO RAPIDAMENTE --}}
+      
+      
+      <li class="nav-item dropdown">
+        <a class="nav-link" data-toggle="dropdown" href="#">
+          <i class="fas fa-shopping-cart"></i>
+          <span class="badge badge-danger navbar-badge">
+            {{App\Usuario::getNroDetallesCarrito()}}
+          </span>
+        </a>
+        <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+          
+          
+          @foreach(App\Usuario::getdetallesCarrito() as $detalleCarrito)
+          <div class="dropdown-divider"></div>
+          <a href="{{route('producto.ver',$detalleCarrito->codProducto)}}" class="dropdown-item">
+            <!-- Message Start -->
+            <div class="media">
+              <img src="../../imagenes/{{$detalleCarrito->getProducto()->nombreImagen}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <div class="media-body">
+                <h3 class="dropdown-item-title">
+                  {{$detalleCarrito->getProducto()->getNombreSubCategoria()}}
+                  <span class="float-right text-sm text-warning">{{-- <i class="fas fa-star"></i> --}}</span>
+                </h3>
+                <p class="text-sm">{{$detalleCarrito->getNombreProducto()}}</p>
+                <p class="text-sm text-muted">
+                
+                   S/. {{$detalleCarrito->cantidad*$detalleCarrito->getProducto()->precioActual}}
+                </p>
+              </div>
+            </div>
+
+
+            <a href="{{route('carrito.mostrar')}}" class="dropdown-item dropdown-footer">Ver mi Carrito</a>
+            <!-- Message End -->
+          </a>
+
+          @endforeach
+          
+        
+        </div>
+
+
+      </li>  
+      {{-- finnnnnnnnnnnnnnnnnn  --}}
+
      <div>
         @if(  Auth::id() =='' )
         {{-- <label for=""> No logeado </label> --}}
         <a href="{{route('user.verLogin')}}" class="btn btn-warning btn-sm"> 
-          <i class="far fa-user fa-x2">
+          <i class="far fa-user fa-x2"></i>
           Iniciar Sesión
          </a>
         @else
@@ -88,12 +165,8 @@
             <i class="fas fa-user-cog"></i>
            </a>
         @endif  
-      
-      
 
         
-          
-        </i>
      </div>
         
         
@@ -135,8 +208,6 @@
         </div>
       </div>
 
-  
-      <!-- /.sidebar-menu -->
 
       {{-- SIDE BAR MIO --}}
       <!-- Sidebar Menu -->
@@ -147,19 +218,14 @@
             <a href="" class="nav-link">
               <i class="fas fa-list-alt"></i>
               <p>
-                CATEGORIAS (clientes)
+                Categorías
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a> 
             <ul class="nav nav-treeview" id="menuCategorias">
            
-                 {{--  <li class="nav-item">
-                    <a href="/categoriaCliente/0" class="nav-link">
-                      <i class="far fa-circle nav-icon"></i>
-                      <p>Todas</p>
-                    </a>
-                  </li> --}}
-      
+              {{-- aqui va el contenido que se agrega mediante JS DE LAS CATEGORIAS --}}
+   
             </ul>
           </li>
 
@@ -167,11 +233,11 @@
             <a href="/carrito" class="nav-link">
               <i class="fas fa-users"></i>
               <p>
-                CARRITO
+                Carrito
               </p>
             </a>
           </li>
-          @if(  Auth::id()!='' )
+        @if(  Auth::id()!='' ){{-- SI ESTÁ LOGEADO --}}
           <li class="nav-item">
             <a href="{{route('domicilio.listar', (App\Usuario::getClientePorCodUsuario(Auth::id()) )->codCliente  )}}" class="nav-link">
               <i class="fas fa-users"></i>
@@ -196,8 +262,8 @@
               </p>
             </a>
           </li>
-          @endif
-
+        @endif
+        @if(Auth::id()=='1')
           <li class="nav-item">
               <a href="" class="nav-link">
                 <i class="fas fa-list-alt"></i>
@@ -234,8 +300,6 @@
                       </a>
                     </li>
                       
-                    
-
               </ul>
           </li>
           <li class="nav-item">
@@ -274,6 +338,8 @@
 
             </ul>
           </li>
+        @endif
+
 
           <li class="nav-item">
             <a href="{{route('user.cerrarSesion')}}" class="nav-link">

@@ -20,7 +20,7 @@
     </div>
     <p>Si usted se ha registrado antes, ingrese su email y su contraseña para confirmar la entrada.</p>
 
-    <form method="POST" action="{{route('user.logearse')}}" id="frmRegistrado" name="frmRegistrado">
+    <form method="POST" action="{{route('user.logearse')}}" id="frmRegistrado" name="frmRegistrado"  onsubmit="return validar()">
         @csrf
         {{-- PARA SABER EN EL CONTROLLER DE DONDE VIENE (si de aqui o del login principal)  --}}
         <input type="hidden" name="tipoLogin" id="tipoLogin" value="2">
@@ -85,5 +85,22 @@ $(document).ready(function(){
 		});
 });
 </script>
+
+<script type="text/javascript"> 
+          
+    function validar() {
+      if (document.getElementById("email").value == ""){
+          alert("Ingrese email de la categoria");
+      }
+      else if (document.getElementById("password").value == ""){
+          alert("Ingrese password de la categoria");
+      }
+      else{
+          return true; // enviamos el formulario	
+      }
+      return false;
+    }
+    
+  </script>
 
 @endsection

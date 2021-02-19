@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Cliente;
-
+use Illuminate\Support\Facades\Auth;
 class Usuario extends Model
 {
 
@@ -17,6 +17,33 @@ class Usuario extends Model
     protected $fillable = [
         'codCliente', 'email','password','fechaActualizacion','isAdmin'
     ];
+
+
+    /* FUNCIONES PARA VER EL CARRITO DESDE EL PLANTILLA  */
+
+    //Retorna los detallesCarrito del carrito que tengo, sea usuario anonimo o logeado
+    public static function getdetallesCarrito(){ 
+        if(is_null(Auth::user())){ //CARRITO ANON 
+            //Recuperamos el token guardado anteriormente
+            $token = session('token');
+            $detallesCarrito=Detalle_CarritoAnon::where('codCarrito','=',$token)->get();
+        }
+        else{           // CARRITO CON CLIENTE LOGEADO 
+            $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get(); //vemos si tiene un carrito
+            if(count($carritos) > 0 ){
+                $carrito = $carritos[0];
+                $detallesCarrito=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
+            }else
+                $detallesCarrito=[];   
+        }
+        return $detallesCarrito;
+
+    } 
+
+    public static function getNroDetallesCarrito(){
+        return count(Usuario::getdetallesCarrito());
+
+    }
 
 
     public static function getEmailPorCodUsuario($codUsuario){

@@ -35,7 +35,7 @@
 
                                     for(var i in respuesta.productos){
                                         tableValor += '<div class="col-lg-2 col-7" style="background: rgb(255, 255, 255);">';
-                                            tableValor += '<img src="../imagenes/'+respuesta.productos[i].nombreImagen+'" style="width: 100%; height: auto;">';
+                                            tableValor += '<img src="../../imagenes/'+respuesta.productos[i].nombreImagen+'" style="width: 100%; height: auto;">';
                                             tableValor += '<div class="container">';
                                                 tableValor += '<a href="/verProducto/'+respuesta.productos[i].codProducto+'"><span>'+respuesta.productos[i].nombre+'</span></a>';
                                                 tableValor += '<p style="font-weight: bold; color: #FF0000">S/. '+respuesta.productos[i].precioActual+'</p>';
@@ -88,7 +88,7 @@
                         @foreach($productos as $itemproducto)
                         <div class="col-lg-2 col-7" style="background: rgb(255, 255, 255);">
                             <a href="{{route('producto.ver',$itemproducto->codProducto)}}">
-                                <img src="../imagenes/{{$itemproducto->nombreImagen}}" style="width: 100%; height: auto;">
+                                <img src="../../imagenes/{{$itemproducto->nombreImagen}}" style="width: 100%; height: auto;">
                                 <div class="container">
                                     
                                         <span>{{$itemproducto->nombre}}</span>

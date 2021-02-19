@@ -18,4 +18,19 @@ class Detalle_Carrito extends Model
     public function producto(){
         return $this->hasOne('App\Producto','codProducto','codProducto');
     }
+
+
+    public function getNombreProducto(){
+        $prod = Producto::findOrFail($this->codProducto);
+        return $prod->nombre;
+    }
+
+    public function getProducto(){
+        $prod = Producto::findOrFail($this->codProducto);
+        return $prod;
+    }
+
+    
+
+
 }

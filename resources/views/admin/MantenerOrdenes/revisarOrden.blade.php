@@ -42,16 +42,19 @@
 
 
 
-    <h3>Detalles de la orden</h3>
-    <br>
-    @if(session('datos'))<!-- cuando se registra algo-->
+    <div style="margin-bottom:25px;">
+        <h3>Detalles de la orden</h3>
+
+        
+        @if(session('datos'))<!-- cuando se registra algo-->
             <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
                 {{session('datos')}}
                 <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
             </div>    
-    @endif
+        @endif
+    </div>
 
     <div class="container" style="margin-bottom: 30px;">      
                 <div class="row">

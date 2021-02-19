@@ -40,15 +40,14 @@
   <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
-            <th scope="col">Codigo</th>
+            <th scope="col">Código</th>
             <th scope="col">Fecha</th>
             <th scope="col">Resumen</th>
             <th scope="col">Domicilio</th>
             <th scope="col">Total</th>
             <th scope="col">Cbte</th>
             <th scope="col">Estado</th>
-            
-            <th scope="col">Ver Detalles</th>
+            <th scope="col">Revisar</th>
             
         </tr>
       </thead>
@@ -72,11 +71,11 @@
                 
                 </td>
                 
-                <td style="text-align: center; background-color:rgb(85, 38, 38)">
+                <td style="text-align: center;">
                     <a href="{{route('orden.verDetalles',$itemOrden->codOrden)}}" class="btn btn-warning btn-sm"> 
                     <i class="fas fa-eye"></i> 
                     </a> 
-                    <a href="{{route('orden.CDP',$itemOrden->codOrden)}}" class="btn btn-info btn-sm"> 
+                    <a href="{{route('orden.CDP',$itemOrden->codOrden)}}" class="btn btn-info btn-sm" target="_blank"> 
                         <i class="fas fa-file-download"></i>
                     </a> 
                 

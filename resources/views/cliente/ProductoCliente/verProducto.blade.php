@@ -23,9 +23,13 @@
           <div class="col-12 col-sm-6">
             <h3 class="d-inline-block d-sm-none">{{$producto->nombre}}</h3>
             <div class="col-12">
+              {{-- 8000/clientejasdjj/ --}}
+              {{-- 8000/cliente/categoria --}}
+              {{-- LO QUE TENGO /cliente/imagenes/imagen19 --}}
+              {{--              /imagenes/imagen19 --}}
+              
+              <img src="/imagenes/{{$producto->nombreImagen}}" class="product-image" alt="Product Image">
 
-              <img src="../imagenes/{{$producto->nombreImagen}}" class="product-image" alt="Product Image">
-            
             </div>
             <!--
             <div class="col-12 product-image-thumbs">

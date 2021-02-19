@@ -15,12 +15,12 @@ Route::get('/cliente/editar/{id}', 'UserController@verEditar')->name('user.verEd
 Route::post('/editar', 'UserController@update')->name('user.update');  //esta es para cuando le damos al boton Ingresar
 
 //DESPLIEGUE DE LA PAGINA PRINCIPAL
-Route::get('/', function () {
-    //$productos=Producto::all()->orderBy('contadorVentas')->paginate(5);
-    $productos=DB::TABLE('PRODUCTO')->where('estado','=',1)->orderBy('contadorVentas')->paginate(6);
-    return view('index',compact('productos'));
-}  )->name('indexGeneral');
+Route::get('/', 'ProductoController@indexListarTop'  )->name('indexGeneral');
+Route::get('/filtro', 'ProductoController@indexFiltro'  )->name('indexFiltro');
 
+Route::get('/marsky',function(){
+    return view('signin');
+});
 
 /*-----------------RUTAS  MANTENEDORES CON RESOURCE ----------------------*/
 Route::resource('categoria', 'CategoriaController');
@@ -63,11 +63,11 @@ Route::get('/producto/eliminarProducto/{id}','ProductoController@destroy')->name
 
 /**MOSTRAR CATEGORIAS PARA LOS CLIENTES */
 
-Route::get('/categoriaCliente/{id}','CategoriaController@mostrarCategorias');
+Route::get('/cliente/categoria/{id}','CategoriaController@mostrarCategorias');
 Route::post('/listarProductosSubCategoria/{id}','ProductoController@listarProductosSubCategoria');
 
-Route::get('/verProducto/{id}','ProductoController@mostrarProducto')->name('producto.ver');
-Route::get('/agregarProductoCarrito/{id}','ProductoController@agregarCarrito');
+Route::get('/cliente/verProducto/{id}','ProductoController@mostrarProducto')->name('producto.ver');
+Route::get('/agregarProductoCarrito/{id}','ProductoController@agregarProducto');
 
 //                                     idProd   
 Route::get('/carrito/eliminarProducto/{id}','CarritoController@eliminarProducto')->name('carrito.eliminarProducto');

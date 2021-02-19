@@ -4,7 +4,7 @@
 <div class="container">
 
   <h1>Editar Domicilio</h1>
-  <form method="POST" action="{{route('domicilio.actualizar',$domicilio->codDomicilio) }} ">
+  <form method="POST" action="{{route('domicilio.actualizar',$domicilio->codDomicilio) }} " onsubmit="return validar()">
       @method('put')
       @csrf
       
@@ -171,6 +171,63 @@
             
             
         });
+    
+    function validar(){
+      
+      //TEXT INPUTS
+      nombre = $('#nombre').val();  
+      direccion = $('#direccion').val();  
+      codigoPostal = $('#codigoPostal').val();  
+      fax = $('#fax').val();  
+      telefono = $('#telefonoFijo').val();  
+      
+      //SELECT INPUTS
+      pais = $('#Pais').val();  
+      region = $('#Region').val();  
+      provincia = $('#Provincia').val();  
+      distrito = $('#Distrito').val();  
+
+      msj = '';
+      
+      if(nombre=='')
+        msj = 'Por favor ingrese el nombre de su domicilio.';
+    
+      if(direccion=='')
+        msj = 'Por favor ingrese su direccion ';
+    
+      if(codigoPostal=='')
+        msj = 'Por favor ingrese el codigo Postal ';
+    
+      if(fax=='')
+        msj = 'Por favor ingrese el fax ';
+    
+      if(telefono=='')
+          msj = 'Por favor ingrese el Número de  telefono';
+      
+   
+        
+      if(distrito=='0')
+        msj='Debes seleccionar un distrito';
+
+      if(provincia=='0')
+        msj='Debes seleccionar una provincia';
+
+      if(region=='0')
+        msj='Debes seleccionar una región';
+
+      if(pais=='0')
+        msj='Debes seleccionar un país';
+
+
+      if(msj!='')
+      {
+        alert(msj) ;
+        return false;
+
+      }
+        return true;
+
+    }
     
     function limpiarRegiones(){  
       limpiarProvincias();
