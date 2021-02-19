@@ -1,0 +1,32 @@
+.btn-primary,
+.btn-primary:hover,
+.btn-primary:active,
+.btn-primary:visited,
+.btn-primary:focus {
+    background-color: #4343DB;
+    border-color: #4343DB;
+}
+.btn-danger,
+.btn-danger:hover,
+.btn-danger:active,
+.btn-danger:visited,
+.btn-danger:focus {
+    background-color: #231C55;
+    border-color: #231C55;
+}
+.btn-warning,
+.btn-warning:hover,
+.btn-warning:active,
+.btn-warning:visited,
+.btn-warning:focus {
+    background-color: #FFD952;
+    border-color: #FFD952;
+}
+
+[class*=sidebar-dark-]
+{
+	background-color: #231c55;
+}
+[class*=sidebar-dark] .user-panel {
+  border-bottom: 1px solid #1F194D;
+}
