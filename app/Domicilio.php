@@ -50,10 +50,19 @@ class Domicilio extends Model
 
     }
 
+    public function getDistrito(){
+        $distrito = Distrito::findOrFail($this->codDistrito);
+      
+        return $distrito;
+
+    }
+
+    
+
+
     //metodo para setear este domicilio como el principal de este cliente
     public function setPrincipal(){
         $listaDomiciliosDelCliente = Domicilio::where('codCliente','=',$this->codCliente)->get();
-
         //quitamos el esPrincipal de todos los domicilios de ese cliente
         foreach ($listaDomiciliosDelCliente as $itemDom) {
             $itemDom->esPrincipal='0';
@@ -61,7 +70,7 @@ class Domicilio extends Model
         }
 
         $this->esPrincipal='1';
-
+        $this->save();
     }
 
     public function distrito(){

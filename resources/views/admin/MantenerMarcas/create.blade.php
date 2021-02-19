@@ -1,10 +1,26 @@
 @extends('layouts.master')
 
 @section('content')
+
+<script type="text/javascript"> 
+          
+  function validar() {
+    if (document.getElementById("nombre").value == ""){
+        alert("Ingrese nombre de la categoria");
+        $("#nombre").focus();
+    }
+    else{
+        return true; // enviamos el formulario	
+    }
+    return false;
+  }
+  
+</script>
+
 <div class="container">
 
   <h1>CREAR MARCA</h1>
-  <form method="POST" action="{{route('marca.store')}}">
+  <form method="POST" action="{{route('marca.store')}}" onsubmit="return validar()">
       @csrf
       <div class="form-group">
         <label for="nombre">Nombre</label>

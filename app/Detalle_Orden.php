@@ -23,6 +23,11 @@ class Detalle_Orden extends Model
         return $prod->nombre;
     }
 
+    public function producto(){
+        return $this->hasOne('App\Producto','codProducto','codProducto');
+
+    }
+
     
 
 

@@ -84,7 +84,9 @@
         @else
           <label for=""> {{ App\Usuario::getEmailPorCodUsuario(Auth::id())  }} </label>
           {{-- sesion={{session('sesionX')}} --}}
-          
+          <a href="{{route('user.verEditar',Auth::user()->usuario->codCliente.'*2')}}" class="btn btn-warning btn-sm"> 
+            <i class="fas fa-user-cog"></i>
+           </a>
         @endif  
       
       
@@ -109,7 +111,7 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="{{route('indexGeneral')}}" class="brand-link">
       <img src="/adminlte/dist/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">ISO Carrito</span>
@@ -186,6 +188,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{route('user.verEditar',Auth::user()->usuario->codCliente.'*2')}}" class="nav-link">
+              <i class="fas fa-users"></i>
+              <p>
+                Mis Datos
+              </p>
+            </a>
+          </li>
           @endif
 
           <li class="nav-item">
@@ -228,7 +238,14 @@
 
               </ul>
           </li>
-
+          <li class="nav-item">
+            <a href="{{route('orden.listarParaAdmin')}}" class="nav-link">
+              <i class="fas fa-users"></i>
+              <p>
+                Ordenes todas
+              </p>
+            </a>
+          </li>
           <li class="nav-item">
             <a href="" class="nav-link">
               <i class="fas fa-list-alt"></i>

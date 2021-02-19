@@ -16,6 +16,7 @@ use App\Metodo_Pago;
 use App\Orden;
 use App\Producto;
 use App\Tipo_CDP;
+use Illuminate\Support\Facades\DB;
 
 class CarritoController extends Controller
 {
@@ -149,15 +150,20 @@ class CarritoController extends Controller
         return view('cliente.MantenerCarrito.opcionesCaja');
     }
 
-    public function mostrarReporte(){
+    public function mostrarVistaPagar(){
         $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();
         $carrito=$carritos[0];
         $detalles=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
+        if(count($detalles)==0){
+            return redirect()->route('carrito.mostrar')->with('datos','¡No tiene ningun item en su carrito!');
+        }
+
         $tiposCDP=Tipo_CDP::all();
         $metodos=Metodo_Pago::all();
-        return view('cliente.MantenerCarrito.reporte',compact('carrito','detalles','tiposCDP','metodos'));
+        return view('cliente.MantenerCarrito.pagar',compact('carrito','detalles','tiposCDP','metodos'));
     }
 
+    /* PAGA LA ORDEN  */
     public function registrarCompra(Request $request)
     {
         date_default_timezone_set('America/Lima');
@@ -194,6 +200,7 @@ class CarritoController extends Controller
             //actualizar stock
             $productoTemp=Producto::find($itemdetalle->codProducto);
             $productoTemp->stock-=$itemdetalle->cantidad;
+            $productoTemp->contadorVentas+=$itemdetalle->cantidad;
             $productoTemp->save();
 
             $itemdetalle->delete();
@@ -203,8 +210,75 @@ class CarritoController extends Controller
         $codOrdenCreada= (Orden::latest('codOrden')->first())->codOrden;
 			
 
-        return redirect()->route('orden.listar',$orden->codCliente)->with('datos','Orden N°'.$codOrdenCreada.' Registrada!');
+        return redirect()->route('orden.listar',$orden->codCliente)->with('datos','Orden N°'.$codOrdenCreada.' Registrada y pagada!');
     }
+
+    //elimina todos los elementos del carrito . OJO, NO BORRA EL CARRITO EN SÍ 
+    public function limpiar(){
+        try {
+            DB::beginTransaction();
+            //CASO ANONIMO 
+            if(is_null(Auth::user())){ 
+
+                
+                $codCarritoAnon = session('token');
+                if($codCarritoAnon=='-2'){//no tiene un carrito creado, retornamos nomas, no hay nada que hacer
+                    DB::commit();
+                    return redirect()->route('carrito.mostrar')->with('datos','¡Error, No tiene ningún elemento en el carrito!');
+                }
+                
+
+                DB::select('delete from public."DETALLE_CARRITOANON" where "codCarrito" = \''.$codCarritoAnon.'\' ');
+                
+            }else{ //CASO LOGEADO 
+                $cliente = Cliente::getClienteLogeado();
+                $carritos  = Carrito::where('codCliente','=',$cliente->codCliente)->get();   
+                if(count($carritos)==0)
+                { //no hay carrito que borrar, retornamos nomas 
+                    DB::commit();
+                    return redirect()->route('carrito.mostrar')->with('datos','¡Error, No tiene ningún elemento en el carrito!');
+
+
+                }
+                
+                $carrito = $carritos[0];
+               
+                DB::select('delete from public."DETALLE_CARRITO" where "codCarrito" = \''.$carrito->codCarrito.'\'');
+
+            } 
+
+            DB::commit();
+            return redirect()->route('carrito.mostrar')->with('datos','¡Carrito Limpiado exitosamente!');
+
+        } catch (\Throwable $th) {
+            error_log('HA OCURRIDO UN ERRO EN CARRITO CONTROLLER LIMPIAR
+            
+            '.$th.'
+            
+                            
+            ')            ;
+            DB::rollBack();
+
+            return redirect()->route('carrito.mostrar')->with('datos','Ha ocurrido un error inesperado');
+        }
+
+
+
+        
+
+
+
+
+
+
+
+
+    }
+
+
+
+
+
 
 
 }

@@ -87,11 +87,15 @@
                     <div class="row" id="productos">
                         @foreach($productos as $itemproducto)
                         <div class="col-lg-2 col-7" style="background: rgb(255, 255, 255);">
-                            <img src="../imagenes/{{$itemproducto->nombreImagen}}" style="width: 100%; height: auto;">
-                            <div class="container">
-                                <a href="{{route('producto.ver',$itemproducto->codProducto)}}"><span>{{$itemproducto->nombre}}</span></a>
-                                <p style="font-weight: bold; color: #FF0000">S/. {{$itemproducto->precioActual}}</p>
-                            </div>
+                            <a href="{{route('producto.ver',$itemproducto->codProducto)}}">
+                                <img src="../imagenes/{{$itemproducto->nombreImagen}}" style="width: 100%; height: auto;">
+                                <div class="container">
+                                    
+                                        <span>{{$itemproducto->nombre}}</span>
+                                    
+                                    <p style="font-weight: bold; color: #FF0000">S/. {{$itemproducto->precioActual}}</p>
+                                </div>
+                            </a>
                         </div>    
                         @endforeach
                     </div>

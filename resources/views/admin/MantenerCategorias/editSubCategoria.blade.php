@@ -1,6 +1,23 @@
 @extends('layouts.master')
 @section('content')
-    <form method="POST" action="{{route('subcategoria.update',$subCategoria->codSubCategoria)}}">
+
+<script type="text/javascript"> 
+          
+  function validar() {
+    if (document.getElementById("nombre").value == ""){
+        alert("Ingrese nombre de la subcategoria");
+        $("#nombre").focus();
+    }
+    else{
+        return true; // enviamos el formulario	
+    }
+    return false;
+  }
+  
+</script>
+
+
+    <form method="POST" action="{{route('subcategoria.update',$subCategoria->codSubCategoria)}}"    onsubmit="return validar()">
             @method('put')
             @csrf
 

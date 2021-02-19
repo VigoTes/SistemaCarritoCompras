@@ -56,7 +56,7 @@
                 <td>{{$itemCliente->getDireccionCompleta()}}</td>
                 
                 <td>
-                <a href="{{route('cliente.edit',$itemCliente->codCliente)}}" class="btn btn-warning btn-sm"> 
+                <a href="{{route('user.verEditar',$itemCliente->codCliente.'*1')}}" class="btn btn-warning btn-sm"> 
                     <i class="fas fa-edit"></i> 
                 </a>
                 

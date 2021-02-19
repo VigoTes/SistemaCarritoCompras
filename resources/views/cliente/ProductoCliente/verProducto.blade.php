@@ -3,6 +3,18 @@
 @section('content')
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <section class="content">
+  
+  
+  
+  @if(session('datos'))<!-- cuando se registra algo-->
+  <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+      {{session('datos')}}
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+      </button>
+  </div>    
+  @endif
+
 
     <!-- Default box -->
     <div class="card card-solid">
@@ -11,7 +23,9 @@
           <div class="col-12 col-sm-6">
             <h3 class="d-inline-block d-sm-none">{{$producto->nombre}}</h3>
             <div class="col-12">
+
               <img src="../imagenes/{{$producto->nombreImagen}}" class="product-image" alt="Product Image">
+            
             </div>
             <!--
             <div class="col-12 product-image-thumbs">
@@ -60,10 +74,11 @@
                 function(){//se ejecuta cuando damos a aceptar
 
                   $.get('/verificarStock/{{$producto->codProducto}}', function(data){
-                    cantidadProducto=data;
-                    cantidadMarcada=$('#cantidad').val();
-                    if(cantidadProducto<cantidadMarcada){
-                      alert('stock insuficiente');
+                    cantidadProducto=parseInt(data);
+                    cantidadMarcada= parseInt($('#cantidad').val() );
+
+                    if(cantidadProducto < cantidadMarcada){
+                      alert('Stock insuficiente, solo se dispone de '+cantidadProducto+' unidades');
                     }else{
                       window.location.href='/agregarProductoCarrito/'+{{$producto->codProducto}}+'*'+cantidadMarcada;
                     }
@@ -72,7 +87,7 @@
                   //var cantidad=$('#cantidad').val();
                   //window.location.href='/agregarProductoCarrito/'+{{$producto->codProducto}}+'*'+cantidad;
 
-                });"><i class="fas fa-cart-plus fa-lg mr-2"></i>Add to Cart</a>
+                });"><i class="fas fa-cart-plus fa-lg mr-2"></i>Añadir al Carrito</a>
               
             </div>
 

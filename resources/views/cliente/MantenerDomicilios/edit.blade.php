@@ -56,7 +56,6 @@
                 @if($itemRegion->codRegion == $domicilio->getRegion()->codRegion)
                   selected
                 @endif
-
                 >
                   {{$itemRegion->nombre}}
               </option>                                 
@@ -140,7 +139,12 @@
       <div class="input-group mb-3">
         <div class="input-group-prepend">
           <div class="input-group-text">
-            <input type="checkbox" name="CBPrincipal" id="CBPrincipal" aria-label="Checkbox for following text input">
+            <input type="checkbox" 
+              @if($domicilio->esPrincipal)
+                  checked
+              @endif
+              name="CBPrincipal" id="CBPrincipal" 
+              aria-label="Checkbox for following text input">
           </div>
         </div>
         <input type="text" class="form-control" aria-label="Text input with checkbox" value="Este es mi Domicilio Principal"  readonly>

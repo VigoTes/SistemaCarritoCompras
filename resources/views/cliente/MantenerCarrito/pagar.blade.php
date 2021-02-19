@@ -102,14 +102,10 @@
                 <div class="row">
                     @foreach(Auth::user()->usuario->cliente->domicilio as $itemdomicilio)
                     <div class="form-check col-sm-3">
-                        <input class="form-check-input" type="radio" name="radio1" id="val{{$itemdomicilio->codDomicilio}}" value="{{$itemdomicilio->codDomicilio}}">
-                        <label class="form-check-label">
-                            {{$itemdomicilio->direccion}} ({{$itemdomicilio->nroTelefonoFijo}})<br>
-                            {{$itemdomicilio->codigoPostal}} <br>
-                            {{$itemdomicilio->distrito->nombre}} <br>
-                            {{$itemdomicilio->distrito->provincia->nombre}} <br>
-                            {{$itemdomicilio->distrito->provincia->region->nombre}} <br>
-                            {{$itemdomicilio->distrito->provincia->region->pais->nombre}} <br>
+                        <input class="form-check-input" type="radio" name="radio1" 
+                            id="val{{$itemdomicilio->codDomicilio}}" value="{{$itemdomicilio->codDomicilio}}">
+                        <label class="form-check-label" for="val{{$itemdomicilio->codDomicilio}}">
+                            {{$itemdomicilio->getDireccionCompleta()}}
                         </label>
                     </div>
                     @endforeach
@@ -201,7 +197,8 @@
                 //alert(val+'...'+cantidades[index]);
                 $.get('/verificarStock/'+codProducto, function(data){
                     cantidadProducto=data;
-                    if(cantidadProducto<cantidades[index]){
+                    
+                    if( parseInt(cantidadProducto)< parseInt(cantidades[index] )){
                         alert('stock insuficiente para producto (cod: '+codProducto+')');
                         
                     }else{
@@ -218,10 +215,12 @@
         importeAnterior=$('#importe'+codigo).val();
         precioVenta=$('#pventa'+codigo).val();
         cantidadActual=$('#cantidad'+codigo).val();
+
         if(cantidadActual<1){
             cantidadActual=1;
             $('#cantidad'+codigo).val(1);
         }
+
         codCarrito=$('#codCarrito').val();
         //cambiamos la cantidad en bd
         $.get('/cambiarCantidadProducto/'+2+'*'+codCarrito+'*'+codigo+'*'+cantidadActual, function(data){});
@@ -231,7 +230,8 @@
             if(val==codigoProducto){
                 cantidades[index]=cantidadActual;
             }
-        });
+        }
+        );
         
         importeActual=cantidadActual*precioVenta;
 

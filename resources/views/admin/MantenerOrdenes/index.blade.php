@@ -17,7 +17,7 @@
 
 
     <div style="margin-bottom:25px;">
-        <h3>Ordenes</h3>
+        <h3>Ordenes de los clientes</h3>
         {{-- <a href="" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
          --}}
         {{-- <nav style="float:right" >
@@ -37,30 +37,32 @@
         @endif
     </div>
   
-  <table class="table table-striped">
+  <table class="table table-striped" style="font-size: 11pt;">
       <thead class="thead-dark">
         <tr>
-            <th scope="col">Codigo</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Resumen</th>
-            <th scope="col">Domicilio</th>
-            <th scope="col">Total</th>
-            <th scope="col">Cbte</th>
-            <th scope="col">Estado</th>
+            <th  width="3%">Código</th>
+            <th  width="7%">Fecha</th>
+            <th  width="7%">Hora</th>
+            <th width="50%">Resumen</th>
+        
+            <th  width="7%">Total</th>
+         
+            <th width="12%" >Estado</th>
             
-            <th scope="col">Ver Detalles</th>
+            <th width="7%">Revisar</th>
             
         </tr>
       </thead>
       <tbody>
           @foreach($listaOrdenes as $itemOrden)      
               <tr>
-                <td>{{$itemOrden->codOrden}}</td>
+                <td style="text-align: center">{{$itemOrden->codOrden}}</td>
                 <td>{{$itemOrden->getFecha()}}</td>
+                <td>{{$itemOrden->getHora()}}</td>
                 <td>{{$itemOrden->getResumen()}}</td>
-                <td>{{$itemOrden->getDomicilio()->nombre}}</td>
-                <td>S/. {{number_format( $itemOrden->total,2)}}</td>
-                <td>{{$itemOrden->getTipoCDP()}}</td>
+        
+                <td>S/.{{number_format( $itemOrden->total,2)}}</td>
+               
                 <td style="text-align: center;" style="color: ">
                     <input type="text" value="{{$itemOrden->getEstado()}}" class="form-control" readonly 
                     style="background-color: {{$itemOrden->getColorEstado()}};
@@ -72,14 +74,10 @@
                 
                 </td>
                 
-                <td style="text-align: center; background-color:rgb(85, 38, 38)">
-                    <a href="{{route('orden.verDetalles',$itemOrden->codOrden)}}" class="btn btn-warning btn-sm"> 
-                    <i class="fas fa-eye"></i> 
+                <td style="text-align: center">
+                    <a href="{{route('orden.revisarOrden',$itemOrden->codOrden)}}" class="btn btn-warning btn-sm"> 
+                        <i class="fas fa-eye"></i> 
                     </a> 
-                    <a href="{{route('orden.CDP',$itemOrden->codOrden)}}" class="btn btn-info btn-sm"> 
-                        <i class="fas fa-file-download"></i>
-                    </a> 
-                
                 </td>
               </tr>
           @endforeach

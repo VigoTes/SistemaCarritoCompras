@@ -162,7 +162,7 @@ class ProductoController extends Controller
         $prod->descuento = $request->descuento;
         $prod->fechaActualizacion = Carbon::now()->subHours(5);
         $prod->estado = '1';
-        $prod->contadorVentas = '0';
+        //$prod->contadorVentas = '0';
 
 
         if(!is_null($request->imagen)){
@@ -250,6 +250,7 @@ class ProductoController extends Controller
         return view('cliente.ProductoCliente.verProducto',compact('producto'));
     }
 
+    /* AGREGA UN PRODUCTO AL CARRITO  */
     public function agregarCarrito($cadena){ 
 
         try {
@@ -360,9 +361,9 @@ class ProductoController extends Controller
                 
             }
 
-            return redirect()->route('producto.ver',$producto->codProducto);
+            return redirect()->route('producto.ver',$producto->codProducto)->with('datos','¡Producto añadido al carrito!');
             /* return redirect('/verProducto/'.$producto->codProducto); */
-
+            
         } catch (\Throwable $th) {
             error_log('HA OCURRIDO UN ERROR EN PRODUCTO CONTROLLER AGREGAR CARRITO 
             

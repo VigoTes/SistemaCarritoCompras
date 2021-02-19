@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Cliente;
 use Illuminate\Support\Carbon;
 use App\Carrito;
+use Illuminate\Support\Facades\DB;
 class UserController extends Controller
 {
 
@@ -122,7 +123,7 @@ class UserController extends Controller
         return view('registrar',compact('tipoReg'));
     }
 
-
+    
     public function store(Request $request){ //REGISTRAR NUEVO USUARIO Y CLIENTE    
         $tipoReg = $request->tipoReg;
 
@@ -179,6 +180,71 @@ class UserController extends Controller
             $valor=1;
         }
         return $valor;
+    }
+
+    /* DESPLIEGA LA VISTA DE  EDICION DEL USUARIO, ESTA PUEDE SER ACCESADA POR EL ADMIN O POR EL USUARIO
+            OCASION ES 2 SI ES USER
+            OCASION ES 1 ADMIN 
+    */
+    public function verEditar($id){
+        $arr = explode('*', $id);
+        $cliente=Cliente::find($arr[0]);
+        $ocasion=$arr[1];
+        return view('admin.MantenerClientes.edit',compact('cliente','ocasion'));
+    }
+
+    public function update(Request $request){ //EDITAR USUARIO Y CLIENTE    
+        
+       /*  return $request; */
+        try {
+            DB::beginTransaction();
+
+            $cliente=Cliente::findOrFail($request->codCliente);
+            $cliente->nombres=$request->nombres;
+            $cliente->apellidos=$request->apellidos;
+            $cliente->nroTelefonoMovil=$request->telefono;
+            $cliente->save();
+
+
+            $usuario=$cliente->usuario();
+            $usuario->email=$request->email;
+            $usuario->password = Hash::make( $request->contraseña); //
+            $usuario->fechaActualizacion = Carbon::now()->subHours(5);
+            $usuario->save();
+            
+            error_log('AAAAAAAAAAAA
+            x
+            '.$request->contraseña.'
+            x
+
+            '.$usuario.'
+        
+
+            AAAAAAAAAAAA
+            ');
+            
+            DB::commit();
+
+            if($request->ocasion==1){
+                return redirect()->route('cliente.index')->with('datos','¡Se han actualizado tus datos!');  
+            }else{
+                return redirect()->route('user.verEditar',$cliente->codCliente.'*2')->with('datos','¡Se han actualizado tus datos!');   
+            }
+        } catch (\Throwable $th) {
+            error_log('
+                HA OCURRIDO UN ERROR EN USER UPDATE
+            
+
+                '.$th.'
+            
+
+            ');
+            DB::rollBack();
+        
+        }
+        
+
+        
     }
 
 

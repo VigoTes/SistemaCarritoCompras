@@ -55,5 +55,10 @@ class Cliente extends Model
         return $this->hasMany('App\Domicilio','codCliente','codCliente');
     }
 
+    public function usuario(){
+        $usuarios=Usuario::where('codCliente','=',$this->codCliente)->get();
+        return $usuarios[0];
+    }
+
 
 }

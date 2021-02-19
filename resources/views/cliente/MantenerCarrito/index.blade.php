@@ -7,6 +7,17 @@
 <div class="container">
     <h1 class="text-center">CARRITO DE COMPRAS</h1>        
     <div class="alert  hidden" role="alert"></div>
+
+
+    @if(session('datos'))<!-- cuando se registra algo-->
+            <div class="alert alert-warning alert-dismissible fade show mt-3" role="alert">
+                {{session('datos')}}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>    
+    @endif
+
     <form method="POST" action="">
     @csrf
    {{--  {{$tipo}} --}}
@@ -68,7 +79,7 @@
 
                             </td>
                             <td>{{$itemdetalle->producto->nombre}}</td>
-                            <td style="text-align:right;"><input type="number" name="cantidad[]" id="cantidad{{$itemdetalle->codDetCarrito}}" min="1" onchange="cambioCantidad({{$itemdetalle->codDetCarrito}})"  value="{{$itemdetalle->cantidad}}" style="width:80px; text-align:right;"></td>
+                            <td style="text-align:right;"><input type="number" name="cantidad[]" id="cantidad{{$itemdetalle->codDetCarrito}}" min="1" onchange="cambioCantidad({{$itemdetalle->codDetCarrito}},{{$itemdetalle->codProducto}})"  value="{{$itemdetalle->cantidad}}" style="width:80px; text-align:right;"></td>
                             <td style="text-align:right;"><input type="number" name="pventa[]" id="pventa{{$itemdetalle->codDetCarrito}}" value="{{$itemdetalle->producto->precioActual}}" style="width:80px; text-align:right;" readonly></td>
                             <td style="text-align:right;">S/ <input type="number" name="importe[]" id="importe{{$itemdetalle->codDetCarrito}}" value="{{$importe}}" style="width:80px; text-align:right;" readonly></td>
                         </tr>
@@ -92,10 +103,37 @@
     <div class="col-md-12 text-center">  
         <div  id="guardar">
             <div class="form-group">
-                <a href="#" class="btn btn-primary" id="btnRegistrar" data-loading-text="<i class='fa a-spinner fa-spin'></i> Registrando">
-                    <i class='fas fa-save'></i> CAJA</a>    
-        
-                <a href="" class='btn btn-danger'><i class='fas fa-ban'></i> CARRO VACIO</a>              
+                <a href="" class="btn btn-primary" id="btnPagar" data-loading-text="<i class='fa a-spinner fa-spin'></i> Registrando">
+                    <i class='fas fa-save'></i> Pagar</a>    
+                    
+
+                <a href="#" class="btn btn-danger" title="Eliminar registro" 
+                    onclick="swal(
+                                {//sweetalert
+                                    title:'¿Está seguro de limpiar el carrito? Esto eliminará todos los items del carrito.',
+                                    text: '',     //mas texto
+                                    //type: 'warning',  
+                                    type: '',
+                                    showCancelButton: true,//para que se muestre el boton de cancelar
+                                    confirmButtonColor: '#3085d6',
+                                    cancelButtonColor: '#d33',
+                                    confirmButtonText:  'SI',
+                                    cancelButtonText:  'NO',
+                                    closeOnConfirm:     true,//para mostrar el boton de confirmar
+                                    html : true
+                                },
+                                function()
+                                {//se ejecuta cuando damos a aceptar
+                                    window.location.href='{{route('carrito.limpiar')}}';
+                                
+                                }
+                                );">
+                    <i class="entypo-cancel"></i>  
+                    <i class='fas fa-ban'></i>
+                    Limpiar Carrito
+                </a>
+                
+                            
             </div>    
         </div>
     </div>
@@ -104,14 +142,14 @@
 
 <script>
 $(document).ready(function(){
-		$("#btnRegistrar").click(function () {
+		$("#btnPagar").click(function () {
             estaLogueado=0;
             $.get('/verificarLogin', function(data){
                 estaLogueado=data;
                 if(estaLogueado==1){
-                    window.location.href='/mostrarReporte';
+                    window.location.href="{{route('carrito.verPagar')}}";
                 }else{
-                    window.location.href='/menuOpcionesCaja';
+                    window.location.href="{{route('carrito.verOpcionesPagoAnonimo')}}";
                 }
             });
             //alert(estaLogueado);
@@ -126,26 +164,40 @@ $(document).ready(function(){
 		});
 });
 
-    function cambioCantidad(codigo){
-        importeAnterior=$('#importe'+codigo).val();
-        precioVenta=$('#pventa'+codigo).val();
-        cantidadActual=$('#cantidad'+codigo).val();
+    function cambioCantidad(codDetalleCarrito,codProducto){
+        importeAnterior=$('#importe'+codDetalleCarrito).val();
+        precioVenta=$('#pventa'+codDetalleCarrito).val();
+        cantidadActual=$('#cantidad'+codDetalleCarrito).val();
         if(cantidadActual<1){
             cantidadActual=1;
-            $('#cantidad'+codigo).val(1);
+            $('#cantidad'+codDetalleCarrito).val(1);
         }
         tipoCarrito=$('#tipo').val();
         codCarrito=$('#codCarrito').val();
-        //cambiamos la cantidad en bd
-        $.get('/cambiarCantidadProducto/'+tipoCarrito+'*'+codCarrito+'*'+codigo+'*'+cantidadActual, function(data){});
-        
-        importeActual=cantidadActual*precioVenta;
 
-        totalAnterior=$('#total').val();
-        totalActual=totalAnterior-importeAnterior+importeActual; 
+        $.get('/verificarStock/'+codProducto, function(data){
+            cantidadProducto=parseInt(data);
+            cantidadMarcada= parseInt(cantidadActual);
+            //VERIFICAMOS EL STOCK PRIMERO
+            if(cantidadProducto < cantidadMarcada){
+                alert('Stock insuficiente, solo se dispone de '+cantidadProducto+' unidades');
+                $('#cantidad'+codDetalleCarrito).val(cantidadMarcada-1);
 
-        $('#importe'+codigo).val(importeActual);
-        $('#total').val(totalActual);
+            }else{   
+                //cambiamos la cantidad en bd
+                $.get('/cambiarCantidadProducto/'+tipoCarrito+'*'+codCarrito+'*'+codDetalleCarrito+'*'+cantidadActual, function(data){});
+                importeActual=cantidadActual*precioVenta;
+
+                totalAnterior=$('#total').val();
+                totalActual=totalAnterior-importeAnterior+importeActual; 
+
+                $('#importe'+codDetalleCarrito).val(importeActual);
+                $('#total').val(totalActual);
+            }
+
+
+        });
+
     }
 </script>
 

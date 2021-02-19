@@ -12,9 +12,67 @@ class Orden extends Model
 
 
     protected $fillable = [
-        'codMetodo', 'total','codDomicilio','codCliente','codCliente','fechaHoraVenta','codTipo','totalIGV','codEstado'
+        'codMetodo', 'total','codDomicilio','codCliente','codCliente'
+        ,'fechaHoraVenta','codTipo','totalIGV','codEstado','nroCDP'
     ];
 
+
+    public function getNombreEstado(){
+        $estado = Estado_Orden::findOrFail($this->codEstado);
+        return $estado->nombre;
+    }
+
+    
+    public function getNombreEstadoSiguiente(){
+        $estado = Estado_Orden::findOrFail($this->codEstado+1);
+        return $estado->nombre;
+    }
+
+    public function getColorEstado(){
+        $color = '';
+        switch($this->codEstado){
+            case '1': //CREADO
+                $color = 'red';
+                break;
+            case '2': //procesado
+                $color = 'blue';
+                break;
+            case '3': //enviado
+                $color = 'rgb(85, 38, 38)';
+                break;
+            case '4': //entregada
+                $color = '';
+                break;
+            case '5': //cancelada
+                $color = '';
+                break;
+            
+        }
+        return $color;
+    }
+
+    public function getColorLetrasEstado(){
+        $color = '';
+        switch($this->codEstado){
+            case '1': //CREADO
+                $color = 'white';
+                break;
+            case '2': //procesado
+                $color = 'white';
+                break;
+            case '3': //enviado
+                $color = 'white';
+                break;
+            case '4': //entregada
+                $color = 'white';
+                break;
+            case '5': //cancelada
+                $color = 'white';
+                break;
+            
+        }
+        return $color;
+    }
 
     public function getFecha(){
         $fecha = $this->fechaHoraVenta;
@@ -23,8 +81,22 @@ class Orden extends Model
         $fecha = str_replace('-','/',$fecha);
         return $fecha;
     }
+    public function getHora(){
+        $fecha = $this->fechaHoraVenta;
+        $fecha = substr($fecha,10,9);
+        
+        $fecha = str_replace('-','/',$fecha);
+        return $fecha;
 
+    }
 
+    public function getFechaHora(){
+        $fecha = $this->fechaHoraVenta;
+        $fecha = substr($fecha,0,19);
+
+        $fecha = str_replace('-','/',$fecha);
+        return $fecha;
+    }
     public function getResumen(){
         $codOrden = $this->codOrden;
         $listaDetalles = Detalle_Orden::where('codOrden','=',$codOrden)->get();
@@ -55,5 +127,10 @@ class Orden extends Model
         $estado = Estado_Orden::findOrFail($this->codEstado);   
         return $estado->nombre;
 
+    }
+
+    public function cliente(){
+        $cliente=Cliente::find($this->codCliente);
+        return $cliente;
     }
 }

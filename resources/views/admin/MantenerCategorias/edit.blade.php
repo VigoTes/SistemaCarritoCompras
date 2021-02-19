@@ -1,8 +1,23 @@
 @extends('layouts.master')
 @section('content')
 
+<script type="text/javascript"> 
+          
+    function validar() {
+      if (document.getElementById("nombrecategoria").value == ""){
+          alert("Ingrese nombre de la categoria");
+          $("#nombrecategoria").focus();
+      }
+      else{
+          return true; // enviamos el formulario	
+      }
+      return false;
+    }
+    
+  </script>
 
-<form method = "POST" action = "{{route('categoria.update',$categoria->codCategoria)}}"  >
+
+<form method = "POST" action = "{{route('categoria.update',$categoria->codCategoria)}}"   onsubmit="return validar()">
     @method('put')
     @csrf   
 

@@ -1,10 +1,59 @@
 @extends('layouts.master')
 
 @section('content')
+
+<script type="text/javascript"> 
+          
+  function validar() {
+    if (document.getElementById("nombre").value == ""){
+        alert("Ingrese nombre del producto");
+        $("#nombre").focus();
+    }
+    else if(document.getElementById("imagen").value == ""){
+      alert("Ingrese imagen del producto");
+      $("#imagen").focus();
+    }
+    else if(document.getElementById("imagen").value == ""){
+      alert("Ingrese imagen del producto");
+      $("#imagen").focus();
+    }
+    else if(document.getElementById("descripcion").value == ""){
+      alert("Ingrese descripcion del producto");
+      $("#descripcion").focus();
+    }
+    else if(document.getElementById("ComboBoxCategoria").value == "0"){
+      alert("Seleccione categoria del producto");
+    }
+    else if(document.getElementById("ComboBoxSubCategoria").value == "-1"){
+      alert("Seleccione sub categoria del producto");
+    }
+    else if(document.getElementById("ComboBoxMarca").value == "-1"){
+      alert("Seleccione marca del producto");
+    }
+    else if(document.getElementById("stock").value == ""){
+      alert("Ingrese stock del producto");
+      $("#stock").focus();
+    }
+    else if(document.getElementById("precio").value == ""){
+      alert("Ingrese precio del producto");
+      $("#precio").focus();
+    }
+    else if(document.getElementById("descuento").value == ""){
+      alert("Ingrese descuento del producto");
+      $("#descuento").focus();
+    }
+    else{
+        return true; // enviamos el formulario	
+    }
+    return false;
+  }
+  
+</script>
+
 <div class="container">
 
   <h1>CREAR PRODUCTO</h1>
-  <form method="POST" action="{{route('producto.store')}}" enctype="multipart/form-data">
+  <form method="POST" action="{{route('producto.store')}}" enctype="multipart/form-data"  onsubmit="return validar()">
       @csrf
       <div class="form-group">
         <label for="nombre">Nombre del producto</label>

@@ -25,7 +25,7 @@ class DomicilioController extends Controller
 
 
     public function listarDomicilios($codCliente){
-
+        //EL CLIENTE NO DEBERIA PASARSE COMO PARAMETRO, DEBERIA SACARSE DEL LOGIN
 
         $listaDomicilios = Domicilio::where('codCliente','=',$codCliente)
         ->orderBy('esPrincipal','DESC')
@@ -109,6 +109,8 @@ class DomicilioController extends Controller
     {
         //
     }
+
+    /* NUEVO REGISTRO */
     public function guardar(Request $request, $codCliente)
     {
         $cliente = Cliente::findOrFail($codCliente);
@@ -187,7 +189,7 @@ class DomicilioController extends Controller
         $domicilio->nroTelefonoFijo = $request->telefonoFijo; 
         $domicilio->fax = $request->fax;
         $domicilio->esPrincipal = '0';
-
+        error_log('aaaaaaa ya esta'.$request->CBPrincipal);
         if($request->CBPrincipal == 'on')
             $domicilio->setPrincipal(); 
         

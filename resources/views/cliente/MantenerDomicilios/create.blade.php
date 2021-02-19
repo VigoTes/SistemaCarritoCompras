@@ -4,111 +4,154 @@
 <div class="container">
 
   <h1>Registrar Nuevo Domicilio</h1>
-  <form method="POST" action="{{route('domicilio.guardar',App\Cliente::getClienteLogeado()->codCliente)}}">
+  <form method="POST" action="{{route('domicilio.guardar',App\Cliente::getClienteLogeado()->codCliente)}}" onsubmit="return validar()">
 
       @csrf
-      <div class="form-group">
-        <label for="nombre">Nombre del domicilio</label>
-        <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" placeholder="Ingrese nombre">
-        @error('nombre')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{$message}}</strong>
-          </span>
-        @enderror
-      </div>
+    <div class="container">
+      <div class="row">
 
-      <div class="form-group">
-        <label for="nombre">Direccion</label>
-        <input type="text" class="form-control @error('direccion') is-invalid @enderror" id="direccion" name="direccion" placeholder="Ingrese direccion">
-        @error('direccion')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{$message}}</strong>
-          </span>
-        @enderror
-      </div>
-
-      <div class="form-group">
-        <label for="nombre">Pais</label>
-        <select class="form-control"  id="Pais" name="Pais" onchange="mostrarRegiones()">
-          <option value="0">-- Seleccionar -- </option>
-          @foreach($listaPaises as $itemPais)
-              <option value="{{$itemPais->codPais}}" >
-                  {{$itemPais->nombre}}
-              </option>                                 
-          @endforeach 
-        </select>   
-      </div>
-      
-      <div class="form-group">
-        <label for="Region">Region</label>
-        <select class="form-control"  id="Region" name="Region" onchange="mostrarProvincias()" >
-          <option value="0">-- Seleccionar -- </option>
-          {{-- ESTA PARTE SE HARIA CON JS --}}
-          
-        </select>   
-      </div>
-
-      <div class="form-group">
-        <label for="Provincia">Provincia</label>
-        <select class="form-control"  id="Provincia" name="Provincia" onchange="mostrarDistritos()" >
-          <option value="0">-- Seleccionar -- </option>
-        
-        </select>   
-      </div>
-      <div class="form-group">
-        <label for="Distrito">Distrito</label>
-        <select class="form-control"  id="Distrito" name="Distrito" >
-          <option value="0">-- Seleccionar -- </option>
-         
-        </select>   
-      </div>
-
-
-      <div class="form-group">
-        <label for="codigoPostal">Codigo Postal</label>
-        <input type="text" class="form-control @error('codigoPostal') is-invalid @enderror" 
-              id="codigoPostal" name="codigoPostal" placeholder="Ingrese codigo Postal">
-        @error('codigoPostal')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{$message}}</strong>
-          </span>
-        @enderror
-      </div>
-
-      <div class="form-group">
-        <label for="fax">FAX</label>
-        <input type="text" class="form-control @error('fax') is-invalid @enderror" 
-              id="fax" name="fax" placeholder="Ingrese fax">
-        @error('fax')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{$message}}</strong>
-          </span>
-        @enderror
-      </div>
-      
-
-      <div class="form-group">
-        <label for="telefonoFijo">Telefono Fijo</label>
-        <input type="text" class="form-control @error('telefonoFijo') is-invalid @enderror" 
-              id="telefonoFijo" name="telefonoFijo" placeholder="Ingrese telefono fijo">
-        @error('telefonoFijo')
-          <span class="invalid-feedback" role="alert">
-              <strong>{{$message}}</strong>
-          </span>
-        @enderror
-      </div>
-
-
-      {{-- DOMICILIO PRINCIPAL --}}
-      <div class="input-group mb-3">
-        <div class="input-group-prepend">
-          <div class="input-group-text">
-            <input type="checkbox" name="CBPrincipal" id="CBPrincipal" aria-label="Checkbox for following text input">
+          <div class="col">
+            <div class="form-group">
+              <label for="nombre">Nombre del domicilio</label>
+              <input type="text" class="form-control @error('nombre') is-invalid @enderror" id="nombre" name="nombre" placeholder="Ingrese nombre">
+              @error('nombre')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{$message}}</strong>
+                </span>
+              @enderror
+            </div>
           </div>
-        </div>
-        <input type="text" class="form-control" aria-label="Text input with checkbox" value="Este es mi Domicilio Principal"  readonly>
-      </div>
 
+          <div class="col"> 
+            <div class="form-group">
+              <label for="nombre">Direccion</label>
+              <input type="text" class="form-control @error('direccion') is-invalid @enderror" id="direccion" name="direccion" placeholder="Ingrese direccion">
+              @error('direccion')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{$message}}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+
+          <div class="w-100"></div>
+
+          <div class="col">
+            <div class="form-group">
+              <label for="nombre">Pais</label>
+              <select class="form-control"  id="Pais" name="Pais" onchange="mostrarRegiones()">
+                <option value="0">-- Seleccionar -- </option>
+                @foreach($listaPaises as $itemPais)
+                    <option value="{{$itemPais->codPais}}" >
+                        {{$itemPais->nombre}}
+                    </option>                                 
+                @endforeach 
+              </select>   
+            </div>    
+          </div>  
+
+          <div class="col">
+            <div class="form-group">
+              <label for="Region">Region</label>
+              <select class="form-control"  id="Region" name="Region" onchange="mostrarProvincias()" >
+                <option value="0">-- Seleccionar -- </option>
+                {{-- ESTA PARTE SE HARIA CON JS --}}
+                
+              </select>   
+            </div>
+          </div>  
+
+          <div class="col">
+            <div class="form-group">
+              <label for="Provincia">Provincia</label>
+              <select class="form-control"  id="Provincia" name="Provincia" onchange="mostrarDistritos()" >
+                <option value="0">-- Seleccionar -- </option>
+              
+              </select>   
+            </div>
+          </div>  
+
+          <div class="col">
+            <div class="form-group">
+              <label for="Distrito">Distrito</label>
+              <select class="form-control"  id="Distrito" name="Distrito" >
+                <option value="0">-- Seleccionar -- </option>
+              
+              </select>   
+            </div>
+          </div>
+          
+          <div class="w-100"></div>
+          <div class="col">
+            <div class="form-group">
+              <label for="codigoPostal">Codigo Postal</label>
+              <input type="number" class="form-control @error('codigoPostal') is-invalid @enderror" 
+                    id="codigoPostal" name="codigoPostal" placeholder="Ingrese codigo Postal">
+              @error('codigoPostal')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{$message}}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+          <div class="col">
+            <div class="form-group">
+              <label for="fax">FAX</label>
+              <input type="text" class="form-control @error('fax') is-invalid @enderror" 
+                    id="fax" name="fax" placeholder="Ingrese fax">
+              @error('fax')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{$message}}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-group">
+              <label for="telefonoFijo">Telefono Fijo</label>
+              <input type="number" class="form-control @error('telefonoFijo') is-invalid @enderror" 
+                    id="telefonoFijo" name="telefonoFijo" placeholder="Ingrese telefono fijo">
+              @error('telefonoFijo')
+                <span class="invalid-feedback" role="alert">
+                    <strong>{{$message}}</strong>
+                </span>
+              @enderror
+            </div>
+          </div>
+          <div class="w-100"></div>
+          <div class="col">
+                  {{-- DOMICILIO PRINCIPAL --}}
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  <input type="checkbox" name="CBPrincipal" id="CBPrincipal" aria-label="Checkbox for following text input">
+                </div>
+              </div>
+              <input type="text" class="form-control" aria-label="Text input with checkbox" value="Este es mi Domicilio Principal"  readonly>
+            </div>
+
+          </div>
+          
+
+
+      </div>
+    </div>
+
+
+
+      
+
+      
+      
+
+      
+
+      
+
+
+
+      
       
 
 
@@ -133,6 +176,67 @@
 
         }); 
     } */
+
+    function validar(){
+      
+      //TEXT INPUTS
+      nombre = $('#nombre').val();  
+      direccion = $('#direccion').val();  
+      codigoPostal = $('#codigoPostal').val();  
+      fax = $('#fax').val();  
+      telefono = $('#telefonoFijo').val();  
+      
+      //SELECT INPUTS
+      pais = $('#Pais').val();  
+      region = $('#Region').val();  
+      provincia = $('#Provincia').val();  
+      distrito = $('#Distrito').val();  
+
+      msj = '';
+      
+      if(nombre=='')
+        msj = 'Por favor ingrese el nombre de su domicilio.';
+    
+      if(direccion=='')
+        msj = 'Por favor ingrese su direccion ';
+    
+      if(codigoPostal=='')
+        msj = 'Por favor ingrese el codigo Postal ';
+    
+      if(fax=='')
+        msj = 'Por favor ingrese el fax ';
+    
+      if(telefono=='')
+          msj = 'Por favor ingrese el Número de  telefono';
+      
+   
+        
+      if(distrito=='0')
+        msj='Debes seleccionar un distrito';
+
+      if(provincia=='0')
+        msj='Debes seleccionar una provincia';
+
+      if(region=='0')
+        msj='Debes seleccionar una región';
+
+      if(pais=='0')
+        msj='Debes seleccionar un país';
+
+      
+     
+     
+
+      if(msj!='')
+      {
+        alert(msj) ;
+        return false;
+
+      }
+        return true;
+
+    }
+
         function sleep(milliseconds) {
           var start = new Date().getTime();
           for (var i = 0; i < 1e7; i++) {
