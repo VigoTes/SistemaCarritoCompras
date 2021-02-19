@@ -37,7 +37,7 @@ Route::get('/mapa/getProvincias/{idRegion}','DomicilioController@getProvincias')
 Route::get('/mapa/getDistritos/{idProvincia}','DomicilioController@getDistritos')->name('domicilio.getDistritos');
 Route::get('/categoria/listarSubs/{id}','CategoriaController@listarSubCategorias');
 Route::get('/menuCategorias','CategoriaController@menuCategorias');//lista de categorias
-
+Route::get('/obtenerParametros/{id}','Tipo_CDPController@getParametros')->name('cdp.getParametros');
 
 //                          idCliente
 Route::post('/cliente/domicilio/guardar/{id}','DomicilioController@guardar')->name('domicilio.guardar');

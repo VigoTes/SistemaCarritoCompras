@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="/img/carro-de-la-compra (2).svg" />
 
     <script
       src="https://kit.fontawesome.com/64d58efce2.js"

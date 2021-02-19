@@ -10,6 +10,28 @@
     let nuevaLongitud=[];
 </script>
 
+<style>
+    .col{
+        /* background-color: orange; */
+        margin-top: 20px;
+        margin-left: 25px;
+    }
+    .colLabel{
+        width: 7%;
+        /* background-color: aqua; */
+        margin-top: 20px;    
+        text-align: left;
+        margin-left :0;
+    }
+    
+    .colLabel2{
+        width: 20%;
+        /* background-color: #3c8dbc; */
+        margin-top: 20px;
+        text-align: left;
+    }
+    
+</style>
 <div class="container">
     <h1 class="text-center">REVISION FINAL DE LA ORDEN</h1>        
 
@@ -113,28 +135,54 @@
                 <br>
             </div>
             <div class="form-group row" >
-                <label class="col-sm-1 col-form-label" >CDP:</label>
-                <div class="col-sm-3">
-                    <select class="form-control" name="codTipo" id="codTipo">
-                    <option value="0">--Seleccionar--</option>
-                    @foreach($tiposCDP as $itemtipo)
-                    <option value="{{$itemtipo->codTipo}}">{{$itemtipo->nombre}}</option>
-                    @endforeach
-                    </select>
+                <div class="container">
+                    <div class="row">
+                        <div class="colLabel" style="">
+                            <label class="col-sm-1 col-form-label" >Comprobante:</label>
+                        </div>
+                        <div class="col" >
+                            <select class="form-control" name="tipoCDP" id="tipoCDP" onchange="cambioCDP()">
+                                <option value="0">--Seleccionar--</option>
+                                @foreach($tiposCDP as $itemtipo)
+                                <option value="{{$itemtipo->codTipo}}">{{$itemtipo->nombre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="colLabel">
+                            <label class="col-sm-1 col-form-label">Nro:</label>
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="nroCDP" name="nroCDP" placeholder="" readonly >
+                        </div>
+                        <div class="colLabel">
+                            <label class="col-sm-1 col-form-label" >Metodo:</label>
+
+                        </div>
+
+                        <div class="col">
+                            <select class="form-control" name="codMetodo" id="codMetodo">
+                                <option value="0">--Seleccionar--</option>
+                                @foreach($metodos as $itemmetodo)
+                                <option value="{{$itemmetodo->codMetodo}}">{{$itemmetodo->nombre}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="colLabel">
+                            <label class="col-sm-1 col-form-label">Tarjeta:</label>
+
+                        </div>
+                        <div class="col">
+                            <input type="text" class="form-control" id="tarjeta" name="tarjeta" placeholder="Tarjeta..." >
+
+                        </div>
+                        
+                    </div>
+
                 </div>
-                <label class="col-sm-1 col-form-label" >Metodo:</label>
-                <div class="col-sm-3">
-                    <select class="form-control" name="codMetodo" id="codMetodo">
-                    <option value="0">--Seleccionar--</option>
-                    @foreach($metodos as $itemmetodo)
-                    <option value="{{$itemmetodo->codMetodo}}">{{$itemmetodo->nombre}}</option>
-                    @endforeach
-                    </select>
-                </div>
-                <label class="col-sm-1 col-form-label">Tarjeta:</label>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" id="tarjeta" name="tarjeta" placeholder="Tarjeta..." >
-                </div>
+
+
+
+
             </div>
         </div>
     </form>
@@ -242,7 +290,27 @@
         $('#total').val(totalActual);
     }
 
+    function cambioCDP(){
+        var x = document.getElementById("divNroSerie");
 
+        if( $('#tipoCDP').val() == '0')
+        {
+          $('#nroSerie').val('');
+          return false;
+        }
+        $.get('/obtenerParametros/'+$('#tipoCDP').val(), function(data)
+            {     
+              $('#nroCDP').val(llenarConCeros(data.serie,3)+'-'+llenarConCeros(data.valor,6));
+              console.log(data);
+            } 
+        );
+
+
+    }
+
+    function llenarConCeros(value, length) {
+      return (value.toString().length < length) ? llenarConCeros("0" + value, length) : value;
+    }
     function validarCampos(){
         msj='';
         codCDP = $('#codTipo').val();

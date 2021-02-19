@@ -185,15 +185,49 @@
         <div class="col"></div>
         <div class="col"></div>
      
+        
+        
+        
         @if($orden->codEstado==1) {{-- solo se puede cancelar la orden si esta en su primer estado --}}
         <div class="col">
+            <a href="#" class="btn btn-danger btn-icon icon-left" title="Eliminar registro" 
+                onclick="swal(
+                            {//sweetalert
+                                title:'¿Está seguro de cancelar la Orden? El stock será repuesto al almacen.',
+                                text: '',     //mas texto
+                                //type: 'warning',  
+                                type: '',
+                                showCancelButton: true,//para que se muestre el boton de cancelar
+                                confirmButtonColor: '#3085d6',
+                                cancelButtonColor: '#d33',
+                                confirmButtonText:  'SI',
+                                cancelButtonText:  'NO',
+                                closeOnConfirm:     true,//para mostrar el boton de confirmar
+                                html : true
+                            },
+                            function()
+                            {//se ejecuta cuando damos a aceptar
+                                window.location.href='{{route('orden.cancelar',$orden->codOrden)}}';
+                            
+
+                            }
+                            );">
+                <i class="entypo-cancel"></i>  
+                <i class="fas fa-ban"></i>
+                Cancelar la Orden
+            </a>
+            {{-- 
+            
+            
             <a href="{{route('orden.cancelar',$orden->codOrden)}}" 
                 class='btn btn-danger'  style="float:right;">
                 <i class="fas fa-ban"></i>
                 Cancelar la Orden
-            </a>    
+            </a>   --}}  
         </div>
         @endif
+
+
         <div class="col">
             <a href="{{route('orden.next',$orden->codOrden)}}" 
                 class='btn btn-success'  style="float:right;">

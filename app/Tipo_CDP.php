@@ -50,7 +50,7 @@ class Tipo_CDP extends Model
 
     /* SI LE MANDAS 1 TE RETONA EL VALOR DE LA NUMERACION QUE ESTÁ LIBRE DE BOLETA
     SI 2 DE FACTURA */
-    public function getNumeracion($id){
+    public static function getNumeracion($id){
         $tcdp = Tipo_CDP::findOrFail($id);
         return $tcdp; //OJO, TE RETORNA EL OBJETO, TIENES QUE SACAR DE ÉL LA SERIE Y EL VALOR
     }

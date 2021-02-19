@@ -18,4 +18,16 @@ class Detalle_CarritoAnon extends Model
     public function producto(){
         return $this->hasOne('App\Producto','codProducto','codProducto');
     }
+
+    public function getProducto(){
+        $prod = Producto::findOrFail($this->codProducto);
+        return $prod;
+    }
+    
+    
+    public function getNombreProducto(){
+        $prod = Producto::findOrFail($this->codProducto);
+        return $prod->nombre;
+    }
+
 }

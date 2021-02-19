@@ -28,23 +28,23 @@ class Orden extends Model
         return $estado->nombre;
     }
 
-    public function getColorEstado(){
+    public function getColorEstado(){ //BACKGROUND
         $color = '';
         switch($this->codEstado){
             case '1': //CREADO
-                $color = 'red';
+                $color = 'rgb(215,208,239)';
                 break;
             case '2': //procesado
-                $color = 'blue';
+                $color = 'rgb(91,79,148)';
                 break;
             case '3': //enviado
-                $color = 'rgb(85, 38, 38)';
+                $color = 'rgb(195,186,230)';
                 break;
             case '4': //entregada
-                $color = '';
+                $color ='rgb(35,28,85)';
                 break;
             case '5': //cancelada
-                $color = '';
+                $color = 'rgb(238,108,77)';
                 break;
             
         }
@@ -61,10 +61,10 @@ class Orden extends Model
                 $color = 'white';
                 break;
             case '3': //enviado
-                $color = 'white';
+                $color = 'black';
                 break;
             case '4': //entregada
-                $color = 'white';
+                $color = 'black';
                 break;
             case '5': //cancelada
                 $color = 'white';

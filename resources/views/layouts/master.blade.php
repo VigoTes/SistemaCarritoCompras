@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+   <!-- Uicons Flaticon -->
+   <link rel="stylesheet" href="/uicons-regular-rounded/css/uicons-regular-rounded.css">
+
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
   <!-- iCheck -->
@@ -67,7 +70,7 @@
     {{-- Left navbar links  --}}
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fi fi-rr-camera"></i></a>
         
       </li>
       
@@ -79,7 +82,10 @@
         <input class="form-control form-control-navbar" name="filtro" id="filtro" type="search" placeholder="Buscar por nombre" aria-label="Search">
         <div class="input-group-append">
           <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
+            <i class="fi fi-rr-camera"></i>
+          </button>
+          </button>
+          </button>
           </button>
         </div>
       </div>
@@ -119,14 +125,20 @@
           </span>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-          
-          
-          @foreach(App\Usuario::getdetallesCarrito() as $detalleCarrito)
+          <?php 
+            $listaDetalles = App\Usuario::getdetallesCarrito();
+          ?>
+
+          @if(count($listaDetalles)==0)
+          <a href="{{route('carrito.mostrar')}}" class="dropdown-item dropdown-footer">No tiene productos en su carrito.</a>
+          @endif  
+          @foreach($listaDetalles as $detalleCarrito)
           <div class="dropdown-divider"></div>
           <a href="{{route('producto.ver',$detalleCarrito->codProducto)}}" class="dropdown-item">
             <!-- Message Start -->
             <div class="media">
-              <img src="../../imagenes/{{$detalleCarrito->getProducto()->nombreImagen}}" alt="User Avatar" class="img-size-50 img-circle mr-3">
+              <img src="../../../imagenes/{{$detalleCarrito->getProducto()->nombreImagen}}" 
+                    alt="User Avatar" class="img-size-50 img-circle mr-3">
               <div class="media-body">
                 <h3 class="dropdown-item-title">
                   {{$detalleCarrito->getProducto()->getNombreSubCategoria()}}
@@ -187,9 +199,11 @@
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="{{route('indexGeneral')}}" class="brand-link">
-      
+    
+    <a href="{{route('indexGeneral')}}" class="d-block">
+      <img src="/head.jpg"> 
     </a>
+   
 
     <!-- Sidebar -->
     <div class="sidebar">
@@ -201,8 +215,10 @@
         <div class="info">
           <a href="#" class="d-block">
             @if(  Auth::id() !='' )
-              <label for=""> {{ App\Usuario::getEmailPorCodUsuario(Auth::id())  }} </label>
-            @else
+              <a href="{{route('user.verEditar', Auth::user()->codCliente.'*2') }}">
+                <label for=""> {{ App\Usuario::getEmailPorCodUsuario(Auth::id())  }} </label>
+              </a>
+              @else
             <label for="">Anonimo</label>
             @endif
           </a>

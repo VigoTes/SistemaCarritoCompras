@@ -30,7 +30,7 @@
         <input id="codCarrito" type="hidden" name="codCarrito" value="{{ $carrito->codCarrito }}" >  
         <div class="table-responsive">                           
             <table id="detalles" class="table table-striped table-bordered table-condensed table-hover" style='background-color:#FFFFFF;'> 
-                <thead class="thead-default" style="background-color:#3c8dbc;color: #fff;">
+                <thead class="thead-default" style="background-color:#5B4F94;color: #fff;">
                     <th width="10" class="text-center">OPCIONES</th> 
                     <th>ARTICULO</th>                                       
                     <th class="text-center">CANTIDAD</th>                                 

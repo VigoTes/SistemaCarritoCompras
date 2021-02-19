@@ -1,7 +1,6 @@
 @extends('layouts.master')
 
 @section('content')
-
   <div class="container-fluid">
     <img src="../img/post.jpeg" style="width: 100%;">
   </div>
@@ -21,7 +20,7 @@
           </div>
           <div class="container">
             <span>{{$itemproducto->nombre}}</span>
-            <p style="font-weight: bold; color: #FF0000">S/. {{$itemproducto->precioActual}}</p>
+            <p style="font-weight: bold; color: #EE6C4D">S/. {{$itemproducto->precioActual}}</p>
           </div>
         </a>
       </div>

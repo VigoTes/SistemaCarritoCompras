@@ -40,14 +40,16 @@
   <table class="table table-striped">
       <thead class="thead-dark">
         <tr>
-            <th scope="col">Código</th>
-            <th scope="col">Fecha</th>
-            <th scope="col">Resumen</th>
-            <th scope="col">Domicilio</th>
-            <th scope="col">Total</th>
-            <th scope="col">Cbte</th>
-            <th scope="col">Estado</th>
-            <th scope="col">Revisar</th>
+            <th width="5%" scope="col">Código</th>
+            <th  width="7%" scope="col">Fecha</th>
+            <th  width="7%" scope="col">Hora</th>
+            
+            <th width="40%"  scope="col">Resumen</th>
+            <th  width="7%" scope="col">Domicilio</th>
+            <th  width="10%" scope="col">Total</th>
+            <th width="5%"  scope="col">Cbte</th>
+            <th width="20%"  scope="col">Estado</th>
+            <th  width="8%" scope="col">Revisar</th>
             
         </tr>
       </thead>
@@ -56,6 +58,8 @@
               <tr>
                 <td>{{$itemOrden->codOrden}}</td>
                 <td>{{$itemOrden->getFecha()}}</td>
+                <td>{{$itemOrden->getHora()}}</td>
+                
                 <td>{{$itemOrden->getResumen()}}</td>
                 <td>{{$itemOrden->getDomicilio()->nombre}}</td>
                 <td>S/. {{number_format( $itemOrden->total,2)}}</td>

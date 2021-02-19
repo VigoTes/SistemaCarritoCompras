@@ -16,7 +16,9 @@ class OrdenController extends Controller
     const PAGINATE=10;
     //lista todas las ordenes de un cliente
     public function listar($idCliente){
-        $listaOrdenes = Orden::where('codCliente','=',$idCliente)->paginate($this::PAGINATE);
+        $listaOrdenes = Orden::where('codCliente','=',$idCliente)
+        ->orderby('fechaHoraVenta','DESC')    
+        ->paginate($this::PAGINATE);
 
         return view('cliente.OrdenesCliente.index',compact('listaOrdenes'));
     }

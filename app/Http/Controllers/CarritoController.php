@@ -11,6 +11,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Cliente;
+
 use App\Detalle_Orden;
 use App\Metodo_Pago;
 use App\Orden;
@@ -166,51 +167,71 @@ class CarritoController extends Controller
     /* PAGA LA ORDEN  */
     public function registrarCompra(Request $request)
     {
-        date_default_timezone_set('America/Lima');
+        try {
+            DB::beginTransaction();
 
-        $orden=new Orden();
-        $orden->codMetodo=$request->codMetodo;
-        $orden->codDomicilio=$request->radio1;
-        $orden->codCliente=Auth::user()->codCliente;
-        $orden->fechaHoraVenta=new DateTime();
-        $orden->codTipo=$request->codTipo;
-        $orden->codEstado='1';
-        
 
-        $total=0;
-        $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();
-        $carrito=$carritos[0];
-        $detalles=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
-        foreach ($detalles as $itemdetalle) {
-            $total+=$itemdetalle->producto->precioActual*$itemdetalle->cantidad;
+            
+            date_default_timezone_set('America/Lima');
+
+            $orden=new Orden();
+            $orden->codMetodo=$request->codMetodo;
+            $orden->codDomicilio=$request->radio1;
+            $orden->codCliente=Auth::user()->codCliente;
+            $orden->fechaHoraVenta=new DateTime();
+            $orden->codTipo=$request->tipoCDP;
+            $orden->codEstado='1';
+            $orden->nroCDP = $request->nroCDP; //STRING CON EL NRO DE SERIE
+
+            Tipo_CDP::pasarASiguiente($request->tipoCDP); //1 O 2
+
+
+            $total=0;
+            $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();
+            $carrito=$carritos[0];
+            $detalles=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
+            foreach ($detalles as $itemdetalle) {
+                $total+=$itemdetalle->producto->precioActual*$itemdetalle->cantidad;
+            }
+
+            $orden->total=$total;
+            $orden->totalIGV=(float)$total*1.18;
+            $orden->save();
+
+            foreach ($detalles as $itemdetalle) {
+                $detalle=new Detalle_Orden();
+                $detalle->codProducto=$itemdetalle->codProducto;
+                $detalle->codOrden=$orden->codOrden;
+                $detalle->precio=$itemdetalle->producto->precioActual;
+                $detalle->cantidad=$itemdetalle->cantidad;
+                $detalle->save();
+
+                //actualizar stock
+                $productoTemp=Producto::find($itemdetalle->codProducto);
+                $productoTemp->stock-=$itemdetalle->cantidad;
+                $productoTemp->contadorVentas+=$itemdetalle->cantidad;
+                $productoTemp->save();
+
+                $itemdetalle->delete();
+            }
+
+            //obtenemos la orden redien creada
+            $codOrdenCreada= (Orden::latest('codOrden')->first())->codOrden;
+                
+            DB::commit();
+            return redirect()->route('orden.listar',$orden->codCliente)->with('datos','Orden N°'.$codOrdenCreada.' Registrada y pagada!');
+        } catch (\Throwable $th) {
+            error_log('HA OCURRIDO UN ERRO EN CARRITO CONTROLLER REGISTRARCOMPRA    
+            
+            
+            '.$th.'
+            
+            A
+            
+            ');
+            DB::rollBack();
         }
-
-        $orden->total=$total;
-        $orden->totalIGV=(float)$total*1.18;
-        $orden->save();
-
-        foreach ($detalles as $itemdetalle) {
-            $detalle=new Detalle_Orden();
-            $detalle->codProducto=$itemdetalle->codProducto;
-            $detalle->codOrden=$orden->codOrden;
-            $detalle->precio=$itemdetalle->producto->precioActual;
-            $detalle->cantidad=$itemdetalle->cantidad;
-            $detalle->save();
-
-            //actualizar stock
-            $productoTemp=Producto::find($itemdetalle->codProducto);
-            $productoTemp->stock-=$itemdetalle->cantidad;
-            $productoTemp->contadorVentas+=$itemdetalle->cantidad;
-            $productoTemp->save();
-
-            $itemdetalle->delete();
-        }
-
-        //obtenemos la orden redien creada
-        $codOrdenCreada= (Orden::latest('codOrden')->first())->codOrden;
-			
-
-        return redirect()->route('orden.listar',$orden->codCliente)->with('datos','Orden N°'.$codOrdenCreada.' Registrada y pagada!');
+    
     }
 
     //elimina todos los elementos del carrito . OJO, NO BORRA EL CARRITO EN SÍ 

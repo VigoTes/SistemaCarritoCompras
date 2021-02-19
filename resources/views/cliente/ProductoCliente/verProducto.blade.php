@@ -39,7 +39,7 @@
               <div class="product-image-thumb"><img src="../../dist/img/prod-4.jpg" alt="Product Image"></div>
               <div class="product-image-thumb active"><img src="../../dist/img/prod-5.jpg" alt="Product Image"></div>
             </div>
-          -->
+            -->
           </div>
           <div class="col-12 col-sm-6">
             <h3 class="my-3">{{$producto->nombre}}</h3>
@@ -47,14 +47,14 @@
             <hr>
             <div class="bg-gray py-2 px-3 mt-4">
               <h2 class="mb-0">
-                S/ {{$producto->precioActual}}
+                S/. {{$producto->precioActual}}
               </h2>
 
             </div>
 
             <div class="row mt-2">
               <div class="col-md-2">
-                <input type="number" class="form-control" id="cantidad" value="1">
+                <input type="number" min="1" class="form-control" id="cantidad" name="cantidad" value="1" onchange="validar()">
               </div>
               <!--
               <a href="" class="btn btn-primary btn-lg btn-flat">
@@ -105,4 +105,13 @@
 
   </section>
 
+
+<script>
+   function validar(){
+    cantidadActual=$('#cantidad').val();
+        if(cantidadActual<1){
+          $('#cantidad').val(1);
+        }
+    }
+</script>
 @endsection
