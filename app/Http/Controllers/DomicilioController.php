@@ -28,6 +28,7 @@ class DomicilioController extends Controller
         //EL CLIENTE NO DEBERIA PASARSE COMO PARAMETRO, DEBERIA SACARSE DEL LOGIN
 
         $listaDomicilios = Domicilio::where('codCliente','=',$codCliente)
+        ->where('activo','=','1')
         ->orderBy('esPrincipal','DESC')
         ->orderBy('codDomicilio','ASC')
         ->paginate($this::PAGINATION);
@@ -124,6 +125,8 @@ class DomicilioController extends Controller
         $domicilio->codCliente = $codCliente;
         $domicilio->fax = $request->fax;
         $domicilio->esPrincipal = '0';
+        $domicilio->activo = '1';
+        
 
         if($request->CBPrincipal == 'on')
             $domicilio->setPrincipal(); 
@@ -219,7 +222,8 @@ class DomicilioController extends Controller
     public function eliminar($id){
         $dom = Domicilio::findOrFail($id);
         $codCliente = $dom->codCliente;
-        $dom->delete();
+        $dom->activo=0;
+        $dom->save();
 
         return redirect()->route('domicilio.listar',$codCliente);
 

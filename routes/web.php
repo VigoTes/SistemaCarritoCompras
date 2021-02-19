@@ -91,6 +91,8 @@ Route::get('/admin/ordenes/cancelar/{id}','OrdenController@cancelar')->name('ord
 Route::get('/admin/ordenes/revisar/{id}','OrdenController@revisarOrden')->name('orden.revisarOrden');
 
 
+Route::get('/admin/reportes','ProductoController@reporteProductos')->name('producto.reporte');
+
 
 Route::get('/cliente/ordenes/{id}','OrdenController@listar')->name('orden.listar');
 Route::get('/cliente/ordenes/detalles/{id}','OrdenController@verDetalles')->name('orden.verDetalles');

@@ -29,7 +29,19 @@ class Cliente extends Model
         return 'No logeado';
     }
 
+    public function tieneDomicilios(){
+        $ListaDomicilios = Domicilio::where('codCliente','=',$this->codCliente)
+        ->where('esPrincipal','=','1')
+        ->get();
 
+        if(count($ListaDomicilios) > 0 )
+            return true;
+        else
+            return false;
+
+    }
+
+    /* RETORNA LA DIRECCION DE SU PRINCIPAL */
     public function getDireccionCompleta(){
         $ListaDomicilios = Domicilio::where('codCliente','=',$this->codCliente)
         ->where('esPrincipal','=','1')

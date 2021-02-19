@@ -113,8 +113,18 @@ class Orden extends Model
     }
 
     public function getDomicilio(){
+
         $dom = Domicilio::findOrFail($this->codDomicilio);
+        error_log('
+        
+        '.$dom->nombre.'
+        
+        
+        
+        ');
         return $dom;
+
+        
     }
 
     public function getTipoCDP(){

@@ -119,4 +119,10 @@ class OrdenController extends Controller
         return $pdf->stream();
     }
 
+
+
+
+    
+
+
 }

@@ -1,6 +1,6 @@
-@extends ('layout.plantilla')
+@extends ('layouts.master')
 
-@section('contenido')
+@section('content')
 
 <div class="row">
     <!-- Left col -->
@@ -27,7 +27,7 @@
         <div class="card-header ui-sortable-handle" style="cursor: move;">
           <h3 class="card-title">
             <i class="fas fa-chart-pie mr-1"></i>
-            <b>  Dinero gastado por los clientes frecuentes</b>
+            <b>  Subcategorías más vendidas</b>
           </h3>
         </div><!-- /.card-header -->
         <div class="card-body">
@@ -50,7 +50,7 @@
 
 @endsection
 
-@section('script')
+
 
 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 <script type="text/javascript">
@@ -63,10 +63,10 @@ function drawChart() {
     ['Language', 'Rating'],
     <?php
 
-        if( count($listaX1) > 0){
+        if( count($categoriasMasVendidas) > 0){
             $i=0;
-            while($i< count($listaX1)  ){
-                $row = $listaX1[$i];
+            while($i< count($categoriasMasVendidas)  ){
+                $row = $categoriasMasVendidas[$i];
                 echo "['".$row->name."', ".$row->cant."],";
                 $i++;
             }
@@ -102,10 +102,10 @@ function drawChart() {
         ['Language', 'Rating'],
         <?php
 
-            if( count($listaX2) > 0){
+            if( count($subCategoriasMasVendidas) > 0){
                 $i=0;
-                while($i< count($listaX2)  ){
-                    $row = $listaX2[$i];
+                while($i< count($subCategoriasMasVendidas)  ){
+                    $row = $subCategoriasMasVendidas[$i];
                     echo "['".$row->name."', ".$row->cant."],";
                     $i++;
                 }
@@ -129,4 +129,3 @@ function drawChart() {
     }
 </script>
 
-@endsection

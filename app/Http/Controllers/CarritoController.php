@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Domicilio;
 use App\Cliente;
 
 use App\Detalle_Orden;
@@ -151,17 +152,33 @@ class CarritoController extends Controller
         return view('cliente.MantenerCarrito.opcionesCaja');
     }
 
+
+    /* VER PAGAR verPagar */
     public function mostrarVistaPagar(){
         $carritos=Carrito::where('codCliente','=',  Auth::user()->codCliente )->get();
         $carrito=$carritos[0];
         $detalles=Detalle_Carrito::where('codCarrito','=',$carrito->codCarrito)->get();
         if(count($detalles)==0){
             return redirect()->route('carrito.mostrar')->with('datos','¡No tiene ningun item en su carrito!');
+        
+        
         }
+        $cliente = Cliente::findOrFail(Auth::user()->codCliente);
+        if(!$cliente->tieneDomicilios())
+            return redirect()->route('domicilio.listar',$cliente->codCliente)->with('datos','Debe configurar un domicilio primero.');
+
+        //le mandamos los domicilios activos del cliente
+        $listaDomicilios = Domicilio::where('codCliente','=',$cliente->codCliente)
+            ->where('activo','=','1')
+            ->orderBy('esPrincipal','DESC')
+            ->orderBy('codDomicilio','ASC')
+            ->get();
+            
+        
 
         $tiposCDP=Tipo_CDP::all();
         $metodos=Metodo_Pago::all();
-        return view('cliente.MantenerCarrito.pagar',compact('carrito','detalles','tiposCDP','metodos'));
+        return view('cliente.MantenerCarrito.pagar',compact('carrito','detalles','tiposCDP','metodos','listaDomicilios','cliente'));
     }
 
     /* PAGA LA ORDEN  */

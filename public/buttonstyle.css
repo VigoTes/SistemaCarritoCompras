@@ -20,8 +20,8 @@
 .btn-warning:active,
 .btn-warning:visited,
 .btn-warning:focus {
-    background-color: #FFD952;
-    border-color: #FFD952;
+    background-color: #C3BAE6;
+    border-color: #C3BAE6;
 }
 
 .btn-info,
@@ -29,8 +29,8 @@
 .btn-info:active,
 .btn-info:visited,
 .btn-info:focus {
-    background-color: #C3BAE6;
-    border-color: #C3BAE6;
+    background-color: #D7D0EF;
+    border-color: #D7D0EF;
 }
 
 [class*=sidebar-dark-]

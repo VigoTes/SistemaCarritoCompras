@@ -16,6 +16,8 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+
+
 class ProductoController extends Controller
 {
     /**
@@ -413,4 +415,32 @@ class ProductoController extends Controller
     }
 
 
+    /* -- reporte de las categorias mas vendidas
+select P."nombre",P."contadorVentas", SC."nombre", C."nombre" from public."PRODUCTO" P
+	inner join public."SUBCATEGORIA" SC on P."codSubCategoria" = SC."codSubCategoria"
+	inner join public."CATEGORIA" C on C."codCategoria" = SC."codCategoria"
+ */
+
+
+    public function reporteProductos(){
+
+        $categoriasMasVendidas = DB::select('
+      
+        select sum(P."contadorVentas") as cant, C."nombre" as name from public."PRODUCTO" P
+            inner join public."SUBCATEGORIA" SC on P."codSubCategoria" = SC."codSubCategoria"
+            inner join public."CATEGORIA" C on C."codCategoria" = SC."codCategoria"
+            group by C."nombre"
+        ');
+        $fechaI='';
+        $fechaF='';
+
+        $subCategoriasMasVendidas = DB::select('
+        select sum(P."contadorVentas") as cant, SC."nombre" as name from public."PRODUCTO" P 
+        inner join public."SUBCATEGORIA" SC on P."codSubCategoria" = SC."codSubCategoria"
+            group by SC."nombre"
+        ');
+
+        return view('admin.Reportes.reporte',compact('categoriasMasVendidas','fechaI','fechaF','subCategoriasMasVendidas'));
+
+    }
 }

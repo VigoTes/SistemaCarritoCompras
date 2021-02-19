@@ -113,16 +113,16 @@
         </div> 
 
     <hr>
-    <h1 class="text-center">REVISION DE CARGA A LA CUENTA Y ENTREGA</h1>
+    <h1 class="text-center">REVISIÓN DE CARGA A LA CUENTA Y ENTREGA</h1>
     <p >Revise que su informacion sea correcta</p>
     <form method="POST" action="{{route('carrito.registrarCompra')}}" onsubmit="return validarCampos()" id="frmRegistrado" name="frmRegistrado">
         @csrf
         <div class="container">
             <div style="margin-left:100px;">
                 <strong>Entregar a:</strong>
-                {{Auth::user()->usuario->cliente->apellidos}}, {{Auth::user()->usuario->cliente->nombres}} ({{Auth::user()->usuario->cliente->nroTelefonoMovil}})<br>
+                {{$cliente->apellidos}}, {{$cliente->nombres}} ({{$cliente->nroTelefonoMovil}})<br>
                 <div class="row">
-                    @foreach(Auth::user()->usuario->cliente->domicilio as $itemdomicilio)
+                    @foreach( $listaDomicilios as $itemdomicilio)
                     <div class="form-check col-sm-3">
                         <input class="form-check-input" type="radio" name="radio1" 
                             id="val{{$itemdomicilio->codDomicilio}}" value="{{$itemdomicilio->codDomicilio}}">
