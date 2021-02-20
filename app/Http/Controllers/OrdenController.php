@@ -69,9 +69,14 @@ class OrdenController extends Controller
             return redirect()->route('orden.listarParaAdmin')->with('datos','Orden actualizada a '.$orden->getNombreEstado());
     }
 
-    public function cancelar($idOrden){
-        $orden = Orden::findOrFail($idOrden);
+
+    /* LE LLEGA POR POST */
+    public function cancelar(Request $request){
+        $codOrden = $request->codOrden;
+
+        $orden = Orden::findOrFail($codOrden);
         $orden->codEstado  = 5;
+        $orden->razonCancelacion = $request->razonCancelacion;
         $orden->save(); 
 
 
@@ -109,7 +114,7 @@ class OrdenController extends Controller
         $pdf = \PDF::loadView('cliente.CDP',array('orden'=>$orden,'domicilio'=>$domicilio,
                                                         'detalles'=>$detalles,
                                                         'fechaHora'=>$fechaHora,
-                                                        'tipo'=>2));
+                                                        'tipo'=>$orden->codTipo));
         $pdf->setPaper(array(0, 0, 301, 623.622), 'portrait');
         //$pdf->set_option('defaultFont', 'Courier');
         

@@ -144,7 +144,7 @@
 
                 <div class="col" style="text-align: center">
                     
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" style="font-family: 'Poppins', sans-serif;">
                         <i class="far fa-save"> Guardar</i>
                     </button>
                 </div>

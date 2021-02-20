@@ -106,7 +106,12 @@ class UserController extends Controller
     }
     public function verLogin(){
         return view('login');
-        
+    }
+
+    public function verNuevoLogin(){
+        $tipoReg='1';
+        $datos='Contraseña Incorrecta';
+        return view('signin',compact('tipoReg','datos'));
     }
 
     public function cerrarSesion(){
@@ -118,8 +123,6 @@ class UserController extends Controller
 
 
     public function verRegistrar($tipoReg){
-
-
         return view('registrar',compact('tipoReg'));
     }
 

@@ -15,14 +15,6 @@
     background-color: #EE6C4D;
     border-color: #EE6C4D;
 }
-.btn-warning,
-.btn-warning:hover,
-.btn-warning:active,
-.btn-warning:visited,
-.btn-warning:focus {
-    background-color: #C3BAE6;
-    border-color: #C3BAE6;
-}
 
 .btn-info,
 .btn-info:hover,
@@ -32,6 +24,7 @@
     background-color: #D7D0EF;
     border-color: #D7D0EF;
 }
+
 
 [class*=sidebar-dark-]
 {

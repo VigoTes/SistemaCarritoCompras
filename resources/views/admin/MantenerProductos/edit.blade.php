@@ -9,14 +9,11 @@
         alert("Ingrese nombre del producto");
         $("#nombre").focus();
     }
-    else if(document.getElementById("imagen").value == ""){
+
+    /* else if(document.getElementById("imagen").value == ""){
       alert("Ingrese imagen del producto");
       $("#imagen").focus();
-    }
-    else if(document.getElementById("imagen").value == ""){
-      alert("Ingrese imagen del producto");
-      $("#imagen").focus();
-    }
+    } */
     else if(document.getElementById("descripcion").value == ""){
       alert("Ingrese descripcion del producto");
       $("#descripcion").focus();

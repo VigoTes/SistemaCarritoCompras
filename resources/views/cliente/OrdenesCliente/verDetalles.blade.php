@@ -118,6 +118,21 @@
                 <input type="text" class="form-control" value="{{ $orden->getNombreEstado() }}" readonly>
             </div>       
             
+            @if($orden->razonCancelacion!='')
+                
+            
+            <div class="w-100"></div> {{-- SALTO LINEA****************************************** --}}
+            <div class="col"> 
+                <label for="">Estado de la orden:</label>
+            </div>
+
+            <div class="col">
+                <input type="text" class="form-control" value="{{ $orden->razonCancelacion}}" readonly>
+            </div>    
+
+
+            @endif
+
         </div>        
            
     </div>   

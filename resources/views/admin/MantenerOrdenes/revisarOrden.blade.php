@@ -37,6 +37,25 @@
         }
         //document.getElementById("ejemplo").innerHTML = mensaje;
     }
+
+    function validar(){
+        msj='';
+        if($('#razonCancelacion').val()=='')
+            msj = "ingrese una razon para la cancelación de la orden.";
+        
+
+
+        if(msj!=''){
+            alert(msj);
+            return false;
+        }
+        
+        
+        return true;
+
+
+    }
+
 </script>
 
 
@@ -182,13 +201,19 @@
                 Regresar al menú
             </a>       
         </div>
-        <div class="col"></div>
-        <div class="col"></div>
+        <div class="col">
+            
+        </div>
+        <div class="col">
+            
+        </div>
      
         
-        
-        
+        <form id="miForm" name="miForm" action="{{route('orden.cancelar')}}" onsubmit="return validar()"> {{-- FORM PARA ENVIAR EL TEXTO DE CANCELACION --}}
+            
         @if($orden->codEstado==1) {{-- solo se puede cancelar la orden si esta en su primer estado --}}
+        <input type="hidden" name="codOrden" id="codOrden" value="{{$orden->codOrden}}">
+            
         <div class="col">
             <a href="#" class="btn btn-danger btn-icon icon-left" title="Eliminar registro" 
                 onclick="swal(
@@ -207,34 +232,34 @@
                             },
                             function()
                             {//se ejecuta cuando damos a aceptar
-                                window.location.href='{{route('orden.cancelar',$orden->codOrden)}}';
-                            
-
+                                /* window.location.href=''; */
+                                if(validar())
+                                    document.getElementById('miForm').submit();
                             }
                             );">
                 <i class="entypo-cancel"></i>  
                 <i class="fas fa-ban"></i>
                 Cancelar la Orden
             </a>
-            {{-- 
-            
-            
-            <a href="{{route('orden.cancelar',$orden->codOrden)}}" 
-                class='btn btn-danger'  style="float:right;">
-                <i class="fas fa-ban"></i>
-                Cancelar la Orden
-            </a>   --}}  
+            <br> <br>
+            <label for="razonCancelacion">Razón de la cancelación:</label>
+            <textarea class="form-control"
+                id="razonCancelacion" name="razonCancelacion" cols="30" rows="3"></textarea>
+
         </div>
         @endif
-
-
-        <div class="col">
-            <a href="{{route('orden.next',$orden->codOrden)}}" 
-                class='btn btn-success'  style="float:right;">
-                <i class="fas fa-check"></i>
-                Marcar como {{$orden->getNombreEstadoSiguiente()}}
-            </a>    
-        </div>
+        
+        </form>
+        @if($orden->codEstado<4)
+            <div class="col">
+                <a href="{{route('orden.next',$orden->codOrden)}}" 
+                    class='btn btn-success'  style="float:right;">
+                    <i class="fas fa-check"></i>
+                    Marcar como {{$orden->getNombreEstadoSiguiente()}}
+                </a>    
+            </div>     
+        @endif
+        
         
            
       

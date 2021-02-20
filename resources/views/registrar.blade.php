@@ -94,7 +94,7 @@
                       
                     {{-- HIDDEN PARA ALMACENAR EL TIPO REG, POR DEFECTO ES 1 (LOGIN) Y 2(DEL PAGO) --}}
                     <input type="hidden" id="tipoReg" name="tipoReg" value="{{$tipoReg}}">
-                    
+                      
                     <input type='submit' id='do_login' value='Registrarme' title='Get Started' />
                     
                 </div>
@@ -108,7 +108,7 @@
         </div>
 
 
-{}
+
 
         <div class='box-info'>
                             <p><button onclick="closeLoginInfo();" class='b b-info i i-left' title='Back to Sign In'></button><h3>Need Help?</h3>

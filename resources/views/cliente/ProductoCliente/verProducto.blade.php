@@ -49,7 +49,7 @@
               <h2 class="mb-0">
                 S/. {{$producto->precioActual}}
               </h2>
-
+              <!--class="mb-0" -->
             </div>
 
             <div class="row mt-2">
@@ -62,7 +62,7 @@
                 Add to Cart
               </a>
             --> 
-              <a href="#" class="btn btn-primary btn-lg btn-flat" onclick="swal({//sweetalert
+              <a href="#" class="btn btn-primary" onclick="swal({//sweetalert
                     title:'<h3>¿Seguro de agregar el producto al carrito?',
                     text: '{{$producto->nombre}}',     //mas texto
                     //type: 'warning',  

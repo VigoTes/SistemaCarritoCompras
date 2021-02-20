@@ -13,7 +13,7 @@ class Orden extends Model
 
     protected $fillable = [
         'codMetodo', 'total','codDomicilio','codCliente','codCliente'
-        ,'fechaHoraVenta','codTipo','totalIGV','codEstado','nroCDP'
+        ,'fechaHoraVenta','codTipo','totalIGV','codEstado','nroCDP','razonCancelacion'
     ];
 
 
@@ -55,7 +55,7 @@ class Orden extends Model
         $color = '';
         switch($this->codEstado){
             case '1': //CREADO
-                $color = 'white';
+                $color = 'black';
                 break;
             case '2': //procesado
                 $color = 'white';
@@ -64,7 +64,7 @@ class Orden extends Model
                 $color = 'black';
                 break;
             case '4': //entregada
-                $color = 'black';
+                $color = 'white';
                 break;
             case '5': //cancelada
                 $color = 'white';

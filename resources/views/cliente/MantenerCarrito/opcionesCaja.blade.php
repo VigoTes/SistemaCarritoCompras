@@ -16,7 +16,7 @@
 <div class="form-group" style="margin-left:350px;">
     <div class="form-check">
       <input class="form-check-input" type="radio" name="radio1" id="val1" value="1" checked="">
-      <label class="">Ya estoy registrado</label>
+      <label class="" for="val1">Ya estoy registrado</label>
     </div>
     <p>Si usted se ha registrado antes, ingrese su email y su contraseña para confirmar la entrada.</p>
 
@@ -45,7 +45,7 @@
     <br>
     <div class="form-check">
       <input class="form-check-input" type="radio" name="radio1" id="val2" value="2">
-      <label class="">Soy un nuevo usuario</label>
+      <label for="val2" class="">Soy un nuevo usuario</label>
     </div>
     <p>Si usted no se ha registrado antes, pulse aqui</p>
     {{--                                2 porque viene del pagar --}}
@@ -55,7 +55,7 @@
 
 <script>
 $(document).ready(function(){
-        $("#val1").click(function () {
+        /* $("#val1").click(function () {
             espacio = '';
                 espacio += '<div class="form-group row" style="margin-left:100px;" id="espacio1">';
                     espacio += '<label class="col-sm-1 col-form-label">Email:</label>';
@@ -70,10 +70,12 @@ $(document).ready(function(){
                     espacio += '</div>';
                 espacio += '</div>';
             $('#frmRegistrado').html(espacio);
-        });
-        $("#val2").click(function () {
+        }); */
+
+
+        /* $("#val2").click(function () {
             $('#frmRegistrado').html('');
-        });
+        }); */
 
 		$("#boton").click(function () { 
 			valor=$('input:radio[name=radio1]:checked').val();

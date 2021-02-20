@@ -194,6 +194,7 @@
 
 <script>
     cont=0;
+
     $(document).ready(function(){
 		$("#boton").click(function () {
             //cont=0;
@@ -205,7 +206,9 @@
                 cont=0;
                 $.get('/verificarStock/'+codProducto, function(data){
                     cantidadProducto=data;
-                    if(cantidadProducto<cantidades[index]){
+                    console.log('aaaaaaaaa'+data);
+
+                    if(parseInt(cantidadProducto)<parseInt(cantidades[index])){
                         alert('stock insuficiente para producto (Nrº: '+index+')');
                         cont+=1;
                     }else{

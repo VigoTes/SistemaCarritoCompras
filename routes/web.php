@@ -18,9 +18,7 @@ Route::post('/editar', 'UserController@update')->name('user.update');  //esta es
 Route::get('/', 'ProductoController@indexListarTop'  )->name('indexGeneral');
 Route::get('/filtro', 'ProductoController@indexFiltro'  )->name('indexFiltro');
 
-Route::get('/marsky',function(){
-    return view('signin');
-});
+/* Route::get('/nuevoLogin', 'UserController@verNuevoLogin')->name('loginNuevo'); */
 
 /*-----------------RUTAS  MANTENEDORES CON RESOURCE ----------------------*/
 Route::resource('categoria', 'CategoriaController');
@@ -87,7 +85,7 @@ Route::post('/registrarCompra','CarritoController@registrarCompra')->name('carri
 
 Route::get('/admin/ordenes/verTodas','OrdenController@listarParaAdmin')->name('orden.listarParaAdmin');
 Route::get('/admin/ordenes/next/{id}','OrdenController@next')->name('orden.next');
-Route::get('/admin/ordenes/cancelar/{id}','OrdenController@cancelar')->name('orden.cancelar');
+Route::get('/admin/ordenes/cancelar/','OrdenController@cancelar')->name('orden.cancelar');
 Route::get('/admin/ordenes/revisar/{id}','OrdenController@revisarOrden')->name('orden.revisarOrden');
 
 
@@ -97,4 +95,3 @@ Route::get('/admin/reportes','ProductoController@reporteProductos')->name('produ
 Route::get('/cliente/ordenes/{id}','OrdenController@listar')->name('orden.listar');
 Route::get('/cliente/ordenes/detalles/{id}','OrdenController@verDetalles')->name('orden.verDetalles');
 Route::get('/cliente/ordenes/CDP/{id}','OrdenController@generarCDP')->name('orden.CDP');
-

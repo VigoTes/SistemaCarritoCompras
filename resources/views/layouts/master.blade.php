@@ -7,12 +7,15 @@
   <title>Carrito de Compras</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  
+  
   <!-- Font Awesome -->
   <link rel="stylesheet" href="/adminlte/plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
+  <!-- Uicons Flaticon -->
+  <link rel="stylesheet" href="/uicons-regular-rounded/css/uicons-regular-rounded.css">
   <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-   <!-- Uicons Flaticon -->
-   <link rel="stylesheet" href="/uicons-regular-rounded/css/uicons-regular-rounded.css">
+   
 
   <!-- Tempusdominus Bbootstrap 4 -->
   <link rel="stylesheet" href="/adminlte/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
@@ -70,7 +73,7 @@
     {{-- Left navbar links  --}}
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fi fi-rr-camera"></i></a>
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         
       </li>
       
@@ -82,7 +85,7 @@
         <input class="form-control form-control-navbar" name="filtro" id="filtro" type="search" placeholder="Buscar por nombre" aria-label="Search">
         <div class="input-group-append">
           <button class="btn btn-navbar" type="submit">
-            <i class="fi fi-rr-camera"></i>
+            <i class="fas fa-search"></i>
           </button>
           </button>
           </button>
@@ -143,12 +146,12 @@
             </div>
 
 
-            <a href="{{route('carrito.mostrar')}}" class="dropdown-item dropdown-footer">Ver mi Carrito</a>
+            
             <!-- Message End -->
           </a>
 
           @endforeach
-          
+          <a href="{{route('carrito.mostrar')}}" class="dropdown-item dropdown-footer">Ver mi Carrito</a>
         
         </div>
 
@@ -191,8 +194,10 @@
     <!-- Brand Logo -->
     
     <a href="{{route('indexGeneral')}}" class="d-block">
-      <img src="/head.jpg"> 
+      <img src="/HEAD.jpg"> 
     </a>
+
+    
    
 
     <!-- Sidebar -->

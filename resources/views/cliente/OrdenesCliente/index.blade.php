@@ -17,7 +17,7 @@
 
 
     <div style="margin-bottom:25px;">
-        <h3>Ordenes</h3>
+        <h3>Órdenes</h3>
         {{-- <a href="" class="btn btn-primary"><i class="fas fa-plus"></i>Nuevo Registro</a>
          --}}
         {{-- <nav style="float:right" >

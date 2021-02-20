@@ -185,7 +185,7 @@ class ProductoController extends Controller
         }
 
         $prod->save();
-        return redirect()->route('producto.index');
+        return redirect()->route('producto.index')->with('¡Se ha actualizado el producto!');
 
     }
 
